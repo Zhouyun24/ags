@@ -16,7 +16,7 @@
             Masuk Ke Academic Guidance System
         </p>
     </div>
-    <form method="GET" action="{{ route("mahasiswa.beranda.index") }}" class="flex-1 px-6 pt-8" x-data="{ showPassword: false, remember: false }">
+    <form method="GET" action="{{ route('mahasiswa.beranda.index') }}" class="flex-1 px-6 pt-8" x-data="{ showPassword: false, remember: false }">
         @csrf
         <div class="mb-5">
             <label for="id_pengguna" class="mb-2 block text-sm font-semibold text-slate-800">
