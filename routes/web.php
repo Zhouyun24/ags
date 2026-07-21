@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HasilBimbinganController;
+use App\Http\Controllers\PersetujuanJadwalController;
 
 Route::get('/', function () {
     return view('pages.splash.index', ['redirectUrl' => route('login'), 'navbarVisibility' => '0', 'sidebarVisibility' => '0']);
@@ -61,3 +63,12 @@ Route::get('/mahasiswa/profile/pengaturan-notifikasi', function () {
 Route::get('/mahasiswa/profile/privasi-keamanan', function () {
     return view('pages.mahasiswa.profile.privasi-keamanan.index');
 })->name('mahasiswa.profile.privasi-keamanan.index');
+
+Route::patch('/dosen/persetujuan-jadwal/{id_jadwal}', [PersetujuanJadwalController::class, 'update'])
+    ->name('dosen.persetujuan-jadwal.update');
+
+Route::patch('/dosen/hasil-bimbingan/{id_hasil}', [HasilBimbinganController::class, 'update'])
+    ->name('dosen.hasil-bimbingan.update');
+
+    Route::get('/dosen/hasil-bimbingan/edit/{id_hasil}', [HasilBimbinganController::class, 'edit'])
+    ->name('dosen.hasil-bimbingan.edit');
