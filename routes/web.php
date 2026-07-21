@@ -67,8 +67,14 @@ Route::get('/mahasiswa/profile/privasi-keamanan', function () {
 Route::patch('/dosen/persetujuan-jadwal/{id_jadwal}', [PersetujuanJadwalController::class, 'update'])
     ->name('dosen.persetujuan-jadwal.update');
 
+Route::get('/dosen/hasil-bimbingan/tambah/{id_jadwal}', [HasilBimbinganController::class, 'create'])
+    ->name('dosen.hasil-bimbingan.create');
+
+Route::post('/dosen/hasil-bimbingan/tambah/{id_jadwal}', [HasilBimbinganController::class, 'store'])
+    ->name('dosen.hasil-bimbingan.store');
+
+Route::get('/dosen/hasil-bimbingan/edit/{id_hasil}', [HasilBimbinganController::class, 'edit'])
+    ->name('dosen.hasil-bimbingan.edit');
+
 Route::patch('/dosen/hasil-bimbingan/{id_hasil}', [HasilBimbinganController::class, 'update'])
     ->name('dosen.hasil-bimbingan.update');
-
-    Route::get('/dosen/hasil-bimbingan/edit/{id_hasil}', [HasilBimbinganController::class, 'edit'])
-    ->name('dosen.hasil-bimbingan.edit');
