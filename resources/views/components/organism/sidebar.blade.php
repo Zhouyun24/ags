@@ -109,7 +109,7 @@
             </ul>
         </nav>
         <div class="border-t border-slate-100 px-5 py-5">
-            <form method="POST" action="#">
+            <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button
                     type="submit"

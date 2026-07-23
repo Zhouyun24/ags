@@ -183,6 +183,16 @@
             </svg>
             Daftar Sekarang
         </a>
+        <form method="POST" action="{{ route('logout') }}" class="mt-3">
+            @csrf
+            <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 py-3.5 text-sm font-semibold text-red-600 transition hover:bg-red-100">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <path d="M16 17l5-5-5-5M21 12H9" />
+                </svg>
+                Keluar dari Akun Operator
+            </button>
+        </form>
         <p class="mt-4 pb-8 text-center text-sm text-slate-600">
             Sudah punya akun?
             <a href="{{ route('login') }}" class="font-semibold text-blue-600 hover:text-blue-700">

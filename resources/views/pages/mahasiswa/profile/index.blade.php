@@ -155,7 +155,7 @@
                     class="rounded-lg border border-slate-200 py-3 font-inter text-sm font-semibold text-black hover:bg-slate-50">
                     Batal
                 </button>
-                <form action="" method="POST">
+                <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit"
                         class="w-full rounded-lg bg-red-600 py-3 font-inter text-sm font-semibold text-white hover:bg-red-700">
