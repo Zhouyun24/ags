@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\AjukanBimbinganController;
+use App\Http\Controllers\StatusJadwalController;
 use App\Http\Controllers\HasilBimbinganController;
 use App\Http\Controllers\PersetujuanJadwalController;
 
@@ -78,17 +80,14 @@ Route::middleware(['auth', 'role:2'])->prefix('mahasiswa')->name('mahasiswa.')->
         return view('pages.mahasiswa.beranda.index');
     })->name('beranda.index');
 
-    Route::get('/ajukan-bimbingan', function () {
-        return view('pages.mahasiswa.ajukan-bimbingan.index');
-    })->name('ajukan-bimbingan.index');
+    Route::get('/ajukan-bimbingan', [AjukanBimbinganController::class, 'create'])
+        ->name('ajukan-bimbingan.index');
 
-    Route::post('/ajukan-bimbingan', function () {
-        return view('pages.mahasiswa.ajukan-bimbingan.index');
-    })->name('ajukan-bimbingan.store');
+    Route::post('/ajukan-bimbingan', [AjukanBimbinganController::class, 'store'])
+        ->name('ajukan-bimbingan.store');
 
-    Route::get('/status-jadwal', function () {
-        return view('pages.mahasiswa.status-jadwal.index');
-    })->name('status-jadwal.index');
+    Route::get('/status-jadwal', [StatusJadwalController::class, 'index'])
+        ->name('status-jadwal.index');
 
     Route::get('/riwayat-bimbingan', function () {
         return view('pages.mahasiswa.riwayat-bimbingan.index');
