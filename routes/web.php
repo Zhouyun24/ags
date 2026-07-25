@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\AjukanBimbinganController;
 use App\Http\Controllers\StatusJadwalController;
 use App\Http\Controllers\RiwayatBimbinganController;
@@ -77,9 +78,7 @@ Route::middleware(['auth', 'role:1'])->prefix('operator')->name('operator.')->gr
 Route::middleware(['auth', 'role:2'])->prefix('mahasiswa')->name('mahasiswa.')->group(function () {
     
     // Beranda & Bimbingan
-    Route::get('/beranda', function () {
-        return view('pages.mahasiswa.beranda.index');
-    })->name('beranda.index');
+    Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda.index');
 
     Route::get('/ajukan-bimbingan', [AjukanBimbinganController::class, 'create'])
         ->name('ajukan-bimbingan.index');
