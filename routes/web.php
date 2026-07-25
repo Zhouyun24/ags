@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AjukanBimbinganController;
 use App\Http\Controllers\StatusJadwalController;
+use App\Http\Controllers\RiwayatBimbinganController;
 use App\Http\Controllers\HasilBimbinganController;
 use App\Http\Controllers\PersetujuanJadwalController;
 
@@ -89,9 +90,8 @@ Route::middleware(['auth', 'role:2'])->prefix('mahasiswa')->name('mahasiswa.')->
     Route::get('/status-jadwal', [StatusJadwalController::class, 'index'])
         ->name('status-jadwal.index');
 
-    Route::get('/riwayat-bimbingan', function () {
-        return view('pages.mahasiswa.riwayat-bimbingan.index');
-    })->name('riwayat-bimbingan.index');
+    Route::get('/riwayat-bimbingan', [RiwayatBimbinganController::class, 'index'])
+        ->name('riwayat-bimbingan.index');
 
     Route::get('/evaluasi-akademik', function () {
         return view('pages.mahasiswa.evaluasi-akademik.index');
