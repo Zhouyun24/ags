@@ -40,6 +40,7 @@ class LoginController extends Controller
         $email = trim($request->email);
         $user = pengguna::whereRaw('TRIM(email) = ?', [$email])->first();
 
+
         // 3. Cek keberadaan akun & cocokkan kata_sandi (Plain Text atau Bcrypt Hash)
         $passwordMatches = false;
         if ($user) {
@@ -56,6 +57,7 @@ class LoginController extends Controller
                 }
             }
         }
+
 
         if ($user && $passwordMatches) {
             // Login-kan pengguna ke dalam Session bawaan Laravel
