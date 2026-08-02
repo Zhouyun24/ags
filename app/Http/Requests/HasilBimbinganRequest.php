@@ -14,8 +14,8 @@ class HasilBimbinganRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'catatan_bimbingan' => ['required', 'string'],
-            'arahan_akademik' => ['required', 'string'],
+            'catatan_bimbingan' => ['required', 'string', 'max:255'],
+            'arahan_akademik' => ['required', 'string', 'max:255'],
         ];
     }
 }
