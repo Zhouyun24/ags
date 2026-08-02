@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\hasil_bimbingan;
 use App\Models\jadwal_bimbingan;
+use App\Models\penilaian_bimbingan;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +16,25 @@ class BerandaController extends Controller
         $m = $user?->mahasiswa;
 
         if (!$m) {
-            return view('pages.mahasiswa.beranda.index');
+            return view('pages.mahasiswa.beranda.index', [
+                'mahasiswa' => (object) [
+                    'nama' => '-',
+                    'nim' => '-',
+                    'prodi' => '-',
+                    'semester' => '-',
+                ],
+                'dosenPa' => '-',
+                'sesiTotal' => 0,
+                'sesiTerpakai' => 0,
+                'progressBimbingan' => 0,
+                'skor' => [
+                    'partisipasi' => 0,
+                    'pemahaman' => 0,
+                    'keseluruhan' => 0,
+                ],
+                'bimbinganMendatang' => null,
+                'bimbinganTerakhir' => null,
+            ]);
         }
 
         $sesiTotal = jadwal_bimbingan::where('nim', $m->nim)
@@ -26,6 +45,12 @@ class BerandaController extends Controller
             ->count();
 
         $progressBimbingan = $sesiTotal > 0 ? (int) round(($sesiTerpakai / $sesiTotal) * 100) : 0;
+
+        $penilaians = penilaian_bimbingan::whereHas('hasilBimbingan.jadwal_bimbingan', fn($q) => $q->where('nim', $m->nim))->get();
+
+        $skorPartisipasi = $penilaians->count() > 0 ? round((float) $penilaians->avg('skor_keaktifan'), 2) : 0;
+        $skorPemahaman = $penilaians->count() > 0 ? round((float) $penilaians->avg('skor_pemahaman'), 2) : 0;
+        $skorKeseluruhan = $penilaians->count() > 0 ? round((float) $penilaians->avg('nilai_perkembangan'), 2) : 0;
 
         $data = [
             'mahasiswa' => (object) [
@@ -39,10 +64,12 @@ class BerandaController extends Controller
             'sesiTerpakai' => $sesiTerpakai,
             'progressBimbingan' => $progressBimbingan,
             'skor' => [
-                'partisipasi' => 0,
-                'pemahaman' => 0,
-                'keseluruhan' => 0,
+                'partisipasi' => $skorPartisipasi,
+                'pemahaman' => $skorPemahaman,
+                'keseluruhan' => $skorKeseluruhan,
             ],
+            'bimbinganMendatang' => null,
+            'bimbinganTerakhir' => null,
         ];
 
         $upcomingJadwal = jadwal_bimbingan::with('dosenPA.pengguna')
@@ -51,14 +78,6 @@ class BerandaController extends Controller
             ->where('tanggal_jadwal', '>=', now()->toDateString())
             ->orderBy('tanggal_jadwal', 'asc')
             ->first();
-
-        if (!$upcomingJadwal) {
-            $upcomingJadwal = jadwal_bimbingan::with('dosenPA.pengguna')
-                ->where('nim', $m->nim)
-                ->where('status_jadwal', 1)
-                ->orderByDesc('tanggal_jadwal')
-                ->first();
-        }
 
         if ($upcomingJadwal) {
             $data['bimbinganMendatang'] = (object) [
@@ -77,13 +96,19 @@ class BerandaController extends Controller
             ->first();
 
         if ($latestHasil) {
+            $latestStatus = match ((int) $latestHasil->jadwal_bimbingan?->status_jadwal) {
+                1 => 'disetujui',
+                2 => 'ditolak',
+                default => 'menunggu',
+            };
+
             $data['bimbinganTerakhir'] = (object) [
                 'judul' => $latestHasil->jadwal_bimbingan?->topik_diskusi ?? '-',
                 'tanggal' => $latestHasil->jadwal_bimbingan?->tanggal_jadwal
                     ? Carbon::parse($latestHasil->jadwal_bimbingan->tanggal_jadwal)->format('d/m/Y')
                     : '-',
                 'catatan' => $latestHasil->catatan_bimbingan,
-                'status' => 'Disetujui',
+                'status' => $latestStatus,
             ];
         }
 
