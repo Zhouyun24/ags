@@ -12,6 +12,7 @@ use App\Http\Controllers\HasilBimbinganController;
 use App\Http\Controllers\PersetujuanJadwalController;
 use App\Http\Controllers\PenilaianBimbinganController;
 use App\Http\Controllers\EvaluasiAkademikController;
+use App\Http\Controllers\EvaluasiMahasiswaDosenController;
 use App\Http\Controllers\Operator\KelolaOperatorController;
 use App\Http\Controllers\Operator\KelolaMahasiswaController;
 use App\Http\Controllers\Operator\KelolaDosenController;
@@ -182,9 +183,8 @@ Route::middleware(['auth', 'role:3'])->prefix('dosen')->name('dosen.')->group(fu
         ->name('persetujuan-jadwal.update');
 
     // Evaluasi Mahasiswa
-    Route::get('/evaluasi-mahasiswa', function () {
-        return view('pages.dosen.evaluasi-mahasiswa.index');
-    })->name('evaluasi-mahasiswa.index');
+    Route::get('/evaluasi-mahasiswa', [EvaluasiMahasiswaDosenController::class, 'index'])
+        ->name('evaluasi-mahasiswa.index');
 
     // Hasil Bimbingan (KK9)
     Route::get('/hasil-bimbingan/tambah/{id_jadwal}', [HasilBimbinganController::class, 'create'])
