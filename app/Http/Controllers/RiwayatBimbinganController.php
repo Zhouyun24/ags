@@ -28,10 +28,16 @@ class RiwayatBimbinganController extends Controller
                 ? Carbon::parse($h->jadwal_bimbingan->tanggal_jadwal)->format('d M Y')
                 : '-';
 
+            $status = match ((int) $h->jadwal_bimbingan?->status_jadwal) {
+                1 => 'disetujui',
+                2 => 'ditolak',
+                default => 'menunggu',
+            };
+
             return (object) [
                 'topik' => $h->jadwal_bimbingan?->topik_diskusi ?? '-',
                 'tanggal' => $tanggal,
-                'status' => 'Disetujui',
+                'status' => $status,
                 'catatan' => $h->catatan_bimbingan,
                 'rekomendasi' => $h->arahan_akademik,
             ];
