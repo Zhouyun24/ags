@@ -46,6 +46,11 @@ class PenilaianBimbinganController extends Controller
             ->with('jadwal_bimbingan')
             ->firstOrFail();
 
+        // Cegah penilaian ganda untuk hasil bimbingan yang sama
+        if ($hasil->penilaian_bimbingan) {
+            return redirect()->back()->with('error', 'Penilaian untuk hasil bimbingan ini sudah ada.');
+        }
+
         $validated = $request->validated();
 
         // Proses 5.2: Hitung nilai perkembangan

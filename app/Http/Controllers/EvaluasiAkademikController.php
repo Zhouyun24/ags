@@ -15,12 +15,23 @@ class EvaluasiAkademikController extends Controller
      */
     public function index()
     {
-        $mahasiswa = Auth::user()?->mahasiswa;
+        $user = Auth::user();
+        $mahasiswa = $user?->mahasiswa;
 
         if (!$mahasiswa) {
             return view('pages.mahasiswa.evaluasi-akademik.index', [
-                'penilaians' => collect(),
-                'ringkasan' => null,
+                'mahasiswa' => (object) [
+                    'nama' => '-',
+                    'semester' => '-',
+                ],
+                'skorKeseluruhan' => 0,
+                'skorMaks' => 5,
+                'labelSkor' => '-',
+                'skor' => [
+                    'partisipasi' => 0,
+                    'pemahaman' => 0,
+                ],
+                'trenPerkembangan' => [],
             ]);
         }
 
@@ -30,37 +41,37 @@ class EvaluasiAkademikController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $penilaians = $records->map(function ($p) {
-            $jadwal = $p->hasilBimbingan?->jadwal_bimbingan;
+        $skorKeseluruhan = 0;
+        $skorPartisipasi = 0;
+        $skorPemahaman = 0;
+        $trenPerkembangan = [];
 
-            $tanggal = $jadwal?->tanggal_jadwal
-                ? Carbon::parse($jadwal->tanggal_jadwal)->format('d M Y')
-                : '-';
-
-            return (object) [
-                'topik' => $jadwal?->topik_diskusi ?? '-',
-                'tanggal' => $tanggal,
-                'skor_keaktifan' => $p->skor_keaktifan,
-                'skor_pemahaman' => $p->skor_pemahaman,
-                'nilai_perkembangan' => $p->nilai_perkembangan,
-            ];
-        });
-
-        // Ringkasan rata-rata
-        $ringkasan = null;
         if ($records->count() > 0) {
-            $ringkasan = (object) [
-                'rata_keaktifan' => round($records->avg('skor_keaktifan'), 2),
-                'rata_pemahaman' => round($records->avg('skor_pemahaman'), 2),
-                'rata_perkembangan' => round($records->avg('nilai_perkembangan'), 2),
-                'nilai_bimbingan' => $mahasiswa->nilai_bimbingan ?? '-',
-                'total_sesi' => $records->count(),
-            ];
+            $skorKeseluruhan = round($records->avg('nilai_perkembangan'), 2);
+            $skorPartisipasi = round($records->avg('skor_keaktifan'), 2);
+            $skorPemahaman = round($records->avg('skor_pemahaman'), 2);
+
+            // Tren perkembangan diurutkan dari yang paling lama ke paling baru (S1, S2, S3...)
+            foreach ($records->reverse()->values() as $index => $p) {
+                $label = 'S' . ($index + 1);
+                $trenPerkembangan[$label] = $p->nilai_perkembangan;
+            }
         }
 
         return view('pages.mahasiswa.evaluasi-akademik.index', [
-            'penilaians' => $penilaians,
-            'ringkasan' => $ringkasan,
+            'mahasiswa' => (object) [
+                'nama' => $user->nama ?? '-',
+                'semester' => $mahasiswa->semester ?? '-',
+            ],
+            'skorKeseluruhan' => $skorKeseluruhan,
+            'skorMaks' => 5,
+            'labelSkor' => $mahasiswa->nilai_bimbingan ?? '-',
+            'skor' => [
+                'partisipasi' => $skorPartisipasi,
+                'pemahaman' => $skorPemahaman,
+            ],
+            'trenPerkembangan' => $trenPerkembangan,
         ]);
     }
 }
+

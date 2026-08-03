@@ -40,6 +40,6 @@ class AjukanBimbinganController extends Controller
         $jadwal->nip = $mahasiswa->nip;
         $jadwal->save();
 
-        return redirect()->route('mahasiswa.status-jadwal.index')->with('success', 'Pengajuan bimbingan berhasil dikirim.');
+        return redirect()->route('mahasiswa.status-jadwal.index')->with('success', 'Pengajuan jadwal berhasil disimpan, menunggu persetujuan Dosen Pembimbing Akademik.');
     }
 }

@@ -2,31 +2,10 @@
 
 @section('layouts')
 @php
-    $mahasiswa ??= (object) [
-        'nama' => 'Nama Pengguna',
-        'semester' => 4,
-    ];
-    $skorKeseluruhan ??= 4.0;
-    $skorMaks ??= 5.0;
-    $labelSkor ??= 'Sangat Baik';
-    $skor ??= [
-        'partisipasi' => 4.2,
-        'pemahaman' => 3.8,
-    ];
-    $trenPerkembangan ??= [
-        'Jan' => 70,
-        'Feb' => 75,
-        'Mar' => 80,
-        'Apr' => 78,
-        'Mei' => 82,
-        'Jun' => 95,
-        'Jul' => 78,
-    ];
-
     // --- Hitung lingkaran skor keseluruhan (circular progress) ---
     $radius = 70;
     $circumference = 2 * pi() * $radius;
-    $persenSkor = $skorKeseluruhan / $skorMaks;
+    $persenSkor = $skorMaks > 0 ? $skorKeseluruhan / $skorMaks : 0;
     $strokeOffset = $circumference * (1 - $persenSkor);
 
     // --- Hitung titik-titik grafik tren (SVG line chart) ---
@@ -36,8 +15,8 @@
     $paddingBottom = 20;
     $paddingTop = 10;
 
-    $minY = 60;
-    $maxY = 100;
+    $minY = 1;
+    $maxY = 5;
     $rangeY = $maxY - $minY;
 
     $labels = array_keys($trenPerkembangan);
@@ -48,13 +27,17 @@
     $plotHeight = $chartHeight - $paddingBottom - $paddingTop;
 
     $points = [];
-    foreach ($values as $i => $val) {
-        $x = $paddingLeft + ($i / ($count - 1)) * $plotWidth;
-        $y = $paddingTop + (1 - (($val - $minY) / $rangeY)) * $plotHeight;
-        $points[] = [$x, $y];
-    }
+    $polylinePoints = '';
 
-    $polylinePoints = collect($points)->map(fn($p) => "{$p[0]},{$p[1]}")->implode(' ');
+    if ($count >= 2) {
+        foreach ($values as $i => $val) {
+            $x = $paddingLeft + ($i / ($count - 1)) * $plotWidth;
+            $y = $paddingTop + (1 - (($val - $minY) / $rangeY)) * $plotHeight;
+            $points[] = [$x, $y];
+        }
+
+        $polylinePoints = collect($points)->map(fn($p) => "{$p[0]},{$p[1]}")->implode(' ');
+    }
 @endphp
 
 <div class="pb-8">
@@ -116,33 +99,39 @@
                 </div>
             </div>
         </div>
-        <div class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
-            <p class="mb-3 font-inter text-sm font-semibold text-black">Tren Perkembangan</p>
-            <svg viewBox="0 0 {{ $chartWidth }} {{ $chartHeight + 20 }}" class="w-full">
-                @foreach ([100, 90, 80, 70, 60] as $gridVal)
-                    @php
-                        $gridY = $paddingTop + (1 - (($gridVal - $minY) / $rangeY)) * $plotHeight;
-                    @endphp
-                    <line x1="{{ $paddingLeft }}" y1="{{ $gridY }}" x2="{{ $chartWidth }}" y2="{{ $gridY }}"
-                        stroke="#F1F5F9" stroke-width="1" />
-                    <text x="0" y="{{ $gridY + 3 }}" font-size="9" fill="#94A3B8" font-family="Inter, sans-serif">
-                        {{ $gridVal }}
-                    </text>
-                @endforeach
-                <polyline points="{{ $polylinePoints }}" fill="none" stroke="#2653EB" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round" />
-                @foreach ($points as $i => $p)
-                    <circle cx="{{ $p[0] }}" cy="{{ $p[1] }}" r="{{ $i === 5 ? 5 : 3.5 }}"
-                        fill="white" stroke="#2653EB" stroke-width="2.5" />
-                @endforeach
-                @foreach ($labels as $i => $label)
-                    <text x="{{ $points[$i][0] }}" y="{{ $chartHeight + 15 }}" font-size="9" fill="#94A3B8"
-                        text-anchor="middle" font-family="Inter, sans-serif">
-                        {{ $label }}
-                    </text>
-                @endforeach
-            </svg>
-        </div>
+        @if (count($trenPerkembangan) >= 2)
+            <div class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
+                <p class="mb-3 font-inter text-sm font-semibold text-black">Tren Perkembangan</p>
+                <svg viewBox="0 0 {{ $chartWidth }} {{ $chartHeight + 20 }}" class="w-full">
+                    @foreach ([5, 4, 3, 2, 1] as $gridVal)
+                        @php
+                            $gridY = $paddingTop + (1 - (($gridVal - $minY) / $rangeY)) * $plotHeight;
+                        @endphp
+                        <line x1="{{ $paddingLeft }}" y1="{{ $gridY }}" x2="{{ $chartWidth }}" y2="{{ $gridY }}"
+                            stroke="#F1F5F9" stroke-width="1" />
+                        <text x="0" y="{{ $gridY + 3 }}" font-size="9" fill="#94A3B8" font-family="Inter, sans-serif">
+                            {{ $gridVal }}
+                        </text>
+                    @endforeach
+                    <polyline points="{{ $polylinePoints }}" fill="none" stroke="#2653EB" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    @foreach ($points as $i => $p)
+                        <circle cx="{{ $p[0] }}" cy="{{ $p[1] }}" r="3.5"
+                            fill="white" stroke="#2653EB" stroke-width="2.5" />
+                    @endforeach
+                    @foreach ($labels as $i => $label)
+                        <text x="{{ $points[$i][0] }}" y="{{ $chartHeight + 15 }}" font-size="9" fill="#94A3B8"
+                            text-anchor="middle" font-family="Inter, sans-serif">
+                            {{ $label }}
+                        </text>
+                    @endforeach
+                </svg>
+            </div>
+        @else
+            <div class="rounded-xl bg-white py-10 text-center shadow-[0px_4px_16px_0px_#0F172A14]">
+                <p class="font-inter text-sm text-slate-400">Belum cukup data untuk menampilkan tren.</p>
+            </div>
+        @endif
     </div>
 </div>
 @endsection

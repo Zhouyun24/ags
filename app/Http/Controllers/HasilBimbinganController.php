@@ -13,7 +13,7 @@ class HasilBimbinganController extends Controller
     public function create($id_jadwal)
     {
         $nip = Auth::user()->dosenPA?->nip;
-        $jadwal = jadwal_bimbingan::where('id_jadwal', $id_jadwal)->where('nip', $nip)->firstOrFail();
+        $jadwal = jadwal_bimbingan::where('id_jadwal', $id_jadwal)->where('nip', $nip)->where('status_jadwal', 1)->firstOrFail();
 
         return view('pages.dosen.hasil-bimbingan.tambah.index', ['jadwal' => $jadwal]);
     }
@@ -21,7 +21,11 @@ class HasilBimbinganController extends Controller
     public function store(HasilBimbinganRequest $request, $id_jadwal)
     {
         $nip = Auth::user()->dosenPA?->nip;
-        $jadwal = jadwal_bimbingan::where('id_jadwal', $id_jadwal)->where('nip', $nip)->firstOrFail();
+        $jadwal = jadwal_bimbingan::where('id_jadwal', $id_jadwal)->where('nip', $nip)->where('status_jadwal', 1)->firstOrFail();
+
+        if ($jadwal->hasil_bimbingan) {
+            return redirect()->back()->with('error', 'Hasil bimbingan untuk jadwal ini sudah ada.');
+        }
 
         $hasil = new hasil_bimbingan();
         $hasil->id_hasil = IdGenerator::generateFor(hasil_bimbingan::class);

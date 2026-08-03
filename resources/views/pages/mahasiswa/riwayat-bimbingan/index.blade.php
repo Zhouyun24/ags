@@ -6,21 +6,21 @@
         (object) [
             'topik' => 'Topik Diskusi',
             'tanggal' => 'DD MM YYYY',
-            'status' => 'Disetujui',
+            'status' => 'disetujui',
             'catatan' => 'Perbaiki latar belakang dan rumusan masalah agar lebih spesifik.',
             'rekomendasi' => 'Baca jurnal referensi dan perbaiki dalam satu minggu.',
         ],
         (object) [
             'topik' => 'Topik Diskusi',
             'tanggal' => 'DD MM YYYY',
-            'status' => 'Disetujui',
+            'status' => 'ditolak',
             'catatan' => 'Catatan Bimbingan/Arahan Akademik.',
             'rekomendasi' => 'Rekomendasi Dosen Pembimbing.',
         ],
         (object) [
             'topik' => 'Topik Diskusi',
             'tanggal' => 'DD MM YYYY',
-            'status' => 'Disetujui',
+            'status' => 'menunggu',
             'catatan' => 'Catatan Bimbingan/Arahan Akademik.',
             'rekomendasi' => 'Rekomendasi Dosen Pembimbing.',
         ],
@@ -37,6 +37,37 @@
             <div class="absolute bottom-4 left-[19px] top-4 w-[2px] bg-blue-100"></div>
             <div class="space-y-5">
                 @foreach ($riwayat as $index => $item)
+                    @php
+                        $statusConfig = [
+                            'disetujui' => [
+                                'label' => 'Disetujui',
+                                'icon_bg' => 'bg-[#16A34A]/15',
+                                'icon_color' => 'text-[#16A34A]',
+                                'badge_bg' => 'bg-[#DCFCE7]',
+                                'badge_text' => 'text-[#16A34A]',
+                            ],
+                            'ditolak' => [
+                                'label' => 'Ditolak',
+                                'icon_bg' => 'bg-[#DC2626]/15',
+                                'icon_color' => 'text-[#DC2626]',
+                                'badge_bg' => 'bg-[#FEE2E2]',
+                                'badge_text' => 'text-[#DC2626]',
+                            ],
+                            'menunggu' => [
+                                'label' => 'Menunggu',
+                                'icon_bg' => 'bg-[#F59E0B]/15',
+                                'icon_color' => 'text-[#F59E0B]',
+                                'badge_bg' => 'bg-[#FEF3C7]',
+                                'badge_text' => 'text-[#F59E0B]',
+                            ],
+                        ][$item->status] ?? [
+                            'label' => 'Menunggu',
+                            'icon_bg' => 'bg-[#F59E0B]/15',
+                            'icon_color' => 'text-[#F59E0B]',
+                            'badge_bg' => 'bg-[#FEF3C7]',
+                            'badge_text' => 'text-[#F59E0B]',
+                        ];
+                    @endphp
                     <div class="relative flex gap-4">
                         <span class="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#2653EB] shadow-[0px_0px_0px_4px_#F0F5FF]">
                             <svg class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -50,11 +81,22 @@
                                 <div>
                                     <p class="font-jakarta text-[16px] font-extrabold text-black">{{ $item->topik }}</p>
                                     <p class="mt-0.5 font-inter text-[10px] text-black">{{ $item->tanggal }}</p>
-                                    <span class="mt-2 inline-flex items-center gap-1 rounded-xl bg-[#DCFCE7] px-2.5 py-1 font-inter text-[10px] font-medium text-[#16A34A]">
-                                        <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <path d="M5 13l4 4L19 7" />
-                                        </svg>
-                                        {{ $item->status }}
+                                    <span class="mt-2 inline-flex items-center gap-1 rounded-xl {{ $statusConfig['badge_bg'] }} px-2.5 py-1 font-inter text-[10px] font-medium {{ $statusConfig['badge_text'] }}">
+                                        @if ($item->status === 'disetujui')
+                                            <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <path d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        @elseif ($item->status === 'ditolak')
+                                            <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <path d="M6 6l12 12M18 6L6 18" />
+                                            </svg>
+                                        @else
+                                            <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                                <circle cx="12" cy="12" r="9" />
+                                                <path d="M12 7v5l3 3" />
+                                            </svg>
+                                        @endif
+                                        {{ $statusConfig['label'] }}
                                     </span>
                                 </div>
                                 <svg class="mt-1 h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200"

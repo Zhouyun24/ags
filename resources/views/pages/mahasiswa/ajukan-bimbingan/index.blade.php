@@ -47,6 +47,9 @@
                     <input type="text" name="topik" placeholder="Contoh: Konsultasi Bab II"
                         class="w-full rounded-lg border border-slate-200 bg-white py-3 pl-10 pr-3 font-inter text-sm text-black placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
                 </div>
+                @error('topik')
+                    <p class="mt-1.5 font-inter text-xs text-red-500">{{ $message }}</p>
+                @enderror
             </div>
             <div class="mb-5 grid grid-cols-2 gap-4">
                 <div>
@@ -62,6 +65,9 @@
                             onfocus="(this.type='date')" onblur="if(!this.value){this.type='text'}"
                             class="w-full rounded-lg border border-slate-200 bg-white py-3 pl-10 pr-3 font-inter text-sm text-black placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
                     </div>
+                    @error('tanggal')
+                        <p class="mt-1.5 font-inter text-xs text-red-500">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div>
                     <label class="mb-2 block font-inter text-[13px] font-semibold text-black">Waktu</label>
@@ -90,6 +96,9 @@
                         </button>
                     @endforeach
                 </div>
+                @error('waktu')
+                    <p class="mt-1.5 font-inter text-xs text-red-500">{{ $message }}</p>
+                @enderror
             </div>
             <div class="grid grid-cols-2 gap-4">
                 <a href="{{ url()->previous() }}"
