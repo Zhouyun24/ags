@@ -12,13 +12,26 @@
         
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
+
+    @php
+        $role = 3;
+        $roleMap = [
+            1 => 'operator',
+            2 => 'mahasiswa',
+            3 => 'dosen',
+        ];
+
+        $namaKomponenNavbar = 'organism.' . ($roleMap[$role] ?? 'mahasiswa') . '.navbar';
+        $namaKomponenSidebar = 'organism.' . ($roleMap[$role] ?? 'mahasiswa') . '.sidebar';
+    @endphp 
+
     <body class="font-inter antialiased">
         <div class="mx-auto min-h-dvh w-full bg-slate-50" x-data="{ open: false }">
-            @if(!isset($navbarVisibility) || $navbarVisibility == 1)
-                <x-organism.navbar/>
+            @if(!isset($navbarVisibility) || $navbarVisibility == 1)   
+                <x-dynamic-component :component="$namaKomponenNavbar" />
             @endif
             @if(!isset($sidebarVisibility) || $sidebarVisibility == 1)
-                <x-organism.sidebar/>
+                <x-dynamic-component :component="$namaKomponenSidebar" />
             @endif
             @yield("layouts")
         </div>
