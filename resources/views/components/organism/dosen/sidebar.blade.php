@@ -1,0 +1,120 @@
+@php
+    $user = $user ?? auth()->user();
+    $navItems = [
+        ['label' => 'Beranda', 'route' => 'dosen.beranda.index', 'icon' => 'home'],
+        ['label' => 'Persetujuan Jadwal', 'route' => 'dosen.persetujuan-jadwal.index', 'icon' => 'clipboard-check'],
+        ['label' => 'Hasil Bimbingan', 'route' => 'dosen.hasil-bimbingan.index', 'icon' => 'save'],
+        ['label' => 'Evaluasi Mahasiswa', 'route' => 'dosen.evaluasi-mahasiswa.index', 'icon' => 'chart'],
+    ];
+@endphp
+
+<div x-data x-cloak>
+    <div
+        x-show="open"
+        x-transition:enter="transition-opacity ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition-opacity ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        @click="open = !open"
+        class="fixed inset-0 z-40 bg-slate-900/40"
+    ></div>
+    <aside
+        x-show="open"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="-translate-x-full"
+        x-transition:enter-end="translate-x-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="translate-x-0"
+        x-transition:leave-end="-translate-x-full"
+        @keydown.escape.window="open = !open"
+        class="fixed inset-y-0 left-0 z-50 flex min-w-[286px] min-h-screen flex-col bg-white shadow-xl"
+    >
+        <div class="relative bg-gradient-to-bl from-[#22C55E] to-[#15803D] w-full min-h-[150px] flex justify-center items-center">
+            <button
+                type="button"
+                @click="open = !open"
+                aria-label="Tutup menu"
+                class="absolute right-4 top-4 flex h-[30px] w-[30px] items-center justify-center rounded-lg bg-white/25 text-white hover:bg-white/30"
+            >
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <path d="M6 6l12 12M18 6 6 18" />
+                </svg>
+            </button>
+            <div class="flex items-center justify-center gap-3">
+                <div class="flex h-[50px] w-[50px] items-center justify-center rounded-lg bg-white/25 border border-white/25">
+                    @if ($user?->foto)
+                        <img src="{{ $user->foto }}" alt="{{ $user->nama }}" class="h-[50px] w-[50px] rounded-2xl object-cover">
+                    @else
+                        <svg class="h-[30px] w-[30px] text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                        </svg>
+                    @endif
+                </div>
+                <div>
+                    <p class="font-jakarta text-base font-extrabold text-white">
+                        {{ $user?->nama ?? 'Nama Pengguna' }}
+                    </p>
+                    <p class="font-inter text-xs text-white">
+                        {{ $user?->peran ?? 'Dosen PA' }} &bull; NIP: {{ $user?->nip ?? 'XXXXXXXX' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1">
+                @foreach ($navItems as $item)
+                    @php $active = request()->routeIs($item['route']); @endphp
+                    <li>
+                        <a
+                            href="{{ Route::has($item['route']) ? route($item['route']) : '#' }}"
+                            class="flex items-center gap-3 py-3 font-inter text-sm font-medium transition
+                                {{ $active ? 'border-l-[3px] border-[#16A34A] bg-[#DCFCE7] text-[#16A34A] px-4' : 'text-black hover:bg-slate-50 px-5' }}"
+                        >
+                            <span class="flex h-[34px] w-[34px] items-center justify-center rounded-lg {{ $active ? 'bg-[#16A34A]/20' : 'bg-[#DCFCE7]' }}">
+                                <svg class="h-4 w-4 {{ $active ? 'text-[#16A34A]' : 'text-black' }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    @switch($item['icon'])
+                                        @case('home')
+                                            <path d="M4 11 12 4l8 7" />
+                                            <path d="M6 10v9a1 1 0 0 0 1 1h4v-6h2v6h4a1 1 0 0 0 1-1v-9" />
+                                            @break
+
+                                        @case('clipboard-check')
+                                            <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+                                            <rect x="9" y="3" width="6" height="4" rx="1" />
+                                            <path d="M9 13l2 2 4-4" />
+                                            @break
+
+                                        @case('save')
+                                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z" />
+                                            <path d="M17 21v-8H7v8" />
+                                            <path d="M7 3v5h8" />
+                                            @break
+
+                                        @case('chart')
+                                            <path d="M5 20V10M12 20V4M19 20v-7" />
+                                            @break
+                                    @endswitch
+                                </svg>
+                            </span>
+                            {{ $item['label'] }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </nav>
+        <div class="border-t border-slate-100 px-5 py-5">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button
+                    type="submit"
+                    class="flex w-full items-center justify-center rounded-[10px] border border-red-200 bg-red-50 py-[10px] font-inter text-sm font-medium text-[#EF4444] transition hover:bg-red-100"
+                >
+                    Keluar
+                </button>
+            </form>
+        </div>
+    </aside>
+</div>

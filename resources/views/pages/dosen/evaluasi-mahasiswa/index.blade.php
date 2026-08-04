@@ -59,7 +59,7 @@
                 </div>
             </div>
 
-            <div class="px-5 pt-5">
+            <div class="px-5 pt-5 flex flex-col items-center">
 
                 <div
                     class="mb-2 flex gap-4 overflow-x-auto pb-5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -83,7 +83,6 @@
                     </button>
                 </div>
 
-                {{--  Searh bar --}}
                 <div class="mb-4 relative w-full max-w-md">
                     <input type="text" placeholder="Cari NIM atau Nama Mahasiswa"
                         class="w-full rounded-full bg-gray-100 py-2 pl-5 pr-12 text-sm text-gray-700 placeholder:text-gray-400 shadow-md outline-none transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-blue-400" />
@@ -98,15 +97,12 @@
                     </button>
                 </div>
 
-                {{-- card --}}
                 @foreach ($jadwal as $item)
                     <div x-show="activeTab === 'semua' || activeTab === '{{ $item->status }}'"
                     class="mt-4 w-full max-w-sm rounded-2xl bg-[#F7F9FC] p-5 shadow-md">
 
-                        <!-- Header -->
                         <div class="flex items-start justify-between">
                             <div class="flex gap-3">
-                                <!-- Avatar -->
                                 <div class="flex h-11 w-11 items-center justify-center rounded-lg bg-[#DDE5FF]">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#4B5FD6]" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -115,7 +111,6 @@
                                     </svg>
                                 </div>
 
-                                <!-- Info -->
                                 <div>
                                     <h2 class="text-2xl font-bold text-gray-900">
                                         {{ $item->nama }}
@@ -127,7 +122,6 @@
                                 </div>
                             </div>
 
-                            <!-- Status -->
                             <span @class([
                                 'rounded-full px-3 py-1 text-xs font-medium',
                                 'bg-[#FFF1DD] text-[#F59E0B]' => $item->status === 'menunggu',
@@ -141,7 +135,6 @@
                             </span>
                         </div>
 
-                        <!-- Date & Time -->
                         <div class="mt-5 flex gap-3">
 
                             <div
@@ -158,7 +151,6 @@
 
                         </div>
 
-                        <!-- Statistik -->
                         <div class="mt-6 grid grid-cols-3 gap-4">
 
                             <div class="rounded-xl bg-white py-4 text-center shadow-md">
@@ -184,23 +176,21 @@
 
                         </div>
 
-                        <!-- Button -->
                         <div class="mt-6 flex justify-end">
-                            <button @class([
-                                'rounded-xl border px-10 py-3 font-semibold transition',
-                                'border-orange-400 text-orange-500 hover:bg-orange-500 hover:text-white' =>
-                                    $item->status === 'menunggu',
-                                'border-green-500 text-green-600 hover:bg-green-500 hover:text-white' =>
-                                    $item->status === 'disetujui',
-                            ])>
-                                {{ $item->status === 'disetujui' ? 'Edit' : 'Isi Evaluasi' }}
-                            </button>
+                            @if ($item->status === 'menunggu')
+                                <a href="{{ route('dosen.penilaian.create', $item->nim) }}"
+                                    class="rounded-xl border px-10 py-3 font-semibold transition border-orange-400 text-orange-500 hover:bg-orange-500 hover:text-white">
+                                    Isi Hasil
+                                </a>
+                            @else
+                                <a href="{{ route('dosen.penilaian.edit', $item->nim) }}"
+                                    class="rounded-xl border px-10 py-3 font-semibold transition border-green-500 text-green-600 hover:bg-green-500 hover:text-white">
+                                    Edit
+                                </a>
+                            @endif
                         </div>
-
                     </div>
                 @endforeach
-
-
             </div>
         </div>
     </div>
