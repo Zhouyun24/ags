@@ -1,3 +1,12 @@
+@php
+    $user = auth()->user();
+    $hasNotification = false;
+    if ($user && $user->dosenPA) {
+        $hasNotification = \App\Models\jadwal_bimbingan::where('nip', $user->dosenPA->nip)
+            ->where('status_jadwal', 0)
+            ->exists();
+    }
+@endphp
 <div class="flex items-center justify-between bg-white px-5 py-4">
     <div class="flex items-center gap-3">
         <button type="button" class="text-[#2653EB] flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#2653EB]/15" @click="open = !open">
@@ -18,14 +27,17 @@
     </div>
     <div class="flex items-center gap-2">
         <a href="{{ route('dosen.notifikasi.index') }}"
-            class="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#2653EB]/15 text-[#2653EB]">
+            class="relative flex h-10 w-10 items-center justify-center rounded-[13px] transition {{ request()->routeIs('dosen.notifikasi.*') ? 'bg-[#2653EB] text-white shadow-md' : 'bg-[#2653EB]/15 text-[#2653EB] hover:bg-[#2653EB]/25' }}">
             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
                 <path d="M13.7 21a2 2 0 0 1-3.4 0" />
             </svg>
+            @if($hasNotification)
+                <span class="absolute right-2 top-2 flex h-2.5 w-2.5 rounded-full bg-red-500 ring-2 {{ request()->routeIs('dosen.notifikasi.*') ? 'ring-[#2653EB]' : 'ring-white' }}"></span>
+            @endif
         </a>
         <a href="{{ route('dosen.profile.index') }}"
-            class="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#2653EB]/15 text-[#2653EB]">
+            class="flex h-10 w-10 items-center justify-center rounded-[13px] transition {{ request()->routeIs('dosen.profile.*') ? 'bg-[#2653EB] text-white shadow-md' : 'bg-[#2653EB]/15 text-[#2653EB] hover:bg-[#2653EB]/25' }}">
             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <circle cx="12" cy="8" r="4" />
                 <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />

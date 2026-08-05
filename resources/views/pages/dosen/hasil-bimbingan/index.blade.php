@@ -25,9 +25,9 @@
     }'
 >
     {{-- ================= HEADER ================= --}}
-    <div class="relative overflow-hidden bg-gradient-to-br from-[#22C55E] via-[#16A34A] to-[#15803D] px-5 pb-6 pt-5">
+    <div class="relative overflow-hidden bg-gradient-to-b from-[#10B981] to-[#059669] px-5 pb-6 pt-5">
         <h1 class="font-jakarta text-xl font-extrabold text-white">Hasil Bimbingan</h1>
-        <p class="mt-1 font-inter text-xs text-white">Kelola catatan dan rekomendasi bimbingan</p>
+        <p class="mt-1 font-inter text-[12px] text-white">Kelola catatan dan rekomendasi bimbingan</p>
     </div>
 
     <div class="px-5 pt-6">

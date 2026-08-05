@@ -67,12 +67,12 @@
     }" class="pb-8">
 
     {{-- Header --}}
-    <div class="relative overflow-hidden rounded-b-[28px] bg-gradient-to-br from-[#2563ED] via-[#2251E3] to-[#1D4ED8] px-5 pb-16 pt-5 text-center">
+    <div class="relative overflow-hidden rounded-b-[28px] bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] px-5 pb-16 pt-5 text-center">
         <h1 class="font-jakarta text-xl font-extrabold text-white">Privasi &amp; Keamanan</h1>
         <p class="mt-1 font-inter text-xs text-blue-100">Jaga keamanan akun dan data Anda</p>
     </div>
 
-    <form action="" method="POST" class="px-5">
+    <form action="" method="POST" class="px-5 relative z-10">
         @csrf
         @method('PUT')
 
@@ -213,7 +213,7 @@
 
         {{-- Tombol Simpan --}}
         <button type="submit"
-            class="w-full rounded-2xl bg-gradient-to-br from-[#2563ED] via-[#2251E3] to-[#1D4ED8] py-3.5 font-inter text-sm font-semibold text-white hover:opacity-90">
+            class="w-full rounded-2xl bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] py-3.5 font-inter text-sm font-semibold text-white hover:opacity-90">
             Simpan Pengaturan
         </button>
     </form>

@@ -1,15 +1,6 @@
 @extends('layouts.index')
 
 @section('layouts')
-@php
-    $operator = (object) [
-        'id' => 1,
-        'nama' => 'Nama Operator',
-        'id_operator' => 'OPXXXXXX',
-        'email' => 'namaop@email.com',
-        'nomor_telepon' => '081234567890'
-    ];
-@endphp
 
 <div class="pb-5">
     <div class="relative overflow-hidden rounded-b-[20px] bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] px-5 pb-6 pt-5">
@@ -28,34 +19,18 @@
     </div>
 
     <div class="px-5 pt-6">
-        <form method="POST" action="{{ route('operator.kelola-operator.update', $operator->id) }}">
+        <form method="POST" action="{{ route('operator.kelola-operator.update', $operator->id_pengguna) }}">
             @csrf
             @method('PUT')
 
             <div class="mb-6 flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-[0px_4px_16px_0px_#0F172A14]">
-
-                <div>
-                    <label for="id_operator" class="mb-1.5 block font-inter text-xs font-semibold text-black">ID Operator</label>
-                    <input
-                        type="text"
-                        id="id_operator"
-                        name="id_operator"
-                        value="{{ old('id_operator', $operator->id_operator) }}"
-                        placeholder="1XXXXXXX"
-                        class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
-                    />
-                    @error('id_operator')
-                        <p class="mt-1 font-inter text-[11px] text-[#DC2626]">{{ $message }}</p>
-                    @enderror
-                </div>
-
                 <div>
                     <label for="nama" class="mb-1.5 block font-inter text-xs font-semibold text-black">Nama Lengkap</label>
                     <input
                         type="text"
                         id="nama"
                         name="nama"
-                        value="{{ old('nama', $operator->nama) }}"
+                        value="{{ old('nama', $operator->pengguna?->nama) }}"
                         placeholder="Masukkan nama lengkap"
                         class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                     />
@@ -70,7 +45,7 @@
                         type="email"
                         id="email"
                         name="email"
-                        value="{{ old('email', $operator->email) }}"
+                        value="{{ old('email', $operator->pengguna?->email) }}"
                         placeholder="nama@email.com"
                         class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                     />
@@ -85,7 +60,7 @@
                         type="tel"
                         id="nomor_telepon"
                         name="nomor_telepon"
-                        value="{{ old('nomor_telepon', $operator->nomor_telepon) }}"
+                        value="{{ old('nomor_telepon', $operator->pengguna?->nomor_telepon) }}"
                         placeholder="08xxxxxxxxxx"
                         class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                     />
@@ -93,6 +68,21 @@
                         <p class="mt-1 font-inter text-[11px] text-[#DC2626]">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <div>
+                    <label for="kata_sandi" class="mb-1.5 block font-inter text-xs font-semibold text-black">Kata Sandi (Opsional)</label>
+                    <input
+                        type="password"
+                        id="kata_sandi"
+                        name="kata_sandi"
+                        placeholder="Kosongkan jika tidak ingin mengubah"
+                        class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                    />
+                    @error('kata_sandi')
+                        <p class="mt-1 font-inter text-[11px] text-[#DC2626]">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
 
             <div class="mb-6 grid grid-cols-2 gap-3">
                 <a href="{{ route('operator.kelola-operator.index') }}"

@@ -1,16 +1,7 @@
 @extends('layouts.index')
 
 @section('layouts')
-@php
-    $dosen = (object) [
-        'id' => 1,
-        'nip' => '11XXXXXXXX',   
-        'nama' => 'Nama Dosen',
-        'email' => 'namadosen@email.com',
-        'nomor_telepon' => '081234567890',
-        'program_studi' => 'Teknik Informatika',
-    ];
-@endphp
+
 
 <div class="pb-5">
     <div class="relative overflow-hidden rounded-b-[20px] bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] px-5 pb-6 pt-5">
@@ -37,7 +28,7 @@
                 </svg>
             </span>
             <div>
-                <p class="font-jakarta text-base font-extrabold text-black">{{ $dosen->nama }}</p>
+                <p class="font-jakarta text-base font-extrabold text-black">{{ $dosen->pengguna?->nama }}</p>
                 <p class="font-inter text-xs text-slate-500">{{ $dosen->nip }} &bull; {{ $dosen->program_studi }}</p>
             </div>
         </div>
@@ -49,15 +40,15 @@
             </div>
             <div class="py-3 first:pt-0">
                 <p class="font-inter text-xs text-slate-500">Nama Lengkap</p>
-                <p class="mt-1 font-inter text-sm font-semibold text-black">{{ $dosen->nama }}</p>
+                <p class="mt-1 font-inter text-sm font-semibold text-black">{{ $dosen->pengguna?->nama }}</p>
             </div>
             <div class="py-3">
                 <p class="font-inter text-xs text-slate-500">Email</p>
-                <p class="mt-1 font-inter text-sm font-semibold text-black">{{ $dosen->email }}</p>
+                <p class="mt-1 font-inter text-sm font-semibold text-black">{{ $dosen->pengguna?->email }}</p>
             </div>
             <div class="py-3">
                 <p class="font-inter text-xs text-slate-500">Nomor Telepon</p>
-                <p class="mt-1 font-inter text-sm font-semibold text-black">{{ $dosen->nomor_telepon }}</p>
+                <p class="mt-1 font-inter text-sm font-semibold text-black">{{ $dosen->pengguna?->nomor_telepon }}</p>
             </div>
             <div class="py-3">
                 <p class="font-inter text-xs text-slate-500">Program Studi</p>
@@ -70,7 +61,7 @@
                 class="flex items-center justify-center rounded-lg border border-slate-200 py-3 font-inter text-sm font-semibold text-black hover:bg-slate-50">
                 Kembali
             </a>
-            <a href="{{ route('operator.kelola-dosen.edit', $dosen->id) }}"
+            <a href="{{ route('operator.kelola-dosen.edit', $dosen->nip) }}"
                 class="flex items-center justify-center rounded-lg bg-[#7C3AED] py-3 font-inter text-sm font-semibold text-white hover:bg-[#6D28D9]">
                 Edit Data
             </a>

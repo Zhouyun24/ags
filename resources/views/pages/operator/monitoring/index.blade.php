@@ -2,60 +2,21 @@
 
 @section('layouts')
 @php
-    $periode = 2026;
-
-    $ringkasan = [
-        'jumlahBimbingan' => 34,
-        'tingkatKehadiran' => 92,
-        'rataSkor' => 4.1,
-        'belumDitinjau' => 5,
-    ];
-
-    $sesiPerBulan = [
-        'Jan' => 7,
-        'Feb' => 11,
-        'Mar' => 18,
-        'Apr' => 19,
-        'Mei' => 22,
-        'Jun' => 33,
-        'Jul' => 15,
-    ];
-
-    $aktivitasTerbaru = [
-        (object) [
-            'dot' => 'bg-[#16A34A]',
-            'judul' => 'Mahasiswa baru ditambahkan (siap demo MBG)',
-            'sorot' => null,
-            'keterangan' => 'Nama (ID) &bull; Waktu',
-        ],
-        (object) [
-            'dot' => 'bg-[#2653EB]',
-            'judul' => 'Jadwal bimbingan',
-            'sorot' => 'disetujui',
-            'sorot_color' => 'text-[#16A34A]',
-            'keterangan' => 'Nama Dosen - Nama Mhs &bull; Waktu',
-        ],
-        (object) [
-            'dot' => 'bg-[#F59E0B]',
-            'judul' => 'Evaluasi bimbingan disimpan',
-            'sorot' => null,
-            'keterangan' => 'Nama Dosen - Nama Mhs &bull; Waktu',
-        ],
-    ];
-
     $lebarChart = 320;
     $tinggiChart = 140;
     $nilaiMax = 36; // sesuai grid label 0-36
-    $jumlahBulan = count($sesiPerBulan);
+    $jumlahBulan = count($sesiPerBulan ?? []);
     $jarakX = $jumlahBulan > 1 ? $lebarChart / ($jumlahBulan - 1) : 0;
 
     $titikKoordinat = [];
     $i = 0;
-    foreach ($sesiPerBulan as $bulan => $nilai) {
-        $x = round($i * $jarakX, 1);
-        $y = round($tinggiChart - ($nilai / $nilaiMax) * $tinggiChart, 1);
-        $titikKoordinat[] = ['bulan' => $bulan, 'nilai' => $nilai, 'x' => $x, 'y' => $y];
-        $i++;
+    if (isset($sesiPerBulan)) {
+        foreach ($sesiPerBulan as $bulan => $nilai) {
+            $x = round($i * $jarakX, 1);
+            $y = round($tinggiChart - ($nilai / $nilaiMax) * $tinggiChart, 1);
+            $titikKoordinat[] = ['bulan' => $bulan, 'nilai' => $nilai, 'x' => $x, 'y' => $y];
+            $i++;
+        }
     }
     $garisPolyline = collect($titikKoordinat)->map(fn($t) => "{$t['x']},{$t['y']}")->implode(' ');
 @endphp
@@ -65,7 +26,7 @@
         <div class="flex items-center justify-between gap-3">
             <div>
                 <h1 class="font-jakarta text-xl font-extrabold text-white">Monitoring</h1>
-                <p class="mt-1 font-inter text-xs text-white">Periode: {{ $periode }}</p>
+                <p class="mt-1 font-inter text-xs text-white">Periode: {{ $periode ?? date('Y') }}</p>
             </div>
             <a href=""
                 class="flex shrink-0 items-center gap-1.5 rounded-lg border border-white/40 bg-white/10 px-4 py-2.5 font-inter text-xs font-semibold text-white hover:bg-white/20">
@@ -80,35 +41,35 @@
 
     <div class="px-5 pt-6">
         <div class="mb-6 grid grid-cols-2 gap-4">
-            <div class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
+            <a href="{{ route('operator.monitoring.jadwal') }}" class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14] hover:bg-slate-50 transition cursor-pointer">
                 <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#2653EB]/15">
                     <svg class="h-5 w-5 text-[#2653EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H12v18H6.5A2.5 2.5 0 0 1 4 18.5v-13Z" />
                         <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H12v18h5.5a2.5 2.5 0 0 0 2.5-2.5v-13Z" />
                     </svg>
                 </span>
-                <p class="mt-3 font-jakarta text-2xl font-extrabold text-[#2653EB]">{{ $ringkasan['jumlahBimbingan'] }}</p>
+                <p class="mt-3 font-jakarta text-2xl font-extrabold text-[#2653EB]">{{ $ringkasan['jumlahBimbingan'] ?? 0 }}</p>
                 <p class="mt-1 font-inter text-xs text-slate-500">Jumlah bimbingan bulan ini</p>
-            </div>
-            <div class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
+            </a>
+            <a href="{{ route('operator.monitoring.hasil') }}" class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14] hover:bg-slate-50 transition cursor-pointer">
                 <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#16A34A]/15">
                     <svg class="h-5 w-5 text-[#16A34A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <path d="M23 6l-9.5 9.5-5-5L1 18" />
                         <path d="M17 6h6v6" />
                     </svg>
                 </span>
-                <p class="mt-3 font-jakarta text-2xl font-extrabold text-[#16A34A]">{{ $ringkasan['tingkatKehadiran'] }}%</p>
+                <p class="mt-3 font-jakarta text-2xl font-extrabold text-[#16A34A]">{{ $ringkasan['tingkatKehadiran'] ?? 0 }}%</p>
                 <p class="mt-1 font-inter text-xs text-slate-500">Tingkat kehadiran</p>
-            </div>
-            <div class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
+            </a>
+            <a href="{{ route('operator.monitoring.penilaian') }}" class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14] hover:bg-slate-50 transition cursor-pointer">
                 <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#F59E0B]/15">
                     <svg class="h-5 w-5 text-[#F59E0B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8l-6.2 3.3 1.2-6.9-5-4.9 6.9-1L12 2Z" />
                     </svg>
                 </span>
-                <p class="mt-3 font-jakarta text-2xl font-extrabold text-[#F59E0B]">{{ number_format($ringkasan['rataSkor'], 1) }}</p>
+                <p class="mt-3 font-jakarta text-2xl font-extrabold text-[#F59E0B]">{{ number_format($ringkasan['rataSkor'] ?? 0, 1) }}</p>
                 <p class="mt-1 font-inter text-xs text-slate-500">Rata - rata skor</p>
-            </div>
+            </a>
             <div class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
                 <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#DC2626]/15">
                     <svg class="h-5 w-5 text-[#DC2626]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -116,7 +77,7 @@
                         <path d="M12 7v5l3 3" />
                     </svg>
                 </span>
-                <p class="mt-3 font-jakarta text-2xl font-extrabold text-[#DC2626]">{{ $ringkasan['belumDitinjau'] }}</p>
+                <p class="mt-3 font-jakarta text-2xl font-extrabold text-[#DC2626]">{{ $ringkasan['belumDitinjau'] ?? 0 }}</p>
                 <p class="mt-1 font-inter text-xs text-slate-500">Belum ditinjau</p>
             </div>
         </div>
@@ -174,7 +135,7 @@
             </a>
         </div>
 
-        @if (count($aktivitasTerbaru))
+        @if (isset($aktivitasTerbaru) && count($aktivitasTerbaru))
             <div class="mb-6 rounded-xl bg-white shadow-[0px_4px_16px_0px_#0F172A14]">
                 @foreach ($aktivitasTerbaru as $aktivitas)
                     <div class="flex items-start gap-3 px-4 py-4 {{ !$loop->last ? 'border-b border-slate-100' : '' }}">

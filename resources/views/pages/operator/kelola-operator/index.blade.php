@@ -2,22 +2,7 @@
 
 @section('layouts')
 @php
-    $daftarOperator = collect([
-        (object) [
-            'id' => 1,
-            'nama' => 'Nama Operator',
-            'id_operator' => 'OPXXXXX',
-            'email' => 'operator@universitas.ac.id'
-        ],
-        (object) [
-            'id' => 2,
-            'nama' => 'Nama Operator',
-            'id_operator' => 'OPXXXXX',
-            'email' => 'operator@universitas.ac.id'
-        ],
-    ]);
-
-    $jumlahOperator = $daftarOperator->count();
+    $jumlahOperator = $operators->count();
 @endphp
 
 <div
@@ -74,42 +59,35 @@
         </form>
 
         <div class="flex flex-col gap-4">
-            @forelse ($daftarOperator as $operator)
-                <div class="rounded-2xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
-                    <div class="flex items-start gap-3">
-                        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#2653EB]/15">
-                            <svg class="h-6 w-6 text-[#2653EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                <circle cx="12" cy="7" r="4" />
-                            </svg>
-                        </span>
-                        <div>
-                            <p class="font-jakarta text-base font-extrabold text-black">{{ $operator->nama }}</p>
-                            <p class="font-inter text-xs text-slate-500">
-                                {{ $operator->id_operator }}
-                            </p>
-                            <p class="font-inter text-xs font-semibold text-slate-500">{{ $operator->email }}</p>
+            @forelse ($operators as $operator)
+                <div class="mb-4 rounded-xl border border-slate-100 bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
+                    <div class="mb-4 flex items-start gap-4">
+                        <img src="{{ $operator->pengguna?->foto_profil ? asset('storage/' . $operator->pengguna->foto_profil) : 'https://ui-avatars.com/api/?name=' . urlencode($operator->pengguna?->nama ?? 'O') . '&background=random' }}"
+                            alt="Profile" class="h-[52px] w-[52px] rounded-full object-cover">
+                        <div class="flex-1">
+                            <h2 class="font-jakarta text-base font-extrabold text-black">{{ $operator->pengguna?->nama ?? '-' }}</h2>
+                            <p class="font-inter text-sm text-slate-500">{{ $operator->id_operator }}</p>
                         </div>
                     </div>
 
-                    <div class="mt-4 grid grid-cols-3 gap-2">
-                        <a href="{{ route('operator.kelola-operator.show', $operator->id) }}"
-                            class="flex items-center justify-center rounded-lg border border-[#2653EB] py-2 font-inter text-xs font-semibold text-[#2653EB] hover:bg-[#2653EB]/5">
-                            Detail
+                    <div class="mb-4 grid grid-cols-1 gap-4 rounded-lg bg-slate-50 p-3">
+                        <div>
+                            <p class="mb-1 font-inter text-[10px] text-slate-400">Email</p>
+                            <p class="font-inter text-xs font-semibold text-black">{{ $operator->pengguna?->email }}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2">
+                        <a href="{{ route('operator.kelola-operator.show', $operator->id_pengguna) }}"
+                            class="flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#2653EB] py-2.5 font-inter text-xs font-semibold text-[#2653EB] transition hover:bg-blue-50">
+                            Lihat Profil
                         </a>
-                        <a href="{{ route('operator.kelola-operator.edit', $operator->id) }}"
-                            class="flex items-center justify-center rounded-lg border border-[#16A34A] py-2 font-inter text-xs font-semibold text-[#16A34A] hover:bg-[#16A34A]/5">
+                        <a href="{{ route('operator.kelola-operator.edit', $operator->id_pengguna) }}"
+                            class="flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#16A34A] py-2.5 font-inter text-xs font-semibold text-[#16A34A] transition hover:bg-green-50">
                             Edit
                         </a>
-                        <button
-                            type="button"
-                            @click="bukaModalHapus(
-                                {{ $operator->id }},
-                                '{{ $operator->nama }}',
-                                '{{ route('operator.kelola-operator.destroy', $operator->id) }}'
-                            )"
-                            class="flex items-center justify-center rounded-lg border border-[#DC2626] py-2 font-inter text-xs font-semibold text-[#DC2626] hover:bg-[#DC2626]/5"
-                        >
+                        <button type="button" @click="bukaModalHapus('{{ $operator->id_pengguna }}', '{{ addslashes($operator->pengguna?->nama ?? '') }}', '{{ route('operator.kelola-operator.destroy', $operator->id_pengguna) }}')"
+                            class="flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#DC2626] py-2.5 font-inter text-xs font-semibold text-[#DC2626] transition hover:bg-red-50">
                             Hapus
                         </button>
                     </div>

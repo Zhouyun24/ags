@@ -9,6 +9,7 @@ use App\Http\Requests\Operator\UpdateMahasiswaRequest;
 use App\Models\dosen_pa;
 use App\Models\mahasiswa;
 use App\Models\pengguna;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class KelolaMahasiswaController extends Controller
@@ -30,6 +31,12 @@ class KelolaMahasiswaController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        $dosenList = dosen_pa::with('pengguna')->get();
+        return view('pages.operator.kelola-mahasiswa.tambah-mahasiswa.index', compact('dosenList'));
+    }
+
     /**
      * Tambah Mahasiswa baru beserta akun pengguna (KK3).
      */
@@ -37,30 +44,45 @@ class KelolaMahasiswaController extends Controller
     {
         $validated = $request->validated();
 
-        $idPengguna = 'USR_' . IdGenerator::generate();
+        DB::transaction(function () use ($validated) {
+            $idPengguna = 'USR_' . IdGenerator::generate();
 
-        // 1. Buat akun pengguna (role = 2 / Mahasiswa)
-        $user = pengguna::create([
-            'id_pengguna' => $idPengguna,
-            'nama' => $validated['nama'],
-            'email' => $validated['email'],
-            'kata_sandi' => Hash::make($validated['kata_sandi']),
-            'nomor_telepon' => $validated['nomor_telepon'] ?? null,
-            'role' => 2,
-        ]);
+            // 1. Buat akun pengguna (role = 2 / Mahasiswa)
+            $user = pengguna::create([
+                'id_pengguna' => $idPengguna,
+                'nama' => $validated['nama'],
+                'email' => $validated['email'],
+                'kata_sandi' => Hash::make($validated['kata_sandi']),
+                'nomor_telepon' => $validated['nomor_telepon'] ?? null,
+                'role' => 2,
+            ]);
 
-        // 2. Buat data mahasiswa
-        mahasiswa::create([
-            'nim' => $validated['nim'],
-            'program_studi' => $validated['program_studi'],
-            'semester' => $validated['semester'],
-            'nilai_bimbingan' => null,
-            'nip' => $validated['nip'] ?? null,
-            'id_pengguna' => $user->id_pengguna,
-        ]);
+            // 2. Buat data mahasiswa
+            mahasiswa::create([
+                'nim' => $validated['nim'],
+                'program_studi' => $validated['program_studi'],
+                'semester' => $validated['semester'],
+                'nilai_bimbingan' => null,
+                'nip' => $validated['nip'] ?? null,
+                'id_pengguna' => $user->id_pengguna,
+            ]);
+        });
 
         return redirect()->route('operator.kelola-mahasiswa.index')
             ->with('success', 'Data mahasiswa berhasil ditambahkan.');
+    }
+
+    public function show($nim)
+    {
+        $mahasiswa = mahasiswa::with(['pengguna', 'dosenPA.pengguna'])->where('nim', $nim)->firstOrFail();
+        return view('pages.operator.kelola-mahasiswa.show', compact('mahasiswa'));
+    }
+
+    public function edit($nim)
+    {
+        $mahasiswa = mahasiswa::with('pengguna')->where('nim', $nim)->firstOrFail();
+        $dosenList = dosen_pa::with('pengguna')->get();
+        return view('pages.operator.kelola-mahasiswa.edit-mahasiswa.index', compact('mahasiswa', 'dosenList'));
     }
 
     /**
@@ -68,27 +90,29 @@ class KelolaMahasiswaController extends Controller
      */
     public function update(UpdateMahasiswaRequest $request, $nim)
     {
-        $mhs = mahasiswa::where('nim', $nim)->firstOrFail();
-        $user = pengguna::where('id_pengguna', $mhs->id_pengguna)->firstOrFail();
-
         $validated = $request->validated();
 
-        // Update akun pengguna
-        $user->nama = $validated['nama'];
-        $user->email = $validated['email'];
-        $user->nomor_telepon = $validated['nomor_telepon'] ?? $user->nomor_telepon;
+        DB::transaction(function () use ($validated, $nim) {
+            $mhs = mahasiswa::where('nim', $nim)->firstOrFail();
+            $user = pengguna::where('id_pengguna', $mhs->id_pengguna)->firstOrFail();
 
-        if (!empty($validated['kata_sandi'])) {
-            $user->kata_sandi = Hash::make($validated['kata_sandi']);
-        }
+            // Update akun pengguna
+            $user->nama = $validated['nama'];
+            $user->email = $validated['email'];
+            $user->nomor_telepon = $validated['nomor_telepon'] ?? $user->nomor_telepon;
 
-        $user->save();
+            if (!empty($validated['kata_sandi'])) {
+                $user->kata_sandi = Hash::make($validated['kata_sandi']);
+            }
 
-        // Update data mahasiswa
-        $mhs->program_studi = $validated['program_studi'];
-        $mhs->semester = $validated['semester'];
-        $mhs->nip = $validated['nip'] ?? $mhs->nip;
-        $mhs->save();
+            $user->save();
+
+            // Update data mahasiswa
+            $mhs->program_studi = $validated['program_studi'];
+            $mhs->semester = $validated['semester'];
+            $mhs->nip = $validated['nip'] ?? $mhs->nip;
+            $mhs->save();
+        });
 
         return redirect()->route('operator.kelola-mahasiswa.index')
             ->with('success', 'Data mahasiswa berhasil diperbarui.');
@@ -99,11 +123,13 @@ class KelolaMahasiswaController extends Controller
      */
     public function destroy($nim)
     {
-        $mhs = mahasiswa::where('nim', $nim)->firstOrFail();
-        $user = pengguna::where('id_pengguna', $mhs->id_pengguna)->firstOrFail();
+        DB::transaction(function () use ($nim) {
+            $mhs = mahasiswa::where('nim', $nim)->firstOrFail();
+            $user = pengguna::where('id_pengguna', $mhs->id_pengguna)->firstOrFail();
 
-        // Hapus pengguna → cascade akan menghapus mahasiswa via FK
-        $user->delete();
+            // Hapus pengguna → cascade akan menghapus mahasiswa via FK
+            $user->delete();
+        });
 
         return redirect()->route('operator.kelola-mahasiswa.index')
             ->with('success', 'Data mahasiswa berhasil dihapus.');

@@ -12,25 +12,12 @@
                     ? 'Selamat Sore'
                     : 'Selamat Malam'));
 
-    $operator = (object) [
-        'nama' => 'Nama Operator',
-        'idOperator' => 'ID Operator',
-        'institusi' => 'Nama Institusi',
-    ];
-
-    $ringkasan = [
-        'mahasiswa' => 248,
-        'dosen' => 18,
-        'jadwalAktif' => 42,
-        'sesiSelesai' => 183,
-    ];
-
     $manajemen = [
         [
             'label' => 'Mahasiswa',
             'deskripsi' => 'Kelola Data',
-            'jumlah' => 248,
-            'route' => 'operator.mahasiswa.index',
+            'jumlah' => $ringkasan['mahasiswa'],
+            'route' => 'operator.kelola-mahasiswa.index',
             'icon_bg' => 'bg-[#2653EB]/15',
             'icon_color' => 'text-[#2653EB]',
             'jumlah_color' => 'text-[#2653EB]',
@@ -39,8 +26,8 @@
         [
             'label' => 'Dosen',
             'deskripsi' => 'Kelola Data',
-            'jumlah' => 18,
-            'route' => 'operator.dosen.index',
+            'jumlah' => $ringkasan['dosen'],
+            'route' => 'operator.kelola-dosen.index',
             'icon_bg' => 'bg-[#16A34A]/15',
             'icon_color' => 'text-[#16A34A]',
             'jumlah_color' => 'text-[#16A34A]',
@@ -49,8 +36,8 @@
         [
             'label' => 'Operator',
             'deskripsi' => 'Kelola Data',
-            'jumlah' => 3,
-            'route' => 'operator.operator.index',
+            'jumlah' => $ringkasan['operator'],
+            'route' => 'operator.kelola-operator.index',
             'icon_bg' => 'bg-[#7C3AED]/15',
             'icon_color' => 'text-[#7C3AED]',
             'jumlah_color' => 'text-[#7C3AED]',
@@ -68,27 +55,6 @@
         ],
     ];
 
-    $aktivitasTerbaru = [
-        (object) [
-            'dot' => 'bg-[#16A34A]',
-            'judul' => 'Mahasiswa baru ditambahkan',
-            'sorot' => null,
-            'keterangan' => 'Nama (ID) &bull; Waktu',
-        ],
-        (object) [
-            'dot' => 'bg-[#2653EB]',
-            'judul' => 'Jadwal bimbingan',
-            'sorot' => 'disetujui',
-            'sorot_color' => 'text-[#16A34A]',
-            'keterangan' => 'Nama Dosen - Nama Mhs &bull; Waktu',
-        ],
-        (object) [
-            'dot' => 'bg-[#F59E0B]',
-            'judul' => 'Evaluasi bimbingan disimpan',
-            'sorot' => null,
-            'keterangan' => 'Nama Dosen - Nama Mhs &bull; Waktu',
-        ],
-    ];
 @endphp
 
 <div class="pb-5">
@@ -201,12 +167,6 @@
 
         <div class="mb-3 flex items-center justify-between">
             <h2 class="font-inter font-semibold text-[13px] text-black">Aktivitas Terbaru</h2>
-            <a href="" class="flex items-center gap-1 font-inter text-[11px] font-semibold text-blue-600 hover:text-blue-700">
-                Lihat Semua
-                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <path d="M9 6l6 6-6 6" />
-                </svg>
-            </a>
         </div>
 
         @if (count($aktivitasTerbaru))

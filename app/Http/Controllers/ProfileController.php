@@ -25,7 +25,7 @@ class ProfileController extends Controller
                 default => 'Unknown'
             },
             'foto' => null,
-            'telepon' => '-',
+            'telepon' => $user->nomor_telepon ?? '-',
             'nim' => '-',
             'nip' => '-',
             'prodi' => '-',
@@ -38,7 +38,6 @@ class ProfileController extends Controller
             $mahasiswa = $user->mahasiswa ?? null; 
             
             if ($mahasiswa) {
-                $profileData->telepon = $mahasiswa->no_telp ?? '-';
                 $profileData->nim = $mahasiswa->nim ?? '-';
                 $profileData->prodi = $mahasiswa->program_studi ?? '-';
                 $profileData->semester = $mahasiswa->semester ?? '-';
@@ -47,14 +46,8 @@ class ProfileController extends Controller
         } elseif ((int)$user->role === 3) { // Dosen
             $dosen = $user->dosenPA ?? null;
             if ($dosen) {
-                $profileData->telepon = $dosen->no_telp ?? '-';
                 $profileData->nip = $dosen->nip ?? '-';
-                $profileData->prodi = $dosen->prodi ?? '-';
-            }
-        } elseif ((int)$user->role === 1) { // Operator
-            $operator = $user->operator ?? null;
-            if ($operator) {
-                $profileData->telepon = $operator->no_telp ?? '-';
+                $profileData->prodi = $dosen->program_studi ?? '-';
             }
         }
 

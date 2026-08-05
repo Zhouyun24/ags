@@ -114,6 +114,38 @@
                         <p class="mt-1 font-inter text-[11px] text-[#DC2626]">{{ $message }}</p>
                     @enderror
                 </div>
+                <div>
+                    <label for="kata_sandi" class="mb-1.5 block font-inter text-xs font-semibold text-black">Kata Sandi</label>
+                    <input
+                        type="password"
+                        id="kata_sandi"
+                        name="kata_sandi"
+                        placeholder="Minimal 8 karakter"
+                        class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                    />
+                    @error('kata_sandi')
+                        <p class="mt-1 font-inter text-[11px] text-[#DC2626]">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="nip" class="mb-1.5 block font-inter text-xs font-semibold text-black">Dosen Pembimbing Akademik</label>
+                    <select
+                        id="nip"
+                        name="nip"
+                        class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                    >
+                        <option value="">Pilih Dosen PA (Opsional)</option>
+                        @foreach($dosenList as $dosen)
+                            <option value="{{ $dosen->nip }}" {{ old('nip') == $dosen->nip ? 'selected' : '' }}>
+                                {{ $dosen->pengguna?->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('nip')
+                        <p class="mt-1 font-inter text-[11px] text-[#DC2626]">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
             <div class="mb-6 grid grid-cols-2 gap-3">

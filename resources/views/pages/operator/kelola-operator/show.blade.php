@@ -1,15 +1,6 @@
 @extends('layouts.index')
 
 @section('layouts')
-@php
-    $operator = (object) [
-        'id' => 1,
-        'nama' => 'Nama Operator',
-        'id_operator' => 'OPXXXXXX',
-        'email' => 'namaop@email.com',
-        'nomor_telepon' => '081234567890'
-    ];
-@endphp
 
 <div class="pb-5">
     <div class="relative overflow-hidden rounded-b-[20px] bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] px-5 pb-6 pt-5">
@@ -36,7 +27,7 @@
                 </svg>
             </span>
             <div>
-                <p class="font-jakarta text-base font-extrabold text-black">{{ $operator->nama }}</p>
+                <p class="font-jakarta text-base font-extrabold text-black">{{ $operator->pengguna?->nama }}</p>
                 <p class="font-inter text-xs text-slate-500">{{ $operator->id_operator }}</p>
             </div>
         </div>
@@ -48,15 +39,15 @@
             </div>
             <div class="py-3 first:pt-0">
                 <p class="font-inter text-xs text-slate-500">Nama Lengkap</p>
-                <p class="mt-1 font-inter text-sm font-semibold text-black">{{ $operator->nama }}</p>
+                <p class="mt-1 font-inter text-sm font-semibold text-black">{{ $operator->pengguna?->nama }}</p>
             </div>
             <div class="py-3">
                 <p class="font-inter text-xs text-slate-500">Email</p>
-                <p class="mt-1 font-inter text-sm font-semibold text-black">{{ $operator->email }}</p>
+                <p class="mt-1 font-inter text-sm font-semibold text-black">{{ $operator->pengguna?->email }}</p>
             </div>
             <div class="py-3">
                 <p class="font-inter text-xs text-slate-500">Nomor Telepon</p>
-                <p class="mt-1 font-inter text-sm font-semibold text-black">{{ $operator->nomor_telepon }}</p>
+                <p class="mt-1 font-inter text-sm font-semibold text-black">{{ $operator->pengguna?->nomor_telepon ?? '-' }}</p>
             </div>
         </div>
 
@@ -65,7 +56,7 @@
                 class="flex items-center justify-center rounded-lg border border-slate-200 py-3 font-inter text-sm font-semibold text-black hover:bg-slate-50">
                 Kembali
             </a>
-            <a href="{{ route('operator.kelola-operator.edit', $operator->id) }}"
+            <a href="{{ route('operator.kelola-operator.edit', $operator->id_pengguna) }}"
                 class="flex items-center justify-center rounded-lg bg-[#7C3AED] py-3 font-inter text-sm font-semibold text-white hover:bg-[#6D28D9]">
                 Edit Data
             </a>

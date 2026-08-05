@@ -1,32 +1,21 @@
 @extends('layouts.index')
 
 @section('layouts')
-@php
-    $user ??= (object) [
-        'nama' => 'Nama Pengguna',
-        'role' => 'Dosen',
-        'foto' => null,
-        'email' => 'Dosen@universitas.ac.id',
-        'telepon' => '08xxxxxxxxxx',
-        'nip' => '10124257',
-        'prodi' => 'Teknik Informatika (TI)',
-    ];
-@endphp
 
 <div x-data="{ showLogoutConfirm: false }" class="pb-8">
 
     {{-- Header --}}
-    <div class="relative overflow-hidden rounded-b-[28px] bg-gradient-to-br from-[#22C55E] to-[#15803D] px-5 pb-16 pt-5 text-center">
-        <h1 class="font-jakarta text-xl font-extrabold text-white">Profil Saya</h1>
-        <p class="mt-1 font-inter text-xs text-blue-100">Kelola Informasi akun Anda</p>
+    <div class="relative overflow-hidden rounded-b-[30px] bg-gradient-to-b from-[#10B981] to-[#059669] px-5 pb-16 pt-5 text-center">
+        <h1 class="font-jakarta text-base font-extrabold text-white">Profil Saya</h1>
+        <p class="mt-1 font-inter text-xs text-white">Kelola Informasi akun Anda</p>
     </div>
 
-    <div class="px-5">
+    <div class="px-5 relative z-10">
 
         {{-- Card Foto Profil (overlap ke header) --}}
         <div class="-mt-12 mb-5 flex flex-col items-center rounded-2xl bg-white p-6 shadow-[0px_4px_16px_0px_#0F172A14]">
             <div class="relative">
-                <div class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-[#22C55E] ring-4 ring-blue-100">
+                <div class="flex h-[60px] w-[60px] items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#059669] to-[#10B981] shadow-[0px_4px_16px_rgba(37,99,235,0.4)] ring-2 ring-white">
                     @if ($user->foto)
                         <img src="{{ $user->foto }}" alt="{{ $user->nama }}" class="h-full w-full object-cover">
                     @else
@@ -37,7 +26,7 @@
                     @endif
                 </div>
                 <label for="upload-foto"
-                    class="absolute -bottom-1 -right-1 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-[#22C55E] ring-2 ring-white hover:bg-[#15803D]">
+                    class="absolute -bottom-1 -right-1 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#10B981] ring-[1.1px] ring-white hover:bg-[#059669]">
                     <svg class="h-3.5 w-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M4 7h3l2-2h6l2 2h3v13H4V7Z" />
                         <circle cx="12" cy="13" r="3.5" />
@@ -75,8 +64,13 @@
 
         {{-- Menu Pengaturan --}}
         <div class="mb-5 rounded-2xl bg-white p-2 shadow-[0px_4px_16px_0px_#0F172A14]">
+            {{-- CODE ASLI (Dengan border-b): disembunyikan sementara karena menu di bawahnya dinonaktifkan
             <a href="{{ route('dosen.profile.ubah-kata-sandi.index') }}"
                 class="flex items-center gap-3 border-b border-slate-100 px-3 py-4 hover:bg-slate-50">
+            --}}
+            {{-- CODE DUPLIKAT (Tanpa border-b): aktif sementara --}}
+            <a href="{{ route('dosen.profile.ubah-kata-sandi.index') }}"
+                class="flex items-center gap-3 px-3 py-4 hover:bg-slate-50">
                 <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#2653EB]/15">
                     <svg class="h-4.5 w-4.5 text-[#2653EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <rect x="5" y="11" width="14" height="9" rx="2" />
@@ -88,7 +82,7 @@
                     <path d="M9 6l6 6-6 6" />
                 </svg>
             </a>
-            <a href="{{ route('dosen.profile.pengaturan-notifikasi.index') }}"
+            <!-- <a href="{{ route('dosen.profile.pengaturan-notifikasi.index') }}"
                 class="flex items-center gap-3 border-b border-slate-100 px-3 py-4 hover:bg-slate-50">
                 <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#2653EB]/15">
                     <svg class="h-4.5 w-4.5 text-[#2653EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -100,8 +94,8 @@
                 <svg class="h-4 w-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M9 6l6 6-6 6" />
                 </svg>
-            </a>
-            <a href="{{ route('dosen.profile.privasi-keamanan.index') }}"
+            </a> -->
+            <!-- <a href="{{ route('dosen.profile.privasi-keamanan.index') }}"
                 class="flex items-center gap-3 px-3 py-4 hover:bg-slate-50">
                 <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#2653EB]/15">
                     <svg class="h-4.5 w-4.5 text-[#2653EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -112,7 +106,7 @@
                 <svg class="h-4 w-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M9 6l6 6-6 6" />
                 </svg>
-            </a>
+            </a> -->
         </div>
 
         {{-- Tombol Keluar --}}

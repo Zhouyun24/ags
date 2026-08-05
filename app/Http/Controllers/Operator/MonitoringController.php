@@ -3,103 +3,143 @@
 namespace App\Http\Controllers\Operator;
 
 use App\Http\Controllers\Controller;
-use App\Models\hasil_bimbingan;
+use Illuminate\Http\Request;
 use App\Models\jadwal_bimbingan;
 use App\Models\penilaian_bimbingan;
-use Illuminate\Support\Carbon;
+use App\Models\hasil_bimbingan;
+use Carbon\Carbon;
 
 class MonitoringController extends Controller
 {
     /**
-     * Lihat seluruh data jadwal bimbingan (KK14).
+     * Tampilkan halaman utama Monitoring
      */
+    public function index()
+    {
+        $bulanSekarang = Carbon::now()->month;
+        $tahunSekarang = Carbon::now()->year;
+
+        // Hitung metrik
+        $jadwalBulanIni = jadwal_bimbingan::whereMonth('tanggal_jadwal', $bulanSekarang)
+                            ->whereYear('tanggal_jadwal', $tahunSekarang)
+                            ->get();
+        $jumlahBimbingan = $jadwalBulanIni->count();
+
+        // Tingkat kehadiran berdasarkan hasil bimbingan bulan ini
+        $hasilBulanIni = hasil_bimbingan::whereMonth('created_at', $bulanSekarang)
+                            ->whereYear('created_at', $tahunSekarang)
+                            ->count();
+        $tingkatKehadiran = $jumlahBimbingan > 0 ? round(($hasilBulanIni / $jumlahBimbingan) * 100) : 0;
+
+        // Rata-rata skor bulan ini dari penilaian_bimbingan
+        $penilaianBulanIni = penilaian_bimbingan::whereMonth('created_at', $bulanSekarang)
+                                ->whereYear('created_at', $tahunSekarang)
+                                ->avg('nilai_perkembangan');
+        $rataSkor = $penilaianBulanIni ?? 0;
+
+        // Belum ditinjau: jadwal yang statusnya menunggu (0)
+        $belumDitinjau = jadwal_bimbingan::where('status_jadwal', 0)->count();
+
+        // Data chart: sesi per bulan
+        $sesiPerBulan = [
+            'Jan' => jadwal_bimbingan::whereMonth('tanggal_jadwal', 1)->whereYear('tanggal_jadwal', $tahunSekarang)->count(),
+            'Feb' => jadwal_bimbingan::whereMonth('tanggal_jadwal', 2)->whereYear('tanggal_jadwal', $tahunSekarang)->count(),
+            'Mar' => jadwal_bimbingan::whereMonth('tanggal_jadwal', 3)->whereYear('tanggal_jadwal', $tahunSekarang)->count(),
+            'Apr' => jadwal_bimbingan::whereMonth('tanggal_jadwal', 4)->whereYear('tanggal_jadwal', $tahunSekarang)->count(),
+            'Mei' => jadwal_bimbingan::whereMonth('tanggal_jadwal', 5)->whereYear('tanggal_jadwal', $tahunSekarang)->count(),
+            'Jun' => jadwal_bimbingan::whereMonth('tanggal_jadwal', 6)->whereYear('tanggal_jadwal', $tahunSekarang)->count(),
+            'Jul' => jadwal_bimbingan::whereMonth('tanggal_jadwal', 7)->whereYear('tanggal_jadwal', $tahunSekarang)->count(),
+            'Ags' => jadwal_bimbingan::whereMonth('tanggal_jadwal', 8)->whereYear('tanggal_jadwal', $tahunSekarang)->count(),
+            'Sep' => jadwal_bimbingan::whereMonth('tanggal_jadwal', 9)->whereYear('tanggal_jadwal', $tahunSekarang)->count(),
+            'Okt' => jadwal_bimbingan::whereMonth('tanggal_jadwal', 10)->whereYear('tanggal_jadwal', $tahunSekarang)->count(),
+            'Nov' => jadwal_bimbingan::whereMonth('tanggal_jadwal', 11)->whereYear('tanggal_jadwal', $tahunSekarang)->count(),
+            'Des' => jadwal_bimbingan::whereMonth('tanggal_jadwal', 12)->whereYear('tanggal_jadwal', $tahunSekarang)->count(),
+        ];
+
+        // Aktivitas terbaru: ambil 3 jadwal terakhir
+        $terbaru = jadwal_bimbingan::with(['mahasiswa.pengguna', 'dosenPA.pengguna'])->orderBy('created_at', 'desc')->take(3)->get();
+        $aktivitasTerbaru = [];
+        foreach($terbaru as $item) {
+            $statusText = $item->status_jadwal == 1 ? 'disetujui' : ($item->status_jadwal == 2 ? 'ditolak' : 'menunggu');
+            $statusColor = $item->status_jadwal == 1 ? 'text-[#16A34A]' : ($item->status_jadwal == 2 ? 'text-[#DC2626]' : 'text-[#F59E0B]');
+            $aktivitasTerbaru[] = (object) [
+                'dot' => 'bg-[#2653EB]',
+                'judul' => 'Jadwal bimbingan',
+                'sorot' => $statusText,
+                'sorot_color' => $statusColor,
+                'keterangan' => ($item->dosenPA->pengguna->nama ?? 'Dosen') . ' - ' . ($item->mahasiswa->pengguna->nama ?? 'Mhs') . ' &bull; ' . $item->created_at->diffForHumans(),
+            ];
+        }
+
+        $ringkasan = [
+            'jumlahBimbingan' => $jumlahBimbingan,
+            'tingkatKehadiran' => $tingkatKehadiran,
+            'rataSkor' => $rataSkor,
+            'belumDitinjau' => $belumDitinjau,
+        ];
+
+        return view('pages.operator.monitoring.index', [
+            'periode' => Carbon::now()->translatedFormat('F Y'),
+            'ringkasan' => $ringkasan,
+            'sesiPerBulan' => $sesiPerBulan,
+            'aktivitasTerbaru' => $aktivitasTerbaru,
+        ]);
+    }
+
     public function jadwal()
     {
-        $records = jadwal_bimbingan::with(['mahasiswa.pengguna', 'dosenPA.pengguna', 'hasil_bimbingan'])
-            ->orderByDesc('created_at')
-            ->get();
-
-        $jadwals = $records->map(function ($j) {
-            $statusText = match ((int) $j->status_jadwal) {
-                1 => 'Disetujui',
-                2 => 'Ditolak',
-                default => 'Menunggu',
-            };
-
+        $jadwals = jadwal_bimbingan::with(['mahasiswa.pengguna', 'dosenPA.pengguna'])->orderBy('tanggal_jadwal', 'desc')->get();
+        
+        $mappedJadwals = $jadwals->map(function($j) {
             return (object) [
-                'id_jadwal' => $j->id_jadwal,
-                'topik' => $j->topik_diskusi,
-                'mahasiswa' => $j->mahasiswa?->pengguna?->nama ?? '-',
-                'nim' => $j->nim,
-                'dosen' => $j->dosenPA?->pengguna?->nama ?? '-',
-                'nip' => $j->nip,
-                'tanggal' => $j->tanggal_jadwal
-                    ? Carbon::parse($j->tanggal_jadwal)->format('d/m/Y')
-                    : '-',
-                'jam' => $j->jam_jadwal
-                    ? Carbon::parse($j->jam_jadwal)->format('H.i') . ' WIB'
-                    : '-',
-                'status' => $statusText,
-                'has_hasil' => $j->hasil_bimbingan !== null,
+                'topik' => $j->topik_diskusi ?? 'Bimbingan',
+                'dosen' => $j->dosenPA->pengguna->nama ?? '-',
+                'mahasiswa' => $j->mahasiswa->pengguna->nama ?? '-',
+                'tanggal' => Carbon::parse($j->tanggal_jadwal)->translatedFormat('d F Y'),
+                'waktu' => Carbon::parse($j->jam_jadwal)->format('H:i') . ' - Selesai',
+                'tipe' => $j->tipe ?? 'Tatap Muka',
+                'status_jadwal' => $j->status_jadwal
             ];
         });
 
         return view('pages.operator.monitoring.jadwal', [
-            'jadwals' => $jadwals,
+            'jadwals' => $mappedJadwals
         ]);
     }
 
-    /**
-     * Lihat seluruh data hasil bimbingan (KK14).
-     */
     public function hasil()
     {
-        $records = hasil_bimbingan::with(['jadwal_bimbingan.mahasiswa.pengguna', 'jadwal_bimbingan.dosenPA.pengguna', 'penilaian_bimbingan'])
-            ->orderByDesc('created_at')
-            ->get();
-
-        $hasils = $records->map(function ($h) {
-            $jadwal = $h->jadwal_bimbingan;
-
+        $hasils = hasil_bimbingan::with(['jadwal_bimbingan.mahasiswa.pengguna', 'jadwal_bimbingan.dosenPA.pengguna'])->orderBy('created_at', 'desc')->get();
+        
+        $mappedHasils = $hasils->map(function($h) {
             return (object) [
                 'id_hasil' => $h->id_hasil,
-                'topik' => $jadwal?->topik_diskusi ?? '-',
-                'mahasiswa' => $jadwal?->mahasiswa?->pengguna?->nama ?? '-',
-                'dosen' => $jadwal?->dosenPA?->pengguna?->nama ?? '-',
-                'tanggal' => $jadwal?->tanggal_jadwal
-                    ? Carbon::parse($jadwal->tanggal_jadwal)->format('d/m/Y')
-                    : '-',
+                'topik' => $h->jadwal_bimbingan->topik_diskusi ?? 'Hasil Bimbingan',
+                'dosen' => $h->jadwal_bimbingan->dosenPA->pengguna->nama ?? '-',
+                'mahasiswa' => $h->jadwal_bimbingan->mahasiswa->pengguna->nama ?? '-',
+                'tanggal' => Carbon::parse($h->created_at)->translatedFormat('d F Y'),
                 'catatan_bimbingan' => $h->catatan_bimbingan,
                 'arahan_akademik' => $h->arahan_akademik,
-                'has_penilaian' => $h->penilaian_bimbingan !== null,
             ];
         });
 
         return view('pages.operator.monitoring.hasil', [
-            'hasils' => $hasils,
+            'hasils' => $mappedHasils
         ]);
     }
 
-    /**
-     * Lihat seluruh data penilaian bimbingan (KK14).
-     */
     public function penilaian()
     {
-        $records = penilaian_bimbingan::with(['hasilBimbingan.jadwal_bimbingan.mahasiswa.pengguna', 'hasilBimbingan.jadwal_bimbingan.dosenPA.pengguna'])
-            ->orderByDesc('created_at')
-            ->get();
-
-        $penilaians = $records->map(function ($p) {
-            $jadwal = $p->hasilBimbingan?->jadwal_bimbingan;
-
+        $penilaians = penilaian_bimbingan::with(['hasilBimbingan.jadwal_bimbingan.mahasiswa.pengguna', 'hasilBimbingan.jadwal_bimbingan.dosenPA.pengguna'])->orderBy('created_at', 'desc')->get();
+        
+        $mappedPenilaians = $penilaians->map(function($p) {
+            $jadwal = $p->hasilBimbingan->jadwal_bimbingan ?? null;
             return (object) [
                 'id_perkembangan' => $p->id_perkembangan,
-                'topik' => $jadwal?->topik_diskusi ?? '-',
-                'mahasiswa' => $jadwal?->mahasiswa?->pengguna?->nama ?? '-',
-                'dosen' => $jadwal?->dosenPA?->pengguna?->nama ?? '-',
-                'tanggal' => $jadwal?->tanggal_jadwal
-                    ? Carbon::parse($jadwal->tanggal_jadwal)->format('d/m/Y')
-                    : '-',
+                'topik' => $jadwal->topik_diskusi ?? 'Penilaian Bimbingan',
+                'dosen' => $jadwal->dosenPA->pengguna->nama ?? '-',
+                'mahasiswa' => $jadwal->mahasiswa->pengguna->nama ?? '-',
+                'tanggal' => Carbon::parse($p->created_at)->translatedFormat('d F Y'),
                 'skor_keaktifan' => $p->skor_keaktifan,
                 'skor_pemahaman' => $p->skor_pemahaman,
                 'nilai_perkembangan' => $p->nilai_perkembangan,
@@ -107,23 +147,7 @@ class MonitoringController extends Controller
         });
 
         return view('pages.operator.monitoring.penilaian', [
-            'penilaians' => $penilaians,
+            'penilaians' => $mappedPenilaians
         ]);
-    }
-
-    /**
-     * Hapus jadwal bimbingan beserta data terkait secara cascade (KK15).
-     *
-     * Cascade: jadwal → hasil_bimbingan → penilaian_bimbingan
-     * (sudah ditangani oleh onDelete('cascade') pada FK di migration)
-     */
-    public function destroyJadwal($id_jadwal)
-    {
-        $jadwal = jadwal_bimbingan::where('id_jadwal', $id_jadwal)->firstOrFail();
-
-        $jadwal->delete();
-
-        return redirect()->route('operator.monitoring.jadwal')
-            ->with('success', 'Data jadwal bimbingan beserta data terkait berhasil dihapus.');
     }
 }

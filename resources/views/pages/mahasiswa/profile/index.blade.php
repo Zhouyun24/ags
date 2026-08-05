@@ -1,19 +1,6 @@
 @extends('layouts.index')
 
 @section('layouts')
-@php
-    $user ??= (object) [
-        'nama' => 'Nama Pengguna',
-        'role' => 'Mahasiswa',
-        'foto' => null,
-        'email' => 'mahasiswa@universitas.ac.id',
-        'telepon' => '08xxxxxxxxxx',
-        'nim' => '10124257',
-        'prodi' => 'Teknik Informatika (TI)',
-        'semester' => 4,
-        'dosenPa' => 'Nama Dosen, Gelar',
-    ];
-@endphp
 
 <div x-data="{ showLogoutConfirm: false }" class="pb-8">
 
@@ -23,7 +10,7 @@
         <p class="mt-1 font-inter text-xs text-blue-100">Kelola Informasi akun Anda</p>
     </div>
 
-    <div class="px-5">
+    <div class="px-5 relative z-10">
 
         {{-- Card Foto Profil (overlap ke header) --}}
         <div class="-mt-12 mb-5 flex flex-col items-center rounded-2xl bg-white p-6 shadow-[0px_4px_16px_0px_#0F172A14]">
@@ -85,8 +72,13 @@
 
         {{-- Menu Pengaturan --}}
         <div class="mb-5 rounded-2xl bg-white p-2 shadow-[0px_4px_16px_0px_#0F172A14]">
+            {{-- CODE ASLI (Dengan border-b): disembunyikan sementara karena menu di bawahnya dinonaktifkan
             <a href="{{ route('mahasiswa.profile.ubah-kata-sandi.index') }}"
                 class="flex items-center gap-3 border-b border-slate-100 px-3 py-4 hover:bg-slate-50">
+            --}}
+            {{-- CODE DUPLIKAT (Tanpa border-b): aktif sementara --}}
+            <a href="{{ route('mahasiswa.profile.ubah-kata-sandi.index') }}"
+                class="flex items-center gap-3 px-3 py-4 hover:bg-slate-50">
                 <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#2653EB]/15">
                     <svg class="h-4.5 w-4.5 text-[#2653EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <rect x="5" y="11" width="14" height="9" rx="2" />
@@ -98,7 +90,7 @@
                     <path d="M9 6l6 6-6 6" />
                 </svg>
             </a>
-            <a href="{{ route('mahasiswa.profile.pengaturan-notifikasi.index') }}"
+            <!-- <a href="{{ route('mahasiswa.profile.pengaturan-notifikasi.index') }}"
                 class="flex items-center gap-3 border-b border-slate-100 px-3 py-4 hover:bg-slate-50">
                 <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#2653EB]/15">
                     <svg class="h-4.5 w-4.5 text-[#2653EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -110,8 +102,8 @@
                 <svg class="h-4 w-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M9 6l6 6-6 6" />
                 </svg>
-            </a>
-            <a href="{{ route('mahasiswa.profile.privasi-keamanan.index') }}"
+            </a> -->
+            <!-- <a href="{{ route('mahasiswa.profile.privasi-keamanan.index') }}"
                 class="flex items-center gap-3 px-3 py-4 hover:bg-slate-50">
                 <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#2653EB]/15">
                     <svg class="h-4.5 w-4.5 text-[#2653EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -122,7 +114,7 @@
                 <svg class="h-4 w-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M9 6l6 6-6 6" />
                 </svg>
-            </a>
+            </a> -->
         </div>
 
         {{-- Tombol Keluar --}}

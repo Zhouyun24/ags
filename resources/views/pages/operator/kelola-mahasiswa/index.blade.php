@@ -2,26 +2,7 @@
 
 @section('layouts')
 @php
-    $daftarMahasiswa = collect([
-        (object) [
-            'id' => 1,
-            'nama' => 'Nama Mhs',
-            'nim' => 'NIM',
-            'prodi' => 'Prodi',
-            'semester' => 'Semester',
-            'dosenPa' => 'Nama Dosen, Gelar',
-        ],
-        (object) [
-            'id' => 2,
-            'nama' => 'Nama Mhs',
-            'nim' => 'NIM',
-            'prodi' => 'Prodi',
-            'semester' => 'Semester',
-            'dosenPa' => 'Nama Dosen, Gelar',
-        ],
-    ]);
-
-    $jumlahMahasiswa = $daftarMahasiswa->count();
+    $jumlahMahasiswa = $mahasiswas->count();
 @endphp
 
 <div
@@ -78,42 +59,43 @@
         </form>
 
         <div class="flex flex-col gap-4">
-            @forelse ($daftarMahasiswa as $mahasiswa)
-                <div class="rounded-2xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
-                    <div class="flex items-start gap-3">
-                        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#2653EB]/15">
-                            <svg class="h-6 w-6 text-[#2653EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                <circle cx="12" cy="7" r="4" />
-                            </svg>
-                        </span>
-                        <div>
-                            <p class="font-jakarta text-base font-extrabold text-black">{{ $mahasiswa->nama }}</p>
-                            <p class="font-inter text-xs text-slate-500">
-                                {{ $mahasiswa->nim }} &bull; {{ $mahasiswa->prodi }} &bull; {{ $mahasiswa->semester }}
-                            </p>
-                            <p class="font-inter text-xs font-semibold text-[#2653EB]">{{ $mahasiswa->dosenPa }}</p>
+            @forelse ($mahasiswas as $mhs)
+                <div class="mb-4 rounded-xl border border-slate-100 bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
+                    <div class="mb-4 flex items-start gap-4">
+                        <img src="{{ $mhs->pengguna?->foto_profil ? asset('storage/' . $mhs->pengguna->foto_profil) : 'https://ui-avatars.com/api/?name=' . urlencode($mhs->pengguna?->nama ?? 'M') . '&background=random' }}"
+                            alt="Profile" class="h-[52px] w-[52px] rounded-full object-cover">
+                        <div class="flex-1">
+                            <h2 class="font-jakarta text-base font-extrabold text-black">{{ $mhs->pengguna?->nama ?? '-' }}</h2>
+                            <p class="font-inter text-sm text-slate-500">{{ $mhs->nim }}</p>
                         </div>
                     </div>
 
-                    <div class="mt-4 grid grid-cols-3 gap-2">
-                        <a href="{{ route('operator.kelola-mahasiswa.show', $mahasiswa->id) }}"
-                            class="flex items-center justify-center rounded-lg border border-[#2653EB] py-2 font-inter text-xs font-semibold text-[#2653EB] hover:bg-[#2653EB]/5">
-                            Detail
+                    <div class="mb-4 grid grid-cols-2 gap-4 rounded-lg bg-slate-50 p-3">
+                        <div>
+                            <p class="mb-1 font-inter text-[10px] text-slate-400">Program Studi</p>
+                            <p class="font-inter text-xs font-semibold text-black">{{ $mhs->program_studi }}</p>
+                        </div>
+                        <div>
+                            <p class="mb-1 font-inter text-[10px] text-slate-400">Semester</p>
+                            <p class="font-inter text-xs font-semibold text-black">Semester {{ $mhs->semester }}</p>
+                        </div>
+                        <div class="col-span-2 border-t border-slate-200 pt-3">
+                            <p class="mb-1 font-inter text-[10px] text-slate-400">Dosen Pembimbing Akademik</p>
+                            <p class="font-inter text-xs font-semibold text-black">{{ $mhs->dosenPA?->pengguna?->nama ?? 'Belum Ditentukan' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2">
+                        <a href="{{ route('operator.kelola-mahasiswa.show', $mhs->nim) }}"
+                            class="flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#2653EB] py-2.5 font-inter text-xs font-semibold text-[#2653EB] transition hover:bg-blue-50">
+                            Lihat Profil
                         </a>
-                        <a href="{{ route('operator.kelola-mahasiswa.edit', $mahasiswa->id) }}"
-                            class="flex items-center justify-center rounded-lg border border-[#16A34A] py-2 font-inter text-xs font-semibold text-[#16A34A] hover:bg-[#16A34A]/5">
+                        <a href="{{ route('operator.kelola-mahasiswa.edit', $mhs->nim) }}"
+                            class="flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#16A34A] py-2.5 font-inter text-xs font-semibold text-[#16A34A] transition hover:bg-green-50">
                             Edit
                         </a>
-                        <button
-                            type="button"
-                            @click="bukaModalHapus(
-                                {{ $mahasiswa->id }},
-                                '{{ $mahasiswa->nama }}',
-                                '{{ route('operator.kelola-mahasiswa.destroy', $mahasiswa->id) }}'
-                            )"
-                            class="flex items-center justify-center rounded-lg border border-[#DC2626] py-2 font-inter text-xs font-semibold text-[#DC2626] hover:bg-[#DC2626]/5"
-                        >
+                        <button type="button" @click="bukaModalHapus('{{ $mhs->nim }}', '{{ addslashes($mhs->pengguna?->nama ?? '') }}', '{{ route('operator.kelola-mahasiswa.destroy', $mhs->nim) }}')"
+                            class="flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#DC2626] py-2.5 font-inter text-xs font-semibold text-[#DC2626] transition hover:bg-red-50">
                             Hapus
                         </button>
                     </div>

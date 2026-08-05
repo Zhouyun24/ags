@@ -1,17 +1,7 @@
 @extends('layouts.index')
 
 @section('layouts')
-@php
-    $mahasiswa = (object) [
-        'id' => 1,
-        'nim' => '11XXXXXXXX', 
-        'nama' => 'Nama Mhs',
-        'email' => 'namamhs@email.com',
-        'nomor_telepon' => '081234567890',
-        'program_studi' => 'Teknik Informatika',
-        'semester' => 5,
-    ];
-@endphp
+
 
 <div class="pb-5">
     <div class="relative overflow-hidden rounded-b-[20px] bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] px-5 pb-6 pt-5">
@@ -30,7 +20,7 @@
     </div>
 
     <div class="px-5 pt-6">
-        <form method="POST" action="{{ route('operator.kelola-mahasiswa.update', $mahasiswa->id) }}">
+        <form method="POST" action="{{ route('operator.kelola-mahasiswa.update', $mahasiswa->nim) }}">
             @csrf
             @method('PUT')
 
@@ -57,7 +47,7 @@
                         type="text"
                         id="nama"
                         name="nama"
-                        value="{{ old('nama', $mahasiswa->nama) }}"
+                        value="{{ old('nama', $mahasiswa->pengguna?->nama) }}"
                         placeholder="Masukkan nama lengkap"
                         class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                     />
@@ -72,7 +62,7 @@
                         type="email"
                         id="email"
                         name="email"
-                        value="{{ old('email', $mahasiswa->email) }}"
+                        value="{{ old('email', $mahasiswa->pengguna?->email) }}"
                         placeholder="nama@email.com"
                         class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                     />
@@ -87,7 +77,7 @@
                         type="tel"
                         id="nomor_telepon"
                         name="nomor_telepon"
-                        value="{{ old('nomor_telepon', $mahasiswa->nomor_telepon) }}"
+                        value="{{ old('nomor_telepon', $mahasiswa->pengguna?->nomor_telepon) }}"
                         placeholder="08xxxxxxxxxx"
                         class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                     />
@@ -124,6 +114,38 @@
                         class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                     />
                     @error('semester')
+                        <p class="mt-1 font-inter text-[11px] text-[#DC2626]">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="kata_sandi" class="mb-1.5 block font-inter text-xs font-semibold text-black">Kata Sandi (Opsional)</label>
+                    <input
+                        type="password"
+                        id="kata_sandi"
+                        name="kata_sandi"
+                        placeholder="Kosongkan jika tidak ingin mengubah"
+                        class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                    />
+                    @error('kata_sandi')
+                        <p class="mt-1 font-inter text-[11px] text-[#DC2626]">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="nip" class="mb-1.5 block font-inter text-xs font-semibold text-black">Dosen Pembimbing Akademik</label>
+                    <select
+                        id="nip"
+                        name="nip"
+                        class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                    >
+                        <option value="">Pilih Dosen PA (Opsional)</option>
+                        @foreach($dosenList as $dosen)
+                            <option value="{{ $dosen->nip }}" {{ old('nip', $mahasiswa->nip) == $dosen->nip ? 'selected' : '' }}>
+                                {{ $dosen->pengguna?->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('nip')
                         <p class="mt-1 font-inter text-[11px] text-[#DC2626]">{{ $message }}</p>
                     @enderror
                 </div>

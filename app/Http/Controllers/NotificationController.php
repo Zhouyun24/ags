@@ -39,8 +39,8 @@ class NotificationController extends Controller
                 }
 
                 // 2. Hasil Bimbingan Added
-                $hasils = hasil_bimbingan::with('jadwalBimbingan')
-                    ->whereHas('jadwalBimbingan', function($q) use ($mahasiswa) {
+                $hasils = hasil_bimbingan::with('jadwal_bimbingan')
+                    ->whereHas('jadwal_bimbingan', function($q) use ($mahasiswa) {
                         $q->where('nim', $mahasiswa->nim);
                     })
                     ->orderBy('created_at', 'desc')
@@ -88,9 +88,10 @@ class NotificationController extends Controller
         $sortedNotifications = $notifications->sortByDesc('created_at')->values()->all();
 
         $viewPath = match ((int)$user->role) {
+            1 => 'pages.operator.notifikasi.index',
             2 => 'pages.mahasiswa.notifikasi.index',
             3 => 'pages.dosen.notifikasi.index',
-            default => 'pages.splash.index' // Operator hasn't notifikasi requested yet
+            default => 'pages.splash.index'
         };
 
         if (!view()->exists($viewPath)) {

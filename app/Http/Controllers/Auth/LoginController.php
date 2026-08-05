@@ -41,23 +41,13 @@ class LoginController extends Controller
         $user = pengguna::whereRaw('TRIM(email) = ?', [$email])->first();
 
 
-        // 3. Cek keberadaan akun & cocokkan kata_sandi (Plain Text atau Bcrypt Hash)
+        // 3. Cek keberadaan akun & cocokkan kata_sandi (hanya Bcrypt Hash)
         $passwordMatches = false;
         if ($user) {
             $inputPassword = trim($request->kata_sandi);
             $dbPassword = trim($user->kata_sandi);
-
-            if ($inputPassword === $dbPassword) {
-                $passwordMatches = true;
-            } else {
-                try {
-                    $passwordMatches = Hash::check($inputPassword, $dbPassword);
-                } catch (\Throwable $e) {
-                    $passwordMatches = false;
-                }
-            }
+            $passwordMatches = Hash::check($inputPassword, $dbPassword);
         }
-
 
         if ($user && $passwordMatches) {
             // Login-kan pengguna ke dalam Session bawaan Laravel
@@ -66,7 +56,7 @@ class LoginController extends Controller
 
             // 4. Redirect sesuai Role Pengguna (1 = Operator, 2 = Mahasiswa, 3 = Dosen PA)
             $targetUrl = match ((int)$user->role) {
-                1 => route('operator.daftar'),
+                1 => route('operator.beranda.index'),
                 2 => route('mahasiswa.beranda.index'),
                 3 => route('dosen.beranda.index'),
                 default => abort(403, 'Role pengguna tidak valid.'),

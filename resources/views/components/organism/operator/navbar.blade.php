@@ -18,14 +18,14 @@
     </div>
     <div class="flex items-center gap-2">
         <a href="{{ route('operator.notifikasi.index') }}"
-            class="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#2653EB]/15 text-[#2653EB]">
+            class="flex h-10 w-10 items-center justify-center rounded-[13px] transition {{ request()->routeIs('operator.notifikasi.*') ? 'bg-[#2653EB] text-white shadow-md' : 'bg-[#2653EB]/15 text-[#2653EB] hover:bg-[#2653EB]/25' }}">
             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
                 <path d="M13.7 21a2 2 0 0 1-3.4 0" />
             </svg>
         </a>
         <a href="{{ route('operator.profile.index') }}"
-            class="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#2653EB]/15 text-[#2653EB]">
+            class="flex h-10 w-10 items-center justify-center rounded-[13px] transition {{ request()->routeIs('operator.profile.*') ? 'bg-[#2653EB] text-white shadow-md' : 'bg-[#2653EB]/15 text-[#2653EB] hover:bg-[#2653EB]/25' }}">
             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <circle cx="12" cy="8" r="4" />
                 <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />

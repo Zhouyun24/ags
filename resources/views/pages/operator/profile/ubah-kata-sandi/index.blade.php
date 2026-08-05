@@ -19,12 +19,12 @@
     }" class="pb-8">
 
     {{-- Header --}}
-    <div class="relative overflow-hidden rounded-b-[28px] bg-gradient-to-br from-[#2563ED] via-[#2251E3] to-[#1D4ED8] px-5 pb-16 pt-5 text-center">
+    <div class="relative overflow-hidden rounded-b-[28px] bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] px-5 pb-16 pt-5 text-center">
         <h1 class="font-jakarta text-xl font-extrabold text-white">Ubah Kata Sandi</h1>
         <p class="mt-1 font-inter text-xs text-blue-100">Sesuaikan ulang kata sandi Anda</p>
     </div>
 
-    <div class="px-5">
+    <div class="px-5 relative z-10">
 
         {{-- Card Form (overlap ke header) --}}
         <form action="" method="POST"
@@ -134,13 +134,13 @@
 
             {{-- Tombol Aksi --}}
             <div class="grid grid-cols-2 gap-4">
-                <a href="{{ route('mahasiswa.profile.index') ?? url()->previous() }}"
+                <a href="{{ route('operator.profile.index') ?? url()->previous() }}"
                     class="flex items-center justify-center rounded-lg border border-blue-600 py-3 font-inter text-sm font-semibold text-blue-600 hover:bg-blue-50">
                     Batal
                 </a>
                 <button type="submit" :disabled="!isValid"
                     :class="isValid
-                        ? 'bg-gradient-to-br from-[#2563ED] via-[#2251E3] to-[#1D4ED8] text-white hover:opacity-90 cursor-pointer'
+                        ? 'bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] text-white hover:opacity-90 cursor-pointer'
                         : 'bg-slate-200 text-slate-400 cursor-not-allowed'"
                     class="flex items-center justify-center rounded-lg py-3 font-inter text-sm font-semibold transition-colors">
                     Konfirmasi

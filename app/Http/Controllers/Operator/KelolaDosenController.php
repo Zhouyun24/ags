@@ -8,6 +8,7 @@ use App\Http\Requests\Operator\StoreDosenRequest;
 use App\Http\Requests\Operator\UpdateDosenRequest;
 use App\Models\dosen_pa;
 use App\Models\pengguna;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class KelolaDosenController extends Controller
@@ -18,12 +19,18 @@ class KelolaDosenController extends Controller
     public function index()
     {
         $dosens = dosen_pa::with('pengguna')
+            ->withCount('mahasiswa')
             ->orderByDesc('created_at')
             ->get();
 
         return view('pages.operator.kelola-dosen.index', [
             'dosens' => $dosens,
         ]);
+    }
+
+    public function create()
+    {
+        return view('pages.operator.kelola-dosen.tambah-dosen.index');
     }
 
     /**
@@ -33,27 +40,41 @@ class KelolaDosenController extends Controller
     {
         $validated = $request->validated();
 
-        $idPengguna = 'USR_' . IdGenerator::generate();
+        DB::transaction(function () use ($validated) {
+            $idPengguna = 'USR_' . IdGenerator::generate();
 
-        // 1. Buat akun pengguna (role = 3 / Dosen PA)
-        $user = pengguna::create([
-            'id_pengguna' => $idPengguna,
-            'nama' => $validated['nama'],
-            'email' => $validated['email'],
-            'kata_sandi' => Hash::make($validated['kata_sandi']),
-            'nomor_telepon' => $validated['nomor_telepon'] ?? null,
-            'role' => 3,
-        ]);
+            // 1. Buat akun pengguna (role = 3 / Dosen PA)
+            $user = pengguna::create([
+                'id_pengguna' => $idPengguna,
+                'nama' => $validated['nama'],
+                'email' => $validated['email'],
+                'kata_sandi' => Hash::make($validated['kata_sandi']),
+                'nomor_telepon' => $validated['nomor_telepon'] ?? null,
+                'role' => 3,
+            ]);
 
-        // 2. Buat data dosen PA
-        dosen_pa::create([
-            'nip' => $validated['nip'],
-            'program_studi' => $validated['program_studi'],
-            'id_pengguna' => $user->id_pengguna,
-        ]);
+            // 2. Buat data dosen PA
+            dosen_pa::create([
+                'nip' => $validated['nip'],
+                'program_studi' => $validated['program_studi'],
+                'id_pengguna' => $user->id_pengguna,
+            ]);
+        });
 
         return redirect()->route('operator.kelola-dosen.index')
             ->with('success', 'Data Dosen PA berhasil ditambahkan.');
+    }
+
+    public function show($nip)
+    {
+        $dosen = dosen_pa::with('pengguna')->where('nip', $nip)->firstOrFail();
+        return view('pages.operator.kelola-dosen.show', compact('dosen'));
+    }
+
+    public function edit($nip)
+    {
+        $dosen = dosen_pa::with('pengguna')->where('nip', $nip)->firstOrFail();
+        return view('pages.operator.kelola-dosen.edit-dosen.index', compact('dosen'));
     }
 
     /**
@@ -61,25 +82,27 @@ class KelolaDosenController extends Controller
      */
     public function update(UpdateDosenRequest $request, $nip)
     {
-        $dosen = dosen_pa::where('nip', $nip)->firstOrFail();
-        $user = pengguna::where('id_pengguna', $dosen->id_pengguna)->firstOrFail();
-
         $validated = $request->validated();
 
-        // Update akun pengguna
-        $user->nama = $validated['nama'];
-        $user->email = $validated['email'];
-        $user->nomor_telepon = $validated['nomor_telepon'] ?? $user->nomor_telepon;
+        DB::transaction(function () use ($validated, $nip) {
+            $dosen = dosen_pa::where('nip', $nip)->firstOrFail();
+            $user = pengguna::where('id_pengguna', $dosen->id_pengguna)->firstOrFail();
 
-        if (!empty($validated['kata_sandi'])) {
-            $user->kata_sandi = Hash::make($validated['kata_sandi']);
-        }
+            // Update akun pengguna
+            $user->nama = $validated['nama'];
+            $user->email = $validated['email'];
+            $user->nomor_telepon = $validated['nomor_telepon'] ?? $user->nomor_telepon;
 
-        $user->save();
+            if (!empty($validated['kata_sandi'])) {
+                $user->kata_sandi = Hash::make($validated['kata_sandi']);
+            }
 
-        // Update data dosen
-        $dosen->program_studi = $validated['program_studi'];
-        $dosen->save();
+            $user->save();
+
+            // Update data dosen
+            $dosen->program_studi = $validated['program_studi'];
+            $dosen->save();
+        });
 
         return redirect()->route('operator.kelola-dosen.index')
             ->with('success', 'Data Dosen PA berhasil diperbarui.');
@@ -90,11 +113,13 @@ class KelolaDosenController extends Controller
      */
     public function destroy($nip)
     {
-        $dosen = dosen_pa::where('nip', $nip)->firstOrFail();
-        $user = pengguna::where('id_pengguna', $dosen->id_pengguna)->firstOrFail();
+        DB::transaction(function () use ($nip) {
+            $dosen = dosen_pa::where('nip', $nip)->firstOrFail();
+            $user = pengguna::where('id_pengguna', $dosen->id_pengguna)->firstOrFail();
 
-        // Hapus pengguna → cascade akan menghapus dosen_pa via FK
-        $user->delete();
+            // Hapus pengguna → cascade akan menghapus dosen_pa via FK
+            $user->delete();
+        });
 
         return redirect()->route('operator.kelola-dosen.index')
             ->with('success', 'Data Dosen PA berhasil dihapus.');

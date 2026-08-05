@@ -8,7 +8,7 @@
     ];
 @endphp
 
-<div x-data x-cloak>
+<div x-data="{ showLogoutConfirm: false }" x-cloak>
     <div
         x-show="open"
         x-transition:enter="transition-opacity ease-out duration-300"
@@ -106,15 +106,47 @@
             </ul>
         </nav>
         <div class="border-t border-slate-100 px-5 py-5">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button
-                    type="submit"
-                    class="flex w-full items-center justify-center rounded-[10px] border border-red-200 bg-red-50 py-[10px] font-inter text-sm font-medium text-[#EF4444] transition hover:bg-red-100"
-                >
-                    Keluar
-                </button>
-            </form>
+            <button
+                type="button"
+                @click="showLogoutConfirm = true"
+                class="flex w-full items-center justify-center rounded-[10px] border border-red-200 bg-red-50 py-[10px] font-inter text-sm font-medium text-[#EF4444] transition hover:bg-red-100"
+            >
+                Keluar
+            </button>
         </div>
     </aside>
+
+    {{-- Modal Konfirmasi Logout --}}
+    <div x-show="showLogoutConfirm" x-cloak
+        class="fixed inset-0 flex items-end justify-center bg-black/40 px-5 pb-8 sm:items-center" style="z-index: 9999;"
+        @click.self="showLogoutConfirm = false">
+        <div x-show="showLogoutConfirm"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 translate-y-4"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            class="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-xl">
+            <span class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-50">
+                <svg class="h-6 w-6 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <path d="M16 17l5-5-5-5M21 12H9" />
+                </svg>
+            </span>
+            <p class="mt-4 font-jakarta text-base font-extrabold text-black">Keluar dari akun?</p>
+            <p class="mt-1 font-inter text-xs text-slate-500">Anda perlu login kembali untuk mengakses akun ini.</p>
+
+            <div class="mt-5 grid grid-cols-2 gap-3">
+                <button type="button" @click="showLogoutConfirm = false"
+                    class="rounded-lg border border-slate-200 py-3 font-inter text-sm font-semibold text-black hover:bg-slate-50">
+                    Batal
+                </button>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit"
+                        class="w-full rounded-lg bg-red-600 py-3 font-inter text-sm font-semibold text-white hover:bg-red-700">
+                        Ya, Keluar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

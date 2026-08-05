@@ -14,10 +14,12 @@ class UpdateMahasiswaRequest extends FormRequest
     public function rules(): array
     {
         $nim = $this->route('nim');
+        $mahasiswa = \App\Models\mahasiswa::find($nim);
+        $idPengguna = $mahasiswa ? $mahasiswa->id_pengguna : null;
 
         return [
             'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:penggunas,email,' . $this->input('id_pengguna') . ',id_pengguna',
+            'email' => 'required|email|unique:penggunas,email,' . $idPengguna . ',id_pengguna',
             'kata_sandi' => 'nullable|string|min:8',
             'nomor_telepon' => 'nullable|string|max:20',
             'program_studi' => 'required|string|max:100',

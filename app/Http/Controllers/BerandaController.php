@@ -13,6 +13,7 @@ class BerandaController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $user?->load('mahasiswa.dosenPA.pengguna');
         $m = $user?->mahasiswa;
 
         if (!$m) {

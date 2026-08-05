@@ -17,8 +17,11 @@ use App\Http\Controllers\Operator\KelolaOperatorController;
 use App\Http\Controllers\Operator\KelolaMahasiswaController;
 use App\Http\Controllers\Operator\KelolaDosenController;
 use App\Http\Controllers\Operator\MonitoringController;
+use App\Http\Controllers\Operator\DashboardOperatorController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
 use App\Http\Controllers\Dosen\PersetujuanJadwalDosenController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NotificationController;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -30,12 +33,17 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     if (Auth::check()) {
         $user = Auth::user();
-        return match ((int)$user->role) {
-            1 => redirect()->route('operator.daftar'),
-            2 => redirect()->route('mahasiswa.beranda.index'),
-            3 => redirect()->route('dosen.beranda.index'),
-            default => redirect()->route('login'),
+        $target = match ((int)$user->role) {
+            1 => 'operator.beranda.index',
+            2 => 'mahasiswa.beranda.index',
+            3 => 'dosen.beranda.index',
+            default => null,
         };
+        if ($target) {
+            return redirect()->route($target);
+        }
+        Auth::logout();
+        return redirect()->route('login');
     }
 
     return view('pages.splash.index', [
@@ -72,6 +80,9 @@ Route::middleware('auth')->post('/ubah-kata-sandi', [ResetPasswordController::cl
 */
 Route::middleware(['auth', 'role:1'])->prefix('operator')->name('operator.')->group(function () {
     
+    // Beranda Operator
+    Route::get('/beranda', [DashboardOperatorController::class, 'index'])->name('beranda.index');
+
     Route::get('/daftar', function () {
         return view('pages.authentication.register.index', [
             'navbarVisibility' => '0', 
@@ -88,29 +99,55 @@ Route::middleware(['auth', 'role:1'])->prefix('operator')->name('operator.')->gr
 
     // --- Kelola Data Operator (KK2) ---
     Route::get('/kelola-operator', [KelolaOperatorController::class, 'index'])->name('kelola-operator.index');
+    Route::get('/kelola-operator/tambah', [KelolaOperatorController::class, 'create'])->name('kelola-operator.create');
     Route::post('/kelola-operator', [KelolaOperatorController::class, 'store'])->name('kelola-operator.store');
+    Route::get('/kelola-operator/{id_pengguna}/edit', [KelolaOperatorController::class, 'edit'])->name('kelola-operator.edit');
+    Route::get('/kelola-operator/{id_pengguna}', [KelolaOperatorController::class, 'show'])->name('kelola-operator.show');
     Route::put('/kelola-operator/{id_pengguna}', [KelolaOperatorController::class, 'update'])->name('kelola-operator.update');
     Route::delete('/kelola-operator/{id_pengguna}', [KelolaOperatorController::class, 'destroy'])->name('kelola-operator.destroy');
 
     // --- Kelola Data Mahasiswa (KK3) ---
     Route::get('/kelola-mahasiswa', [KelolaMahasiswaController::class, 'index'])->name('kelola-mahasiswa.index');
+    Route::get('/kelola-mahasiswa/tambah', [KelolaMahasiswaController::class, 'create'])->name('kelola-mahasiswa.create');
     Route::post('/kelola-mahasiswa', [KelolaMahasiswaController::class, 'store'])->name('kelola-mahasiswa.store');
+    Route::get('/kelola-mahasiswa/{nim}/edit', [KelolaMahasiswaController::class, 'edit'])->name('kelola-mahasiswa.edit');
+    Route::get('/kelola-mahasiswa/{nim}', [KelolaMahasiswaController::class, 'show'])->name('kelola-mahasiswa.show');
     Route::put('/kelola-mahasiswa/{nim}', [KelolaMahasiswaController::class, 'update'])->name('kelola-mahasiswa.update');
     Route::delete('/kelola-mahasiswa/{nim}', [KelolaMahasiswaController::class, 'destroy'])->name('kelola-mahasiswa.destroy');
 
     // --- Kelola Data Dosen PA (KK4) ---
     Route::get('/kelola-dosen', [KelolaDosenController::class, 'index'])->name('kelola-dosen.index');
+    Route::get('/kelola-dosen/tambah', [KelolaDosenController::class, 'create'])->name('kelola-dosen.create');
     Route::post('/kelola-dosen', [KelolaDosenController::class, 'store'])->name('kelola-dosen.store');
+    Route::get('/kelola-dosen/{nip}/edit', [KelolaDosenController::class, 'edit'])->name('kelola-dosen.edit');
+    Route::get('/kelola-dosen/{nip}', [KelolaDosenController::class, 'show'])->name('kelola-dosen.show');
     Route::put('/kelola-dosen/{nip}', [KelolaDosenController::class, 'update'])->name('kelola-dosen.update');
     Route::delete('/kelola-dosen/{nip}', [KelolaDosenController::class, 'destroy'])->name('kelola-dosen.destroy');
 
     // --- Monitoring Data Bimbingan (KK14) ---
+    Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
     Route::get('/monitoring/jadwal', [MonitoringController::class, 'jadwal'])->name('monitoring.jadwal');
     Route::get('/monitoring/hasil', [MonitoringController::class, 'hasil'])->name('monitoring.hasil');
     Route::get('/monitoring/penilaian', [MonitoringController::class, 'penilaian'])->name('monitoring.penilaian');
 
     // --- Hapus Jadwal Bimbingan (KK15) ---
     Route::delete('/monitoring/jadwal/{id_jadwal}', [MonitoringController::class, 'destroyJadwal'])->name('monitoring.jadwal.destroy');
+
+    // Notifikasi & Profile
+    Route::get('/notifikasi', [NotificationController::class, 'index'])->name('notifikasi.index');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+
+    Route::get('/profile/ubah-kata-sandi', function () {
+        return view('pages.operator.profile.ubah-kata-sandi.index');
+    })->name('profile.ubah-kata-sandi.index');
+
+    Route::get('/profile/pengaturan-notifikasi', function () {
+        return view('pages.operator.profile.pengaturan-notifikasi.index');
+    })->name('profile.pengaturan-notifikasi.index');
+
+    Route::get('/profile/privasi-keamanan', function () {
+        return view('pages.operator.profile.privasi-keamanan.index');
+    })->name('profile.privasi-keamanan.index');
 
 });
 
@@ -141,14 +178,9 @@ Route::middleware(['auth', 'role:2'])->prefix('mahasiswa')->name('mahasiswa.')->
     Route::get('/evaluasi-akademik', [EvaluasiAkademikController::class, 'index'])
         ->name('evaluasi-akademik.index');
 
-    Route::get('/notifikasi', function () {
-        return view('pages.mahasiswa.notifikasi.index');
-    })->name('notifikasi.index');
-
-    // Profile & Pengaturan
-    Route::get('/profile', function () {
-        return view('pages.mahasiswa.profile.index');
-    })->name('profile.index');
+    // Notifikasi & Profile
+    Route::get('/notifikasi', [NotificationController::class, 'index'])->name('notifikasi.index');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 
     Route::get('/profile/ubah-kata-sandi', function () {
         return view('pages.mahasiswa.profile.ubah-kata-sandi.index');
@@ -215,14 +247,9 @@ Route::middleware(['auth', 'role:3'])->prefix('dosen')->name('dosen.')->group(fu
     Route::patch('/penilaian/{id_perkembangan}', [PenilaianBimbinganController::class, 'update'])
         ->name('penilaian.update');
 
-    Route::get('/notifikasi', function () {
-        return view('pages.dosen.notifikasi.index');
-    })->name('notifikasi.index');
-
-    // Profile & Pengaturan
-    Route::get('/profile', function () {
-        return view('pages.dosen.profile.index');
-    })->name('profile.index');
+    // Notifikasi & Profile
+    Route::get('/notifikasi', [NotificationController::class, 'index'])->name('notifikasi.index');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 
     Route::get('/profile/ubah-kata-sandi', function () {
         return view('pages.dosen.profile.ubah-kata-sandi.index');

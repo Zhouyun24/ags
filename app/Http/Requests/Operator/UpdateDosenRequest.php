@@ -13,9 +13,13 @@ class UpdateDosenRequest extends FormRequest
 
     public function rules(): array
     {
+        $nip = $this->route('nip');
+        $dosen = \App\Models\dosen_pa::find($nip);
+        $idPengguna = $dosen ? $dosen->id_pengguna : null;
+
         return [
             'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:penggunas,email,' . $this->input('id_pengguna') . ',id_pengguna',
+            'email' => 'required|email|unique:penggunas,email,' . $idPengguna . ',id_pengguna',
             'kata_sandi' => 'nullable|string|min:8',
             'nomor_telepon' => 'nullable|string|max:20',
             'program_studi' => 'required|string|max:100',

@@ -8,6 +8,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\operator;
 use App\Models\pengguna;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
@@ -30,25 +31,29 @@ class RegisterController extends Controller
     {
         $validated = $request->validated();
 
-        // 1. Buat data pengguna baru (role = 1 / Operator)
-        $idPengguna = 'USR_' . IdGenerator::generate();
+        $user = DB::transaction(function () use ($validated) {
+            // 1. Buat data pengguna baru (role = 1 / Operator)
+            $idPengguna = 'USR_' . IdGenerator::generate();
 
-        $user = pengguna::create([
-            'id_pengguna' => $idPengguna,
-            'nama' => $validated['nama'],
-            'email' => $validated['email'],
-            'kata_sandi' => Hash::make($validated['kata_sandi']),
-            'nomor_telepon' => $validated['nomor_telepon'] ?? null,
-            'role' => 1,
-        ]);
+            $user = pengguna::create([
+                'id_pengguna' => $idPengguna,
+                'nama' => $validated['nama'],
+                'email' => $validated['email'],
+                'kata_sandi' => Hash::make($validated['kata_sandi']),
+                'nomor_telepon' => $validated['nomor_telepon'] ?? null,
+                'role' => 1,
+            ]);
 
-        // 2. Buat data operator terkait
-        $idOperator = 'OP_' . IdGenerator::generate();
+            // 2. Buat data operator terkait
+            $idOperator = 'OP_' . IdGenerator::generate();
 
-        operator::create([
-            'id_operator' => $idOperator,
-            'id_pengguna' => $user->id_pengguna,
-        ]);
+            operator::create([
+                'id_operator' => $idOperator,
+                'id_pengguna' => $user->id_pengguna,
+            ]);
+
+            return $user;
+        });
 
         // 3. Login otomatis setelah registrasi
         Auth::login($user);

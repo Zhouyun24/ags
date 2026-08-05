@@ -115,7 +115,7 @@
 
         <div class="mb-3 flex items-center justify-between">
             <h2 class="font-inter font-semibold text-[13px] text-black">Jadwal Hari Ini</h2>
-            <a href="{{ route('dosen.persetujuan-jadwal.index') }}" class="flex items-center gap-1 font-inter text-[11px] font-semibold text-blue-600 hover:text-blue-700">
+            <a href="{{ route('dosen.persetujuan-jadwal.index') }}" class="flex items-center gap-1 font-inter text-[11px] font-semibold text-[#2563EB] hover:text-blue-700">
                 Lihat Semua
                 <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M9 6l6 6-6 6" />
@@ -216,7 +216,7 @@
                 </span>
                 <span class="font-inter text-xs text-black">Evaluasi<br>Mahasiswa</span>
             </a>
-            <a href=""
+            <!-- <a href=""
                 class="flex items-center gap-3 rounded-xl bg-white min-h-[80px] px-4 shadow-[0px_4px_16px_0px_#0F172A14]">
                 <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#9333EA]/15">
                     <svg class="h-5 w-5 text-[#9333EA]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -226,7 +226,7 @@
                         <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                     </svg>
                 </span>
-                <span class="font-inter text-xs text-black">Daftar<br>Mahasiswa</span>
+                <span class="font-inter text-xs text-black">Daftar<br>Mahasiswa</span> -->
             </a>
         </div>
     </div>
