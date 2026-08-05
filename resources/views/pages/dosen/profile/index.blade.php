@@ -75,7 +75,7 @@
 
         {{-- Menu Pengaturan --}}
         <div class="mb-5 rounded-2xl bg-white p-2 shadow-[0px_4px_16px_0px_#0F172A14]">
-            <a href="{{ route('mahasiswa.profile.ubah-kata-sandi.index') }}"
+            <a href="{{ route('dosen.profile.ubah-kata-sandi.index') }}"
                 class="flex items-center gap-3 border-b border-slate-100 px-3 py-4 hover:bg-slate-50">
                 <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#2653EB]/15">
                     <svg class="h-4.5 w-4.5 text-[#2653EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -88,7 +88,7 @@
                     <path d="M9 6l6 6-6 6" />
                 </svg>
             </a>
-            <a href="{{ route('mahasiswa.profile.pengaturan-notifikasi.index') }}"
+            <a href="{{ route('dosen.profile.pengaturan-notifikasi.index') }}"
                 class="flex items-center gap-3 border-b border-slate-100 px-3 py-4 hover:bg-slate-50">
                 <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#2653EB]/15">
                     <svg class="h-4.5 w-4.5 text-[#2653EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -101,7 +101,7 @@
                     <path d="M9 6l6 6-6 6" />
                 </svg>
             </a>
-            <a href="{{ route('mahasiswa.profile.privasi-keamanan.index') }}"
+            <a href="{{ route('dosen.profile.privasi-keamanan.index') }}"
                 class="flex items-center gap-3 px-3 py-4 hover:bg-slate-50">
                 <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#2653EB]/15">
                     <svg class="h-4.5 w-4.5 text-[#2653EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
