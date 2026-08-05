@@ -19,7 +19,7 @@
     }" class="pb-8">
 
     {{-- Header --}}
-    <div class="relative overflow-hidden rounded-b-[28px] bg-gradient-to-br from-[#2563ED] via-[#2251E3] to-[#1D4ED8] px-5 pb-16 pt-5 text-center">
+    <div class="relative overflow-hidden rounded-b-[28px] bg-gradient-to-br from-[#22C55E] to-[#15803D] px-5 pb-16 pt-5 text-center">
         <h1 class="font-jakarta text-xl font-extrabold text-white">Ubah Kata Sandi</h1>
         <p class="mt-1 font-inter text-xs text-blue-100">Sesuaikan ulang kata sandi Anda</p>
     </div>
