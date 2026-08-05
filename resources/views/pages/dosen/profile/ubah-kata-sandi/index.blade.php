@@ -29,7 +29,7 @@
         {{-- Card Form (overlap ke header) --}}
         <form action="" method="POST"
             @submit="if (!isValid) $event.preventDefault()"
-            class="-mt-12 rounded-2xl bg-white p-6 shadow-[0px_4px_16px_0px_#0F172A14]">
+            class="relative z-10 -mt-12 rounded-2xl bg-white p-6 shadow-[0px_4px_16px_0px_#0F172A14]">
             @csrf
             @method('PUT')
 
