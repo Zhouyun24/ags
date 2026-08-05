@@ -12,7 +12,9 @@
     </div>
 
     <div class="px-6 mt-6 w-full max-w-md mx-auto">
-        <form class="space-y-6">
+        <form method="POST" action="{{ route('dosen.hasil-bimbingan.update', $hasil->id_hasil) }}" class="space-y-6">
+            @csrf
+            @method('PATCH')
             <div class="rounded-xl border border-[#60a5fa] bg-[#e0e7ff] p-4 shadow-sm">
                 <div class="flex items-center gap-4">
                     <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#2563eb] text-white">
@@ -22,10 +24,10 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="font-bold text-slate-900 text-[15px]">Nama Mahasiswa</h3>
+                        <h3 class="font-bold text-slate-900 text-[15px]">{{ $hasil->jadwal_bimbingan?->mahasiswa?->pengguna?->nama ?? '-' }}</h3>
                         <div class="text-[13px] text-slate-500 mt-0.5 leading-tight">
-                            <p>NIM: 10124257 &bull; Sesi ke-n</p>
-                            <p>DD/MM/YYYY &bull; HH/MM WIB</p>
+                            <p>NIM: {{ $hasil->jadwal_bimbingan?->mahasiswa?->nim ?? $hasil->jadwal_bimbingan?->nim }}</p>
+                            <p>{{ $hasil->jadwal_bimbingan?->tanggal_jadwal ? \Illuminate\Support\Carbon::parse($hasil->jadwal_bimbingan->tanggal_jadwal)->format('d/m/Y') : '-' }} &bull; {{ $hasil->jadwal_bimbingan?->jam_jadwal ? \Illuminate\Support\Carbon::parse($hasil->jadwal_bimbingan->jam_jadwal)->format('H.i') . ' WIB' : '-' }}</p>
                         </div>
                     </div>
                 </div>
@@ -40,18 +42,18 @@
                             <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                         </svg>
                     </div>
-                    <input type="text" class="block w-full rounded-2xl border border-slate-200 bg-white py-3.5 pl-11 pr-4 text-sm text-slate-500 placeholder:text-slate-400 focus:border-[#10b981] focus:outline-none focus:ring-1 focus:ring-[#10b981]" placeholder="Topik Diskusi (dimuat langsung tapi bisa diedit)">
+                    <input type="text" name="topik_diskusi" value="{{ old('topik_diskusi', $hasil->jadwal_bimbingan?->topik_diskusi) }}" class="block w-full rounded-2xl border border-slate-200 bg-white py-3.5 pl-11 pr-4 text-sm text-slate-500 placeholder:text-slate-400 focus:border-[#10b981] focus:outline-none focus:ring-1 focus:ring-[#10b981]" placeholder="Topik Diskusi">
                 </div>
             </div>
 
             <div class="space-y-2">
                 <label class="block text-[15px] font-bold text-slate-900">Catatan Bimbingan</label>
-                <textarea rows="5" class="block w-full rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-700 placeholder:text-slate-400 focus:border-[#10b981] focus:outline-none focus:ring-1 focus:ring-[#10b981] resize-none" placeholder="Tuliskan catatan lengkap..."></textarea>
+                <textarea name="catatan_bimbingan" rows="5" class="block w-full rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-700 placeholder:text-slate-400 focus:border-[#10b981] focus:outline-none focus:ring-1 focus:ring-[#10b981] resize-none" placeholder="Tuliskan catatan lengkap...">{{ old('catatan_bimbingan', $hasil->catatan_bimbingan) }}</textarea>
             </div>
 
             <div class="space-y-2">
                 <label class="block text-[15px] font-bold text-slate-900">Rekomendasi</label>
-                <textarea rows="5" class="block w-full rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-700 placeholder:text-slate-400 focus:border-[#10b981] focus:outline-none focus:ring-1 focus:ring-[#10b981] resize-none" placeholder="Tuliskan rekomendasi untuk mahasiswa..."></textarea>
+                <textarea name="arahan_akademik" rows="5" class="block w-full rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-700 placeholder:text-slate-400 focus:border-[#10b981] focus:outline-none focus:ring-1 focus:ring-[#10b981] resize-none" placeholder="Tuliskan rekomendasi untuk mahasiswa...">{{ old('arahan_akademik', $hasil->arahan_akademik) }}</textarea>
             </div>
 
             <div class="grid grid-cols-2 gap-4 pt-2">

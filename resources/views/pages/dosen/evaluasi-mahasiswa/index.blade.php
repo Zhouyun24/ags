@@ -1,39 +1,4 @@
 @php
-    $jadwal ??= collect([
-        (object) [
-            'tanggal' => '04/08/2026',
-            'jam' => '08.30 WIB',
-            'status' => 'menunggu',
-            'nama' => 'Budi Santoso',
-            'nim' => '10154678',
-            'partisipasi' => 16,
-            'pemahaman' => 82,
-            'keseluruhan' => 78,
-        ],
-
-        (object) [
-            'tanggal' => '04/08/2026',
-            'jam' => '09.00 WIB',
-            'status' => 'disetujui',
-            'nama' => 'Siti Aisyah',
-            'nim' => '10154679',
-            'partisipasi' => 90,
-            'pemahaman' => 88,
-            'keseluruhan' => 89,
-        ],
-
-        (object) [
-            'tanggal' => '05/08/2026',
-            'jam' => '10.15 WIB',
-            'status' => 'menunggu',
-            'nama' => 'Andi Wijaya',
-            'nim' => '10154680',
-            'partisipasi' => 75,
-            'pemahaman' => 80,
-            'keseluruhan' => 78,
-        ],
-    ]);
-
     $jumlahMenunggu = $jadwal->where('status', 'menunggu')->count();
     $jumlahDitolak = $jadwal->where('status', 'ditolak')->count();
     $jumlahselesai = $jadwal->where('status', 'disetujui')->count();
@@ -97,7 +62,7 @@
                     </button>
                 </div>
 
-                @foreach ($jadwal as $item)
+                @forelse ($jadwal as $item)
                     <div x-show="activeTab === 'semua' || activeTab === '{{ $item->status }}'"
                     class="mt-4 w-full max-w-sm rounded-2xl bg-[#F7F9FC] p-5 shadow-md">
 
@@ -117,7 +82,7 @@
                                     </h2>
 
                                     <p class="text-sm text-gray-500">
-                                        Topik diskusi • 10124257
+                                        {{ $item->topik }} • {{ $item->nim }}
                                     </p>
                                 </div>
                             </div>
@@ -178,19 +143,23 @@
 
                         <div class="mt-6 flex justify-end">
                             @if ($item->status === 'menunggu')
-                                <a href="{{ route('dosen.penilaian.create', $item->nim) }}"
+                                <a href="{{ route('dosen.penilaian.create', $item->id_hasil) }}"
                                     class="rounded-xl border px-10 py-3 font-semibold transition border-orange-400 text-orange-500 hover:bg-orange-500 hover:text-white">
                                     Isi Hasil
                                 </a>
                             @else
-                                <a href="{{ route('dosen.penilaian.edit', $item->nim) }}"
+                                <a href="{{ route('dosen.penilaian.edit', $item->id_perkembangan) }}"
                                     class="rounded-xl border px-10 py-3 font-semibold transition border-green-500 text-green-600 hover:bg-green-500 hover:text-white">
                                     Edit
                                 </a>
                             @endif
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="mt-4 w-full max-w-sm rounded-xl bg-white py-10 text-center shadow-[0px_4px_16px_0px_#0F172A14]">
+                        <p class="font-inter text-sm text-slate-400">Belum ada hasil bimbingan untuk dinilai.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>

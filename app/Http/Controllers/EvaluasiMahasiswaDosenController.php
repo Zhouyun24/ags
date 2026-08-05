@@ -14,7 +14,7 @@ class EvaluasiMahasiswaDosenController extends Controller
 
         if (!$nip) {
             return view('pages.dosen.evaluasi-mahasiswa.index', [
-                'evaluasi' => collect(),
+                'jadwal' => collect(),
             ]);
         }
 
@@ -26,7 +26,7 @@ class EvaluasiMahasiswaDosenController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $evaluasi = $records->map(function ($h) {
+        $jadwal = $records->map(function ($h) {
             $penilaian = $h->penilaian_bimbingan;
 
             $tanggal = $h->jadwal_bimbingan?->tanggal_jadwal
@@ -37,11 +37,7 @@ class EvaluasiMahasiswaDosenController extends Controller
                 ? Carbon::parse($h->jadwal_bimbingan->jam_jadwal)->format('H.i') . ' WIB'
                 : '-';
 
-            $status = match ((int) $h->jadwal_bimbingan?->status_jadwal) {
-                1 => 'disetujui',
-                2 => 'ditolak',
-                default => 'menunggu',
-            };
+            $status = $penilaian !== null ? 'disetujui' : 'menunggu';
 
             return (object) [
                 'nim' => $h->jadwal_bimbingan?->mahasiswa?->nim ?? '-',
@@ -60,7 +56,7 @@ class EvaluasiMahasiswaDosenController extends Controller
         });
 
         return view('pages.dosen.evaluasi-mahasiswa.index', [
-            'evaluasi' => $evaluasi,
+            'jadwal' => $jadwal,
         ]);
     }
 }

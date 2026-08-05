@@ -1,38 +1,6 @@
 @extends('layouts.index')
 
 @section('layouts')
-@php
-    // ==========================================================
-    // DATA STATIS (SEMENTARA) - nanti diganti dengan data dari controller
-    // ==========================================================
-    $daftarBimbingan = collect([
-        [
-            'id' => 1,
-            'nama' => 'Nama Mhs',
-            'nim' => '10124257',
-            'topik' => 'Topik diskusi',
-            'tanggal' => 'DD/MM/YYYY',
-            'jam' => 'HH/MM WIB',
-            'catatan' => 'Perbaiki latar belakang dan rumusan masalah agar lebih spesifik.',
-            'rekomendasi' => 'Baca jurnal referensi dan perbaiki dalam satu minggu.',
-            'status' => 'menunggu',
-            'urlAksi' => route('dosen.hasil-bimbingan.create', 1),
-        ],
-        [
-            'id' => 2,
-            'nama' => 'Nama Mhs',
-            'nim' => '10124257',
-            'topik' => 'Topik diskusi',
-            'tanggal' => 'DD/MM/YYYY',
-            'jam' => 'HH/MM WIB',
-            'catatan' => 'Perbaiki latar belakang dan rumusan masalah agar lebih spesifik.',
-            'rekomendasi' => 'Baca jurnal referensi dan perbaiki dalam satu minggu.',
-            'status' => 'selesai',
-            'urlAksi' => route('dosen.hasil-bimbingan.edit', 2),
-        ],
-    ]);
-@endphp
-
 <div class="pb-5"
     x-data='{
         filter: "semua",

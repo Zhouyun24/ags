@@ -12,6 +12,7 @@
     $chartWidth = 320;
     $chartHeight = 140;
     $paddingLeft = 30;
+    $paddingRight = 12;
     $paddingBottom = 20;
     $paddingTop = 10;
 
@@ -23,7 +24,7 @@
     $values = array_values($trenPerkembangan);
     $count = count($values);
 
-    $plotWidth = $chartWidth - $paddingLeft;
+    $plotWidth = $chartWidth - $paddingLeft - $paddingRight;
     $plotHeight = $chartHeight - $paddingBottom - $paddingTop;
 
     $points = [];

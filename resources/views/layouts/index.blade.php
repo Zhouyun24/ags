@@ -14,7 +14,7 @@
     </head>
 
     @php
-        $role = 3;
+        $role = \Illuminate\Support\Facades\Auth::user()?->role;
         $roleMap = [
             1 => 'operator',
             2 => 'mahasiswa',

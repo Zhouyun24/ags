@@ -187,6 +187,9 @@ Route::middleware(['auth', 'role:3'])->prefix('dosen')->name('dosen.')->group(fu
         ->name('evaluasi-mahasiswa.index');
 
     // Hasil Bimbingan (KK9)
+    Route::get('/hasil-bimbingan', [HasilBimbinganController::class, 'index'])
+        ->name('hasil-bimbingan.index');
+
     Route::get('/hasil-bimbingan/tambah/{id_jadwal}', [HasilBimbinganController::class, 'create'])
         ->name('hasil-bimbingan.create');
 
@@ -211,5 +214,26 @@ Route::middleware(['auth', 'role:3'])->prefix('dosen')->name('dosen.')->group(fu
 
     Route::patch('/penilaian/{id_perkembangan}', [PenilaianBimbinganController::class, 'update'])
         ->name('penilaian.update');
+
+    Route::get('/notifikasi', function () {
+        return view('pages.dosen.notifikasi.index');
+    })->name('notifikasi.index');
+
+    // Profile & Pengaturan
+    Route::get('/profile', function () {
+        return view('pages.dosen.profile.index');
+    })->name('profile.index');
+
+    Route::get('/profile/ubah-kata-sandi', function () {
+        return view('pages.dosen.profile.ubah-kata-sandi.index');
+    })->name('profile.ubah-kata-sandi.index');
+
+    Route::get('/profile/pengaturan-notifikasi', function () {
+        return view('pages.dosen.profile.pengaturan-notifikasi.index');
+    })->name('profile.pengaturan-notifikasi.index');
+
+    Route::get('/profile/privasi-keamanan', function () {
+        return view('pages.dosen.profile.privasi-keamanan.index');
+    })->name('profile.privasi-keamanan.index');
 
 });
