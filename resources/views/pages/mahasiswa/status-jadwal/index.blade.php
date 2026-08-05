@@ -154,6 +154,7 @@
             @endforeach
         </div>
         <div x-show="
+            (activeTab === 'semua' && {{ $jadwal->count() }} === 0) ||
             (activeTab === 'menunggu' && {{ $jumlahMenunggu }} === 0) ||
             (activeTab === 'ditolak' && {{ $jumlahDitolak }} === 0) ||
             (activeTab === 'disetujui' && {{ $jumlahDisetujui }} === 0)

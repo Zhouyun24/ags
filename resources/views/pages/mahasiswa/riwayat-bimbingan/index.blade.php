@@ -34,9 +34,11 @@
     </div>
     <div class="px-5 pt-6">
         <div class="relative">
-            <div class="absolute bottom-4 left-[19px] top-4 w-[2px] bg-blue-100"></div>
+            @if ($riwayat->count() > 0)
+                <div class="absolute bottom-4 left-[19px] top-4 w-[2px] bg-blue-100"></div>
+            @endif
             <div class="space-y-5">
-                @foreach ($riwayat as $index => $item)
+                @forelse ($riwayat as $index => $item)
                     @php
                         $statusConfig = [
                             'disetujui' => [
@@ -118,7 +120,11 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="rounded-xl bg-white py-10 text-center shadow-[0px_4px_16px_0px_#0F172A14]">
+                        <p class="font-inter text-sm text-slate-400">Belum ada riwayat bimbingan.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>

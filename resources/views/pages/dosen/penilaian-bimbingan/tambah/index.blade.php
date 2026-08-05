@@ -1,20 +1,6 @@
 @extends('layouts.index')
 
 @section('layouts')
-@php
-    // ==========================================================
-    // DATA STATIS (SEMENTARA) - nanti diganti dengan data dari controller
-    // ==========================================================
-    $mahasiswa = (object) [
-        'id' => 1,
-        'nama' => 'Nama Mahasiswa',
-        'nim' => '10124257',
-        'sesiKe' => 'n',
-        'tanggal' => 'DD/MM/YYYY',
-        'jam' => 'HH/MM WIB',
-    ];
-@endphp
-
 <div class="pb-5" x-data="{
         partisipasi: 0,
         pemahaman: 0,
@@ -29,7 +15,7 @@
     </div>
 
     <div class="px-5 pt-6">
-        <form method="POST" action="{{ route('dosen.penilaian.store', $mahasiswa->id) }}">
+        <form method="POST" action="{{ route('dosen.penilaian.store', $hasil->id_hasil) }}">
             @csrf
 
             {{-- ================= INFO MAHASISWA ================= --}}
@@ -41,11 +27,11 @@
                     </svg>
                 </span>
                 <div>
-                    <p class="font-inter text-sm font-semibold text-black">{{ $mahasiswa->nama }}</p>
+                    <p class="font-inter text-sm font-semibold text-black">{{ $hasil->jadwal_bimbingan?->mahasiswa?->pengguna?->nama ?? '-' }}</p>
                     <p class="font-inter text-xs text-slate-500">
-                        NIM: {{ $mahasiswa->nim }} &bull; Sesi ke-{{ $mahasiswa->sesiKe }}
+                        NIM: {{ $hasil->jadwal_bimbingan?->nim ?? '-' }}
                     </p>
-                    <p class="font-inter text-xs text-slate-500">{{ $mahasiswa->tanggal }} &bull; {{ $mahasiswa->jam }}</p>
+                    <p class="font-inter text-xs text-slate-500">{{ $hasil->jadwal_bimbingan?->tanggal_jadwal ? \Illuminate\Support\Carbon::parse($hasil->jadwal_bimbingan->tanggal_jadwal)->format('d/m/Y') : '-' }} &bull; {{ $hasil->jadwal_bimbingan?->jam_jadwal ? \Illuminate\Support\Carbon::parse($hasil->jadwal_bimbingan->jam_jadwal)->format('H.i') . ' WIB' : '-' }}</p>
                 </div>
             </div>
 
@@ -67,11 +53,14 @@
                             x-text="nilai"
                         ></button>
                     </template>
-                    <input type="hidden" name="partisipasi" x-model="partisipasi" />
+                    <input type="hidden" name="skor_keaktifan" x-model="partisipasi" />
                     <div class="ml-auto flex h-9 w-16 items-center justify-center rounded-lg border-2 border-[#2653EB]">
                         <span class="font-jakarta text-sm font-extrabold text-[#2653EB]" x-text="partisipasi.toFixed(1)"></span>
                     </div>
                 </div>
+                @error('skor_keaktifan')
+                    <p class="mt-1.5 font-inter text-xs text-red-500">{{ $message }}</p>
+                @enderror
 
                 {{-- Pemahaman --}}
                 <p class="mt-6 font-inter text-sm text-black">Pemahaman</p>
@@ -89,11 +78,14 @@
                             x-text="nilai"
                         ></button>
                     </template>
-                    <input type="hidden" name="pemahaman" x-model="pemahaman" />
+                    <input type="hidden" name="skor_pemahaman" x-model="pemahaman" />
                     <div class="ml-auto flex h-9 w-16 items-center justify-center rounded-lg border-2 border-[#2653EB]">
                         <span class="font-jakarta text-sm font-extrabold text-[#2653EB]" x-text="pemahaman.toFixed(1)"></span>
                     </div>
                 </div>
+                @error('skor_pemahaman')
+                    <p class="mt-1.5 font-inter text-xs text-red-500">{{ $message }}</p>
+                @enderror
 
                 {{-- Skor Keseluruhan --}}
                 <div class="mt-6 rounded-xl bg-[#2653EB] py-6 text-center">
@@ -117,5 +109,31 @@
             </div>
         </form>
     </div>
+
+    @if (session('success'))
+        <div x-data="{ showSuccess: true }">
+            <div x-show="showSuccess" x-cloak
+                class="fixed inset-0 z-50 flex items-end justify-center bg-black/40 px-5 pb-8 sm:items-center"
+                @click.self="showSuccess = false">
+                <div x-show="showSuccess"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 translate-y-4"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                    class="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-xl">
+                    <span class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#DCFCE7]">
+                        <svg class="h-6 w-6 text-[#16A34A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M5 13l4 4L19 7" />
+                        </svg>
+                    </span>
+                    <p class="mt-4 font-jakarta text-base font-extrabold text-black">Berhasil</p>
+                    <p class="mt-1 font-inter text-xs text-slate-500">{{ session('success') }}</p>
+                    <button type="button" @click="showSuccess = false"
+                        class="mt-5 w-full rounded-lg bg-[#16A34A] py-3 font-inter text-sm font-semibold text-white hover:opacity-90">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
 @endsection
