@@ -134,7 +134,7 @@
 
             {{-- Tombol Aksi --}}
             <div class="grid grid-cols-2 gap-4">
-                <a href="{{ route('mahasiswa.profile.index') ?? url()->previous() }}"
+                <a href="{{ route('dosen.profile.index') ?? url()->previous() }}"
                     class="flex items-center justify-center rounded-lg border border-blue-600 py-3 font-inter text-sm font-semibold text-blue-600 hover:bg-blue-50">
                     Batal
                 </a>
