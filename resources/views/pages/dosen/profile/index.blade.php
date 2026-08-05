@@ -8,10 +8,8 @@
         'foto' => null,
         'email' => 'Dosen@universitas.ac.id',
         'telepon' => '08xxxxxxxxxx',
-        'nim' => '10124257',
+        'nip' => '10124257',
         'prodi' => 'Teknik Informatika (TI)',
-        'semester' => 4,
-        'dosenPa' => 'Nama Dosen, Gelar',
     ];
 @endphp
 
@@ -65,20 +63,12 @@
                     <span class="font-inter text-xs font-medium text-black">{{ $user->telepon }}</span>
                 </div>
                 <div class="flex items-center justify-between py-3">
-                    <span class="font-inter text-xs text-slate-400">NIM</span>
-                    <span class="font-inter text-xs font-medium text-black">{{ $user->nim }}</span>
+                    <span class="font-inter text-xs text-slate-400">NIP</span>
+                    <span class="font-inter text-xs font-medium text-black">{{ $user->nip }}</span>
                 </div>
                 <div class="flex items-center justify-between py-3">
                     <span class="font-inter text-xs text-slate-400">Program Studi</span>
                     <span class="font-inter text-xs font-medium text-black">{{ $user->prodi }}</span>
-                </div>
-                <div class="flex items-center justify-between py-3">
-                    <span class="font-inter text-xs text-slate-400">Semester</span>
-                    <span class="font-inter text-xs font-medium text-black">{{ $user->semester }}</span>
-                </div>
-                <div class="flex items-center justify-between py-3">
-                    <span class="font-inter text-xs text-slate-400">Dosen Pembimbing</span>
-                    <span class="font-inter text-xs font-medium text-black">{{ $user->dosenPa }}</span>
                 </div>
             </div>
         </div>
