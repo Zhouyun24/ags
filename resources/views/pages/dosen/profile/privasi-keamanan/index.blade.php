@@ -67,7 +67,7 @@
     }" class="pb-8">
 
     {{-- Header --}}
-    <div class="relative overflow-hidden rounded-b-[28px] bg-gradient-to-br from-[#2563ED] via-[#2251E3] to-[#1D4ED8] px-5 pb-16 pt-5 text-center">
+    <div class="relative overflow-hidden rounded-b-[28px] bg-gradient-to-br from-[#22C55E] to-[#15803D] px-5 pb-16 pt-5 text-center">
         <h1 class="font-jakarta text-xl font-extrabold text-white">Privasi &amp; Keamanan</h1>
         <p class="mt-1 font-inter text-xs text-blue-100">Jaga keamanan akun dan data Anda</p>
     </div>
@@ -77,7 +77,7 @@
         @method('PUT')
 
         {{-- Skor Keamanan Akun --}}
-        <div class="-mt-12 mb-5 rounded-2xl bg-white p-5 shadow-[0px_4px_16px_0px_#0F172A14]">
+        <div class="relative z-10 -mt-12 mb-5 rounded-2xl bg-white p-5 shadow-[0px_4px_16px_0px_#0F172A14]">
             <div class="flex items-start gap-3 rounded-xl bg-[#EFF3FF] p-4">
                 <span class="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-[#2653EB]">
                     <span class="font-jakarta text-lg font-extrabold leading-none text-white">{{ $skorKeamanan }}</span>
@@ -113,8 +113,8 @@
                         @click="settings.autentikasi_2fa = !settings.autentikasi_2fa"
                         :class="settings.autentikasi_2fa ? 'bg-[#2653EB]' : 'bg-slate-200'"
                         class="relative h-6 w-11 shrink-0 rounded-full transition-colors">
-                        <span :class="settings.autentikasi_2fa ? 'translate-x-5' : 'translate-x-0.5'"
-                            class="absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform"></span>
+                        <span :class="settings.autentikasi_2fa ? 'translate-x-[22px]' : 'translate-x-0.5'"
+                            class="absolute left-0 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform"></span>
                     </button>
                     <input type="hidden" name="autentikasi_2fa" :value="settings.autentikasi_2fa ? 1 : 0">
                 </div>
@@ -136,8 +136,8 @@
                         @click="settings.login_biometrik = !settings.login_biometrik"
                         :class="settings.login_biometrik ? 'bg-[#2653EB]' : 'bg-slate-200'"
                         class="relative h-6 w-11 shrink-0 rounded-full transition-colors">
-                        <span :class="settings.login_biometrik ? 'translate-x-5' : 'translate-x-0.5'"
-                            class="absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform"></span>
+                        <span :class="settings.login_biometrik ? 'translate-x-[22px]' : 'translate-x-0.5'"
+                            class="absolute left-0 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform"></span>
                     </button>
                     <input type="hidden" name="login_biometrik" :value="settings.login_biometrik ? 1 : 0">
                 </div>
@@ -159,8 +159,8 @@
                         @click="settings.logout_otomatis = !settings.logout_otomatis"
                         :class="settings.logout_otomatis ? 'bg-[#2653EB]' : 'bg-slate-200'"
                         class="relative h-6 w-11 shrink-0 rounded-full transition-colors">
-                        <span :class="settings.logout_otomatis ? 'translate-x-5' : 'translate-x-0.5'"
-                            class="absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform"></span>
+                        <span :class="settings.logout_otomatis ? 'translate-x-[22px]' : 'translate-x-0.5'"
+                            class="absolute left-0 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform"></span>
                     </button>
                     <input type="hidden" name="logout_otomatis" :value="settings.logout_otomatis ? 1 : 0">
                 </div>
