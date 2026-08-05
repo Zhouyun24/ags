@@ -1,11 +1,11 @@
 @php
     $user = $user ?? auth()->user();
     $navItems = [
-        ['label' => 'Beranda', 'route' => 'mahasiswa.beranda.index', 'icon' => 'home'],
-        ['label' => 'Ajukan Bimbingan', 'route' => 'mahasiswa.ajukan-bimbingan.index', 'icon' => 'plus'],
-        ['label' => 'Status Jadwal', 'route' => 'mahasiswa.status-jadwal.index', 'icon' => 'calendar'],
-        ['label' => 'Riwayat Bimbingan', 'route' => 'mahasiswa.riwayat-bimbingan.index', 'icon' => 'book'],
-        ['label' => 'Evaluasi Akademik', 'route' => 'mahasiswa.evaluasi-akademik.index', 'icon' => 'chart'],
+        ['label' => 'Beranda', 'route' => 'operator.beranda.index', 'icon' => 'home'],
+        ['label' => 'Manajemen Mahasiswa', 'route' => 'operator.kelola-mahasiswa.index', 'icon' => 'users'],
+        ['label' => 'Manajemen Dosen', 'route' => 'operator.kelola-dosen.index', 'icon' => 'graduation-cap'],
+        ['label' => 'Manajemen Operator', 'route' => 'operator.kelola-operator.index', 'icon' => 'shield'],
+        ['label' => 'Monitoring', 'route' => 'operator.monitoring.index', 'icon' => 'chart'],
     ];
 @endphp
 
@@ -32,7 +32,7 @@
         @keydown.escape.window="open = !open"
         class="fixed inset-y-0 left-0 z-50 flex min-w-[286px] min-h-screen flex-col bg-white shadow-xl"
     >
-        <div class="relative bg-gradient-to-bl from-[#3B82F6] to-[#2563EB] w-full min-h-[150px] flex justify-center items-center">
+        <div class="relative bg-gradient-to-bl from-[#8B5CF6] to-[#6D28D9] w-full min-h-[150px] flex justify-center items-center">
             <button
                 type="button"
                 @click="open = !open"
@@ -59,7 +59,7 @@
                         {{ $user?->nama ?? 'Nama Pengguna' }}
                     </p>
                     <p class="font-inter text-xs text-white">
-                        {{ $user?->peran ?? 'Mahasiswa' }} &bull; NIM: {{ $user?->nim ?? '10124257' }}
+                        {{ $user?->peran ?? 'Operator' }} &bull; NIP: {{ $user?->nip ?? 'XXXXXXXX' }}
                     </p>
                 </div>
             </div>
@@ -72,28 +72,30 @@
                         <a
                             href="{{ Route::has($item['route']) ? route($item['route']) : '#' }}"
                             class="flex items-center gap-3 py-3 font-inter text-sm font-medium transition
-                                {{ $active ? 'border-l-[3px] border-[#2563EB] bg-[#EFF6FF] text-[#2563EB] px-4' : 'text-black hover:bg-slate-50 px-5' }}"
+                                {{ $active ? 'border-l-[3px] border-[#7C3AED] bg-[#F3E8FF] text-[#7C3AED] px-4' : 'text-black hover:bg-slate-50 px-5' }}"
                         >
-                            <span class="flex h-[34px] w-[34px] items-center justify-center rounded-lg {{ $active ? 'bg-[#2563EB]/20' : 'bg-[#EFF6FF]' }}">
-                                <svg class="h-4 w-4 {{ $active ? 'text-[#2563EB]' : 'text-black' }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <span class="flex h-[34px] w-[34px] items-center justify-center rounded-lg {{ $active ? 'bg-[#7C3AED]/20' : 'bg-[#F3E8FF]' }}">
+                                <svg class="h-4 w-4 {{ $active ? 'text-[#7C3AED]' : 'text-black' }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                     @switch($item['icon'])
                                         @case('home')
                                             <path d="M4 11 12 4l8 7" />
                                             <path d="M6 10v9a1 1 0 0 0 1 1h4v-6h2v6h4a1 1 0 0 0 1-1v-9" />
                                             @break
 
-                                        @case('plus')
-                                            <path d="M12 5v14M5 12h14" />
+                                        @case('users')
+                                            <path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+                                            <circle cx="10" cy="7" r="4" />
+                                            <path d="M23 20v-2a4 4 0 0 0-3-3.87" />
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                                             @break
 
-                                        @case('calendar')
-                                            <rect x="3" y="4" width="18" height="17" rx="2" />
-                                            <path d="M3 9h18M8 2v4M16 2v4" />
+                                        @case('graduation-cap')
+                                            <path d="m22 10-10-5L2 10l10 5 10-5Z" />
+                                            <path d="M6 12v5c0 1.1 2.7 2 6 2s6-.9 6-2v-5" />
                                             @break
 
-                                        @case('book')
-                                            <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H12v18H6.5A2.5 2.5 0 0 1 4 18.5v-13Z" />
-                                            <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H12v18h5.5a2.5 2.5 0 0 0 2.5-2.5v-13Z" />
+                                        @case('shield')
+                                            <path d="M12 3 4 6v6c0 5 3.4 8.7 8 9 4.6-.3 8-4 8-9V6l-8-3Z" />
                                             @break
 
                                         @case('chart')

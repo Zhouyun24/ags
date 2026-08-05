@@ -17,14 +17,14 @@
         </div>
     </div>
     <div class="flex items-center gap-2">
-        <a href="{{ route('mahasiswa.notifikasi.index') }}"
+        <a href="{{ route('operator.notifikasi.index') }}"
             class="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#2653EB]/15 text-[#2653EB]">
             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
                 <path d="M13.7 21a2 2 0 0 1-3.4 0" />
             </svg>
         </a>
-        <a href="{{ route('mahasiswa.profile.index') }}"
+        <a href="{{ route('operator.profile.index') }}"
             class="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#2653EB]/15 text-[#2653EB]">
             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <circle cx="12" cy="8" r="4" />
