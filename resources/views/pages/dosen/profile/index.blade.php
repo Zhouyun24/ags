@@ -4,9 +4,9 @@
 @php
     $user ??= (object) [
         'nama' => 'Nama Pengguna',
-        'role' => 'Mahasiswa',
+        'role' => 'Dosen',
         'foto' => null,
-        'email' => 'mahasiswa@universitas.ac.id',
+        'email' => 'Dosen@universitas.ac.id',
         'telepon' => '08xxxxxxxxxx',
         'nim' => '10124257',
         'prodi' => 'Teknik Informatika (TI)',
@@ -18,7 +18,7 @@
 <div x-data="{ showLogoutConfirm: false }" class="pb-8">
 
     {{-- Header --}}
-    <div class="relative overflow-hidden rounded-b-[28px] bg-gradient-to-br from-[#2563ED] via-[#2251E3] to-[#1D4ED8] px-5 pb-16 pt-5 text-center">
+    <div class="relative overflow-hidden rounded-b-[28px] bg-gradient-to-br from-[#22C55E] to-[#15803D] px-5 pb-16 pt-5 text-center">
         <h1 class="font-jakarta text-xl font-extrabold text-white">Profil Saya</h1>
         <p class="mt-1 font-inter text-xs text-blue-100">Kelola Informasi akun Anda</p>
     </div>
@@ -28,7 +28,7 @@
         {{-- Card Foto Profil (overlap ke header) --}}
         <div class="-mt-12 mb-5 flex flex-col items-center rounded-2xl bg-white p-6 shadow-[0px_4px_16px_0px_#0F172A14]">
             <div class="relative">
-                <div class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-[#2653EB] ring-4 ring-blue-100">
+                <div class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-[#22C55E] ring-4 ring-blue-100">
                     @if ($user->foto)
                         <img src="{{ $user->foto }}" alt="{{ $user->nama }}" class="h-full w-full object-cover">
                     @else
@@ -39,7 +39,7 @@
                     @endif
                 </div>
                 <label for="upload-foto"
-                    class="absolute -bottom-1 -right-1 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-[#2653EB] ring-2 ring-white hover:bg-blue-700">
+                    class="absolute -bottom-1 -right-1 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-[#22C55E] ring-2 ring-white hover:bg-[#15803D]">
                     <svg class="h-3.5 w-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M4 7h3l2-2h6l2 2h3v13H4V7Z" />
                         <circle cx="12" cy="13" r="3.5" />
