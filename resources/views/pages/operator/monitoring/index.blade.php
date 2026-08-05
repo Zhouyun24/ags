@@ -69,9 +69,10 @@
             </div>
             <a href=""
                 class="flex shrink-0 items-center gap-1.5 rounded-lg border border-white/40 bg-white/10 px-4 py-2.5 font-inter text-xs font-semibold text-white hover:bg-white/20">
-                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 15V3m0 12-4-4m4 4 4-4" />
-                    <path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-icon lucide-upload">
+                    <path d="M12 3v12"/>
+                    <path d="m17 8-5-5-5 5"/>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 </svg>
                 Ekspor
             </a>
@@ -164,14 +165,76 @@
             </div>
         </div>
 
-        <div class="mb-3 flex items-center justify-between">
-            <h2 class="font-inter font-semibold text-[13px] text-black">Log Aktivitas</h2>
-            <a href="" class="flex items-center gap-1 font-inter text-[11px] font-semibold text-blue-600 hover:text-blue-700">
-                Lihat Semua
-                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <path d="M9 6l6 6-6 6" />
-                </svg>
-            </a>
+        <div x-data="{ showEksporModal: false }">
+            <div class="mb-3 flex items-center justify-between">
+                <h2 class="font-inter font-semibold text-[13px] text-black">Log Aktivitas</h2>
+                <button type="button" @click="showEksporModal = true"
+                    class="flex items-center gap-1 font-inter text-[11px] font-semibold text-blue-600 hover:text-blue-700">
+                    Lihat Semua
+                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M9 6l6 6-6 6" />
+                    </svg>
+                </button>
+            </div>
+
+            <div x-show="showEksporModal" x-cloak
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-5"
+                @click.self="showEksporModal = false">
+                <div x-show="showEksporModal"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 translate-y-4"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                    class="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
+
+                    <p class="font-inter text-sm text-black">Ekspor untuk melihat log aktivitas lebih lanjut</p>
+
+                    <div class="mt-5">
+                        <p class="font-inter text-sm font-semibold text-black">
+                            Pilih Periode
+                            <span class="font-normal text-xs text-slate-400">(*Periode yang dipilih hanya bisa di tahun yang sama)</span>
+                        </p>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="mb-1.5 block font-inter text-sm font-semibold text-black">Dari</label>
+                        <div class="relative">
+                            <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <rect x="3" y="5" width="18" height="16" rx="2" />
+                                <path d="M8 3v4M16 3v4M3 10h18" />
+                            </svg>
+                            <input type="date" name="dari"
+                                class="w-full rounded-lg bg-slate-100 py-3 pl-10 pr-3 font-inter text-sm text-slate-400 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2653EB]"
+                                placeholder="DD/MM/YYYY">
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="mb-1.5 block font-inter text-sm font-semibold text-black">Sampai</label>
+                        <div class="relative">
+                            <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <rect x="3" y="5" width="18" height="16" rx="2" />
+                                <path d="M8 3v4M16 3v4M3 10h18" />
+                            </svg>
+                            <input type="date" name="sampai"
+                                class="w-full rounded-lg bg-slate-100 py-3 pl-10 pr-3 font-inter text-sm text-slate-400 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2653EB]"
+                                placeholder="DD/MM/YYYY">
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-2 gap-3">
+                        <button type="button" @click="showEksporModal = false"
+                            class="rounded-full border border-[#2653EB] py-3 font-inter text-sm font-semibold text-[#2653EB] hover:bg-blue-50">
+                            Batal
+                        </button>
+                        <button type="button"
+                            class="w-full rounded-full bg-[#2653EB] py-3 font-inter text-sm font-semibold text-white hover:bg-blue-700">
+                            Ekspor
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         @if (count($aktivitasTerbaru))
