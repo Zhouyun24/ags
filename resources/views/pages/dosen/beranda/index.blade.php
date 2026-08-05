@@ -12,27 +12,33 @@
                     ? 'Selamat Sore'
                     : 'Selamat Malam'));
 
-    $dosen = (object) [
-        'nama' => 'Nama Dosen PA, Gelar',
-        'nip' => 'XXXXXX',
-        'prodi' => 'TI S1',
+    $dosen ??= (object) [
+        'nama' => '',
+        'nip' => '',
+        'prodi' => '',
     ];
+
+    $today = now()->format('d/m/Y');
+    $jadwalMendatangColl = collect($jadwalMendatang ?? []);
+    $itemHariIni = $jadwalMendatangColl->firstWhere('tanggal', $today);
 
     $ringkasan = [
-        'pending' => 2,
-        'hariIni' => 3,
-        'mahasiswa' => 8,
-        'selesai' => 24,
+        'pending' => $statistik->jadwalMenunggu ?? 0,
+        'hariIni' => $jadwalMendatangColl->where('tanggal', $today)->count(),
+        'mahasiswa' => $statistik->totalMahasiswa ?? 0,
+        'selesai' => collect($mahasiswas ?? [])->sum('total_sesi'),
     ];
 
-    $permintaanMenunggu = 2;
+    $permintaanMenunggu = $statistik->jadwalMenunggu ?? 0;
 
-    $jadwalHariIni = (object) [
-        'judul' => 'Nama Diskusi',
-        'topik' => 'Topik Diskusi',
-        'jam' => '09:00',
-        'status' => 'disetujui',
-    ];
+    $jadwalHariIni = $itemHariIni
+        ? (object) [
+            'judul' => $itemHariIni->mahasiswa ?? '',
+            'topik' => $itemHariIni->topik ?? '',
+            'jam' => $itemHariIni->jam ?? '',
+            'status' => 'disetujui',
+        ]
+        : null;
 @endphp
 
 <div class="pb-5">
