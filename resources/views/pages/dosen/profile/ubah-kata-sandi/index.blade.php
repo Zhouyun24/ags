@@ -18,7 +18,6 @@
         },
     }" class="pb-8">
 
-    {{-- Header --}}
     <div class="relative overflow-hidden rounded-b-[28px] bg-gradient-to-br from-[#22C55E] to-[#15803D] px-5 pb-16 pt-5 text-center">
         <h1 class="font-jakarta text-xl font-extrabold text-white">Ubah Kata Sandi</h1>
         <p class="mt-1 font-inter text-xs text-blue-100">Sesuaikan ulang kata sandi Anda</p>
@@ -26,14 +25,12 @@
 
     <div class="px-5">
 
-        {{-- Card Form (overlap ke header) --}}
         <form action="" method="POST"
             @submit="if (!isValid) $event.preventDefault()"
             class="relative z-10 -mt-12 rounded-2xl bg-white p-6 shadow-[0px_4px_16px_0px_#0F172A14]">
             @csrf
             @method('PUT')
 
-            {{-- Kata Sandi Saat Ini --}}
             <div class="mb-5">
                 <label class="mb-2 block font-inter text-[13px] font-semibold text-black">Kata Sandi Saat Ini</label>
                 <div class="relative">
@@ -63,7 +60,6 @@
                 @enderror
             </div>
 
-            {{-- Kata Sandi Baru --}}
             <div class="mb-5">
                 <label class="mb-2 block font-inter text-[13px] font-semibold text-black">Kata Sandi Baru</label>
                 <div class="relative">
@@ -96,7 +92,6 @@
                 @enderror
             </div>
 
-            {{-- Konfirmasi Kata Sandi Baru --}}
             <div class="mb-6">
                 <label class="mb-2 block font-inter text-[13px] font-semibold text-black">Konfirmasi Kata Sandi Baru</label>
                 <div class="relative">
@@ -132,7 +127,6 @@
                 @enderror
             </div>
 
-            {{-- Tombol Aksi --}}
             <div class="grid grid-cols-2 gap-4">
                 <a href="{{ route('dosen.profile.index') ?? url()->previous() }}"
                     class="flex items-center justify-center rounded-lg border border-blue-600 py-3 font-inter text-sm font-semibold text-blue-600 hover:bg-blue-50">
