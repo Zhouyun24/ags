@@ -26,6 +26,7 @@ class ProfileController extends Controller
             },
             'foto' => null,
             'telepon' => $user->nomor_telepon ?? '-',
+            'id_operator' => '-',
             'nim' => '-',
             'nip' => '-',
             'prodi' => '-',
@@ -34,7 +35,12 @@ class ProfileController extends Controller
         ];
 
         // Specific data depending on role
-        if ((int)$user->role === 2) { // Mahasiswa
+        if ((int)$user->role === 1) { // Operator
+            $operator = $user->operator ?? null;
+            if ($operator) {
+                $profileData->id_operator = $operator->id_operator ?? '-';
+            }
+        } elseif ((int)$user->role === 2) { // Mahasiswa
             $mahasiswa = $user->mahasiswa ?? null; 
             
             if ($mahasiswa) {

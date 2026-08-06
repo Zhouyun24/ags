@@ -30,7 +30,7 @@
         x-transition:leave-start="translate-x-0"
         x-transition:leave-end="-translate-x-full"
         @keydown.escape.window="open = !open"
-        class="fixed inset-y-0 left-0 z-50 flex min-w-[286px] min-h-screen flex-col bg-white shadow-xl"
+        class="fixed inset-y-0 left-0 z-50 flex min-w-[286px] h-full h-[100dvh] flex-col bg-white shadow-xl"
     >
         <div class="relative bg-gradient-to-bl from-[#8B5CF6] to-[#6D28D9] w-full min-h-[150px] flex justify-center items-center">
             <button
