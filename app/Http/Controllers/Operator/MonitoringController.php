@@ -27,11 +27,12 @@ class MonitoringController extends Controller
                             ->get();
         $jumlahBimbingan = $jadwalBulanIni->count();
 
-        // Tingkat kehadiran berdasarkan hasil bimbingan bulan ini
-        $hasilBulanIni = hasil_bimbingan::whereMonth('created_at', $bulanSekarang)
-                            ->whereYear('created_at', $tahunSekarang)
+        // Tingkat kehadiran berdasarkan jumlah jadwal bulan ini yang sudah selesai (ada hasil bimbingan)
+        $jadwalSelesai = jadwal_bimbingan::whereMonth('tanggal_jadwal', $bulanSekarang)
+                            ->whereYear('tanggal_jadwal', $tahunSekarang)
+                            ->has('hasil_bimbingan')
                             ->count();
-        $tingkatKehadiran = $jumlahBimbingan > 0 ? round(($hasilBulanIni / $jumlahBimbingan) * 100) : 0;
+        $tingkatKehadiran = $jumlahBimbingan > 0 ? min(round(($jadwalSelesai / $jumlahBimbingan) * 100), 100) : 0;
 
         // Rata-rata skor bulan ini dari penilaian_bimbingan
         $penilaianBulanIni = penilaian_bimbingan::whereMonth('created_at', $bulanSekarang)

@@ -2,7 +2,7 @@
 
 @section('layouts')
 
-<div class="pb-5">
+<div class="pb-5" x-data="{ modalImport: false }">
     <div class="relative overflow-hidden bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] px-5 pb-12 pt-10">
         <div class="flex items-center justify-between gap-3">
            <div class="flex items-center gap-3">
@@ -18,14 +18,14 @@
                 </div>
             </div>
 
-            <a href=""
+            <button type="button" @click="modalImport = true"
                 class="flex shrink-0 items-center gap-1.5 rounded-lg border border-white/40 bg-white/10 px-3.5 py-2.5 font-inter text-xs font-semibold text-white hover:bg-white/20">
                 <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 15V3m0 12-4-4m4 4 4-4" />
                     <path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2" />
                 </svg>
                 Import Excel
-            </a>
+            </button>
         </div>
     </div>
 
@@ -134,6 +134,59 @@
                 </button>
             </div>
         </form>
+    <div
+        x-show="modalImport"
+        x-cloak
+        x-transition:enter="transition-opacity ease-out duration-200"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition-opacity ease-in duration-150"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        @click.self="modalImport = false"
+        @keydown.escape.window="modalImport = false"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-6"
+    >
+        <div
+            x-show="modalImport"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+            class="w-full max-w-md rounded-2xl bg-white p-5 shadow-xl"
+        >
+            <div class="mb-4">
+                <h3 class="font-jakarta text-lg font-extrabold text-black">Import Data Dosen</h3>
+                <p class="font-inter text-xs text-slate-500">Upload file Excel (.xlsx, .xls) untuk import data sekaligus.</p>
+            </div>
+
+            <form method="POST" action="{{ route('operator.kelola-dosen.import') }}" enctype="multipart/form-data">
+                @csrf
+                <div class="mb-5">
+                    <label class="mb-1.5 block font-inter text-xs font-semibold text-black">File Excel</label>
+                    <input type="file" name="file" accept=".xlsx,.xls,.csv" required
+                        class="w-full rounded-lg border border-slate-200 px-3 py-2 font-inter text-sm text-black focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button
+                        type="button"
+                        @click="modalImport = false"
+                        class="flex items-center justify-center rounded-lg border border-slate-200 py-2.5 font-inter text-sm font-semibold text-black hover:bg-slate-50"
+                    >
+                        Batal
+                    </button>
+                    <button
+                        type="submit"
+                        class="flex w-full items-center justify-center rounded-lg bg-[#2653EB] py-2.5 font-inter text-sm font-semibold text-white hover:bg-[#1D4ED8]"
+                    >
+                        Import
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 @endsection

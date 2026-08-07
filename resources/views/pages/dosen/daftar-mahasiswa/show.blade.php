@@ -72,14 +72,10 @@
             </div>
         </div>
 
-        <div class="mb-6 grid grid-cols-2 gap-3">
+        <div class="mb-6 flex flex-col">
             <a href="{{ route('dosen.daftar-mahasiswa.index') }}"
                 class="flex items-center justify-center rounded-lg border border-slate-200 py-3 font-inter text-sm font-semibold text-black hover:bg-slate-50">
                 Kembali
-            </a>
-            <a href=""
-                class="flex items-center justify-center rounded-lg bg-[#10B981] py-3 font-inter text-sm font-semibold text-white hover:bg-[#6D28D9]">
-                Simpan
             </a>
         </div>
     </div>

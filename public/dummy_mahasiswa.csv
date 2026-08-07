@@ -1,0 +1,21 @@
+nim,nama,email,nomor_telepon,program_studi,semester,nip
+109110001,"Mahasiswa 1",mhs1@student.example.com,085700000001,"Teknik Informatika",8,11223302
+109110002,"Mahasiswa 2",mhs2@student.example.com,085700000002,"Teknik Informatika",7,11223302
+109110003,"Mahasiswa 3",mhs3@student.example.com,085700000003,"Teknik Informatika",2,11223305
+109110004,"Mahasiswa 4",mhs4@student.example.com,085700000004,"Teknik Informatika",5,11223303
+109110005,"Mahasiswa 5",mhs5@student.example.com,085700000005,"Teknik Informatika",1,11223301
+109110006,"Mahasiswa 6",mhs6@student.example.com,085700000006,"Teknik Informatika",3,11223302
+109110007,"Mahasiswa 7",mhs7@student.example.com,085700000007,"Teknik Informatika",8,11223304
+109110008,"Mahasiswa 8",mhs8@student.example.com,085700000008,"Teknik Informatika",7,11223305
+109110009,"Mahasiswa 9",mhs9@student.example.com,085700000009,"Teknik Informatika",4,11223304
+109110010,"Mahasiswa 10",mhs10@student.example.com,085700000010,"Teknik Informatika",7,11223305
+109110011,"Mahasiswa 11",mhs11@student.example.com,085700000011,"Teknik Informatika",6,11223303
+109110012,"Mahasiswa 12",mhs12@student.example.com,085700000012,"Teknik Informatika",5,11223304
+109110013,"Mahasiswa 13",mhs13@student.example.com,085700000013,"Teknik Informatika",4,11223301
+109110014,"Mahasiswa 14",mhs14@student.example.com,085700000014,"Teknik Informatika",3,11223302
+109110015,"Mahasiswa 15",mhs15@student.example.com,085700000015,"Teknik Informatika",6,11223305
+109110016,"Mahasiswa 16",mhs16@student.example.com,085700000016,"Teknik Informatika",5,11223301
+109110017,"Mahasiswa 17",mhs17@student.example.com,085700000017,"Teknik Informatika",2,11223303
+109110018,"Mahasiswa 18",mhs18@student.example.com,085700000018,"Teknik Informatika",1,11223302
+109110019,"Mahasiswa 19",mhs19@student.example.com,085700000019,"Teknik Informatika",3,11223304
+109110020,"Mahasiswa 20",mhs20@student.example.com,085700000020,"Teknik Informatika",1,11223304

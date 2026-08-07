@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id_pengguna' => 'USR_OP001',
                 'nama' => 'Operator System',
-                'kata_sandi' => Hash::make('12345678'),
+                'kata_sandi' => Hash::make('password123'),
                 'nomor_telepon' => '081234567890',
                 'role' => 1,
             ]
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id_pengguna' => 'USR_DOS001',
                 'nama' => 'Dr. Dosen Pembimbing, M.Kom.',
-                'kata_sandi' => Hash::make('12345678'),
+                'kata_sandi' => Hash::make('password123'),
                 'nomor_telepon' => '081234567891',
                 'role' => 3,
             ]
@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id_pengguna' => 'USR_MHS001',
                 'nama' => 'Mahasiswa Utama',
-                'kata_sandi' => Hash::make('12345678'),
+                'kata_sandi' => Hash::make('password123'),
                 'nomor_telepon' => '081234567892',
                 'role' => 2,
             ]

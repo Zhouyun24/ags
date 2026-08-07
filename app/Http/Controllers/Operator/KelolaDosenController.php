@@ -135,4 +135,17 @@ class KelolaDosenController extends Controller
         return redirect()->route('operator.kelola-dosen.index')
             ->with('success', 'Data Dosen PA berhasil dihapus.');
     }
+    public function import(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            "file" => "required|mimes:xlsx,xls,csv"
+        ]);
+
+        try {
+            \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\DosenImport, $request->file("file"));
+            return redirect()->route("operator.kelola-dosen.index")->with("success", "Data Dosen berhasil diimport.");
+        } catch (\Exception $e) {
+            return redirect()->back()->with("error", "Terjadi kesalahan saat import data: " . $e->getMessage());
+        }
+    }
 }

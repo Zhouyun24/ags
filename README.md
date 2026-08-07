@@ -6,6 +6,7 @@ Aplikasi AGS berbasis web yang dibangun menggunakan **Laravel 11**.
 Sebelum menjalankan aplikasi ini, pastikan laptop Anda sudah terinstal:
 - **XAMPP** (Mendukung PHP versi 8.2 atau lebih baru)
 - **Composer** (Package manager untuk PHP)
+- **Node.js** (Termasuk NPM, dibutuhkan untuk frontend)
 
 ## Cara Instalasi & Menjalankan Aplikasi
 
@@ -56,19 +57,19 @@ npm run build
   ```
 *(Catatan: Jika file .env sudah otomatis terbawa dari copy-an teman Anda, pastikan saja isi database-nya benar).*
 
-### 7. Generate Application Key
+### 8. Generate Application Key
 Jalankan perintah ini untuk membuat kunci keamanan aplikasi:
 ```bash
 php artisan key:generate
 ```
 
-### 8. Migrasi dan Seeding Database
+### 9. Migrasi dan Seeding Database
 Jalankan perintah ini untuk membangun seluruh struktur tabel database sekaligus memasukkan data akun dummy awal:
 ```bash
 php artisan migrate:fresh --seed
 ```
 
-### 9. Jalankan Aplikasi
+### 10. Jalankan Aplikasi
 Langkah terakhir, nyalakan server lokal Laravel dengan perintah:
 ```bash
 php artisan serve

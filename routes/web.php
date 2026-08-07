@@ -123,6 +123,7 @@ Route::middleware(['auth', 'role:1'])->prefix('operator')->name('operator.')->gr
 
     // --- Kelola Data Mahasiswa (KK3) ---
     Route::get('/kelola-mahasiswa', [KelolaMahasiswaController::class, 'index'])->name('kelola-mahasiswa.index');
+    Route::post('/kelola-mahasiswa/import', [KelolaMahasiswaController::class, 'import'])->name('kelola-mahasiswa.import');
     Route::get('/kelola-mahasiswa/tambah', [KelolaMahasiswaController::class, 'create'])->name('kelola-mahasiswa.create');
     Route::post('/kelola-mahasiswa', [KelolaMahasiswaController::class, 'store'])->name('kelola-mahasiswa.store');
     Route::get('/kelola-mahasiswa/{nim}/edit', [KelolaMahasiswaController::class, 'edit'])->name('kelola-mahasiswa.edit');
@@ -132,6 +133,7 @@ Route::middleware(['auth', 'role:1'])->prefix('operator')->name('operator.')->gr
 
     // --- Kelola Data Dosen PA (KK4) ---
     Route::get('/kelola-dosen', [KelolaDosenController::class, 'index'])->name('kelola-dosen.index');
+    Route::post('/kelola-dosen/import', [KelolaDosenController::class, 'import'])->name('kelola-dosen.import');
     Route::get('/kelola-dosen/tambah', [KelolaDosenController::class, 'create'])->name('kelola-dosen.create');
     Route::post('/kelola-dosen', [KelolaDosenController::class, 'store'])->name('kelola-dosen.store');
     Route::get('/kelola-dosen/{nip}/edit', [KelolaDosenController::class, 'edit'])->name('kelola-dosen.edit');

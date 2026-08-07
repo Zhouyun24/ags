@@ -33,6 +33,17 @@
             @if(!isset($sidebarVisibility) || $sidebarVisibility == 1)
                 <x-dynamic-component :component="$namaKomponenSidebar" />
             @endif
+            @if(session('success'))
+                <div class="m-5 rounded-lg border-l-4 border-green-500 bg-green-50 p-4 text-green-700 shadow-md">
+                    <p class="font-inter text-sm font-semibold">{{ session('success') }}</p>
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="m-5 rounded-lg border-l-4 border-red-500 bg-red-50 p-4 text-red-700 shadow-md">
+                    <p class="font-inter text-sm font-semibold">{{ session('error') }}</p>
+                </div>
+            @endif
+            
             @yield("layouts")
         </div>
     </body>
