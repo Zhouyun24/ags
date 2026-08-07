@@ -23,7 +23,7 @@
         },
     }"
 >
-    <div class="relative overflow-hidden rounded-b-[20px] bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] px-5 pb-6 pt-5">
+    <div class="relative overflow-hidden bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] px-5 pb-12 pt-10">
         <div class="flex items-start justify-between gap-3">
             <div>
                 <h1 class="font-jakarta text-xl font-extrabold text-white">Manajemen Operator</h1>

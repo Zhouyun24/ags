@@ -133,6 +133,19 @@ Route::middleware(['auth', 'role:1'])->prefix('operator')->name('operator.')->gr
     // --- Hapus Jadwal Bimbingan (KK15) ---
     Route::delete('/monitoring/jadwal/{id_jadwal}', [MonitoringController::class, 'destroyJadwal'])->name('monitoring.jadwal.destroy');
 
+    // Kelola Bimbingan
+    Route::get('/kelola-bimbingan', function () {
+        return view('pages.operator.kelola-bimbingan.index');
+    })->name('kelola-bimbingan.index');
+
+    Route::get('/kelola-bimbingan/{nim}', function () {
+        return view('pages.operator.kelola-bimbingan.show');
+    })->name('kelola-bimbingan.show');
+    
+    Route::get('/kelola-jadwal', function () {
+        return view('pages.operator.kelola-jadwal.index');
+    })->name('kelola-jadwal.index');
+
     // Notifikasi & Profile
     Route::get('/notifikasi', [NotificationController::class, 'index'])->name('notifikasi.index');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
@@ -246,6 +259,14 @@ Route::middleware(['auth', 'role:3'])->prefix('dosen')->name('dosen.')->group(fu
 
     Route::patch('/penilaian/{id_perkembangan}', [PenilaianBimbinganController::class, 'update'])
         ->name('penilaian.update');
+
+    Route::get('/daftar-mahasiswa', function () {
+        return view('pages.dosen.daftar-mahasiswa.index');
+    })->name('daftar-mahasiswa.index');
+
+    Route::get('/daftar-mahasiswa/{nim}', function () {
+        return view('pages.dosen.daftar-mahasiswa.show');
+    })->name('daftar-mahasiswa.show');
 
     // Notifikasi & Profile
     Route::get('/notifikasi', [NotificationController::class, 'index'])->name('notifikasi.index');

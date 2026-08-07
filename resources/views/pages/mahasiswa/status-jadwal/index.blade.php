@@ -39,7 +39,7 @@
 @endphp
 
 <div x-data="{ activeTab: 'semua' }" class="pb-8">
-    <div class="relative overflow-hidden bg-gradient-to-tl from-[#2563ED] via-[#2251E3] to-[#1D4ED8] px-5 min-h-[106px] flex flex-col justify-center">
+    <div class="relative overflow-hidden bg-gradient-to-tl from-[#2563ED] via-[#2251E3] to-[#1D4ED8] px-5 pb-12 pt-10 flex flex-col justify-center">
         <h1 class="font-jakarta text-xl font-extrabold text-white">Status Jadwal</h1>
         <p class="mt-1 font-inter text-xs text-white">{{ $jadwal->count() }} Jadwal Tercatat</p>
     </div>

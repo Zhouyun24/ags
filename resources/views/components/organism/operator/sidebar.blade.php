@@ -5,6 +5,8 @@
         ['label' => 'Manajemen Mahasiswa', 'route' => 'operator.kelola-mahasiswa.index', 'icon' => 'users'],
         ['label' => 'Manajemen Dosen', 'route' => 'operator.kelola-dosen.index', 'icon' => 'graduation-cap'],
         ['label' => 'Manajemen Operator', 'route' => 'operator.kelola-operator.index', 'icon' => 'shield'],
+        ['label' => 'Manajemen Bimbingan', 'route' => 'operator.kelola-bimbingan.index', 'icon' => 'save'],
+        ['label' => 'Manajemen Jadwal', 'route' => 'operator.kelola-jadwal.index', 'icon' => 'clipboard'],
         ['label' => 'Monitoring', 'route' => 'operator.monitoring.index', 'icon' => 'chart'],
     ];
 @endphp
@@ -96,6 +98,18 @@
 
                                         @case('shield')
                                             <path d="M12 3 4 6v6c0 5 3.4 8.7 8 9 4.6-.3 8-4 8-9V6l-8-3Z" />
+                                            @break
+
+                                        @case('save')
+                                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z" />
+                                            <path d="M17 21v-8H7v8" />
+                                            <path d="M7 3v5h8" />
+                                            @break
+                                        
+                                        @case('clipboard')
+                                            <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+                                            <rect x="9" y="3" width="6" height="4" rx="1" />
+                                            <path d="M9 13l2 2 4-4" />
                                             @break
 
                                         @case('chart')
