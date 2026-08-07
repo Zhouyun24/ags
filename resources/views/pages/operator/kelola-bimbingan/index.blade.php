@@ -99,22 +99,18 @@
                         <span
                             :class="{
                                 'bg-[#DCFCE7] text-[#16A34A]': bimbingan.status === 'selesai',
-                                'bg-[#FEE2E2] text-[#DC2626]': bimbingan.status === 'ditolak',
-                                'bg-[#FEF3C7] text-[#F59E0B]': bimbingan.status === 'menunggu',
+                                'bg-[#FEF3C7] text-[#F59E0B]': bimbingan.status === 'belum_selesai',
                             }"
                             class="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-xl px-2.5 py-1 font-inter text-[10px]"
                         >
                             <svg x-show="bimbingan.status === 'selesai'" class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                 <path d="M5 13l4 4L19 7" />
                             </svg>
-                            <svg x-show="bimbingan.status === 'ditolak'" class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                <path d="M6 6l12 12M18 6 6 18" />
-                            </svg>
-                            <svg x-show="bimbingan.status === 'menunggu'" class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <svg x-show="bimbingan.status === 'belum_selesai'" class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <circle cx="12" cy="12" r="9" />
                                 <path d="M12 7v5l3 3" />
                             </svg>
-                            <span x-text="bimbingan.status === 'selesai' ? 'Selesai' : (bimbingan.status === 'ditolak' ? 'Ditolak' : 'Disetujui')"></span>
+                            <span x-text="bimbingan.status === 'selesai' ? 'Selesai' : 'Belum Selesai'"></span>
                         </span>
                     </div>
 

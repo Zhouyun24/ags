@@ -22,7 +22,7 @@ class KelolaJadwalController extends Controller
                 'nip' => $jadwal->nip,
                 'tanggal' => \Carbon\Carbon::parse($jadwal->tanggal_jadwal)->format('d/m/Y'),
                 'jam' => \Carbon\Carbon::parse($jadwal->jam_jadwal)->format('H:i') . ' WIB',
-                'status' => $jadwal->status_jadwal,
+                'status' => $jadwal->status_jadwal == 1 ? 'disetujui' : ($jadwal->status_jadwal == 2 ? 'ditolak' : 'menunggu'),
                 'urlHapus' => route('operator.kelola-jadwal.destroy', $jadwal->id_jadwal),
             ];
         });

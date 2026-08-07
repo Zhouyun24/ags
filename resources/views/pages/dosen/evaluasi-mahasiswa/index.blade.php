@@ -67,53 +67,61 @@
                     class="mt-4 w-full max-w-sm rounded-2xl bg-[#F7F9FC] p-5 shadow-md">
 
                         <div class="flex items-start justify-between">
-                            <div class="flex gap-3">
-                                <div class="flex h-11 w-11 items-center justify-center rounded-lg bg-[#DDE5FF]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#4B5FD6]" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M15 19v-1a3 3 0 00-3-3H8a3 3 0 00-3 3v1m10-10a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <div class="flex items-start gap-3">
+                                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#DDE5FF]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#2653EB]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
                                 </div>
 
                                 <div>
-                                    <h2 class="text-2xl font-bold text-gray-900">
+                                    <p class="font-jakarta text-base font-extrabold text-black">
                                         {{ $item->nama }}
-                                    </h2>
-
-                                    <p class="text-sm text-gray-500">
+                                    </p>
+                                    <p class="font-inter text-xs text-slate-500">
                                         {{ $item->topik }} • {{ $item->nim }}
+                                    </p>
+                                    <p class="font-inter text-xs font-semibold text-[#2653EB]">
+                                        {{ Auth::user()->nama }}, {{ Auth::user()->dosenPA->nip ?? '-' }}
                                     </p>
                                 </div>
                             </div>
 
                             <span @class([
-                                'rounded-full px-3 py-1 text-xs font-medium',
-                                'bg-[#FFF1DD] text-[#F59E0B]' => $item->status === 'menunggu',
+                                'inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-xl px-2.5 py-1 font-inter text-[10px]',
+                                'bg-[#FEF3C7] text-[#F59E0B]' => $item->status === 'menunggu',
                                 'bg-[#DCFCE7] text-[#16A34A]' => $item->status === 'disetujui',
                             ])>
                                 @if ($item->status === 'disetujui')
-                                    ✅ Selesai
+                                    <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <path d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span>Selesai</span>
                                 @elseif ($item->status === 'menunggu')
-                                    ⏱ Menunggu
+                                    <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <circle cx="12" cy="12" r="9" />
+                                        <path d="M12 7v5l3 3" />
+                                    </svg>
+                                    <span>Menunggu</span>
                                 @endif
                             </span>
                         </div>
 
-                        <div class="mt-5 flex gap-3">
-
-                            <div
-                                class="flex flex-1 items-center gap-2 rounded-md bg-[#DDE3FF] px-3 py-2 text-sm text-gray-700">
-                                📅
-                                <span> {{ $item->tanggal }} </span>
-                            </div>
-
-                            <div
-                                class="flex flex-1 items-center gap-2 rounded-md bg-[#DDE3FF] px-3 py-2 text-sm text-gray-700">
-                                🕒
-                                <span> {{ $item->jam }} </span>
-                            </div>
-
+                        <div class="mt-4 flex items-center gap-4 rounded-lg bg-[#E0E7FF]/60 px-3 py-2.5">
+                            <span class="flex items-center gap-1.5 font-inter text-xs text-slate-700">
+                                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <rect x="3" y="4" width="18" height="17" rx="2" />
+                                    <path d="M3 9h18M8 2v4M16 2v4" />
+                                </svg>
+                                <span>{{ $item->tanggal }}</span>
+                            </span>
+                            <span class="flex items-center gap-1.5 font-inter text-xs text-slate-700">
+                                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <circle cx="12" cy="12" r="9" />
+                                    <path d="M12 7v5l3 3" />
+                                </svg>
+                                <span>{{ $item->jam }}</span>
+                            </span>
                         </div>
 
                         <div class="mt-6 grid grid-cols-3 gap-4">

@@ -25,7 +25,7 @@ class KelolaBimbinganController extends Controller
                 'nip' => $jadwal->nip,
                 'tanggal' => \Carbon\Carbon::parse($jadwal->tanggal_jadwal)->format('d/m/Y'),
                 'jam' => \Carbon\Carbon::parse($jadwal->jam_jadwal)->format('H:i') . ' WIB',
-                'status' => $jadwal->status_jadwal,
+                'status' => $hasil ? 'selesai' : 'belum_selesai',
                 'catatan' => $hasil->catatan_bimbingan ?? '-',
                 'rekomendasi' => $hasil->arahan_akademik ?? '-',
                 'evaluasi' => [
