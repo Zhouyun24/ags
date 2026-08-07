@@ -4,17 +4,28 @@
 
 <div class="pb-5">
     <div class="relative overflow-hidden bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] px-5 pb-12 pt-10">
-        <div class="flex items-center gap-3">
-            <a href="{{ route('operator.kelola-dosen.index') }}"
-                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/20 text-white hover:bg-white/30">
-                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <path d="M15 6l-6 6 6 6" />
-                </svg>
-            </a>
-            <div>
-                <h1 class="font-jakarta text-xl font-extrabold text-white">Tambah Dosen</h1>
-                <p class="mt-1 font-inter text-xs text-white">Tambahkan data dosen baru</p>
+        <div class="flex items-center justify-between gap-3">
+           <div class="flex items-center gap-3">
+                <a href="{{ route('operator.kelola-dosen.index') }}"
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/20 text-white hover:bg-white/30">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M15 6l-6 6 6 6" />
+                    </svg>
+                </a>
+                <div>
+                    <h1 class="font-jakarta text-xl font-extrabold text-white">Tambah Dosen</h1>
+                    <p class="mt-1 font-inter text-xs text-white">Tambahkan data dosen baru</p>
+                </div>
             </div>
+
+            <a href=""
+                class="flex shrink-0 items-center gap-1.5 rounded-lg border border-white/40 bg-white/10 px-3.5 py-2.5 font-inter text-xs font-semibold text-white hover:bg-white/20">
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 15V3m0 12-4-4m4 4 4-4" />
+                    <path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2" />
+                </svg>
+                Import Excel
+            </a>
         </div>
     </div>
 
