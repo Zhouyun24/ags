@@ -83,7 +83,7 @@ Aplikasi sekarang sudah menyala! Buka browser Anda dan akses URL:
 
 Untuk mencoba masuk ke aplikasi, Anda bisa login menggunakan salah satu akun default di bawah ini. Semua akun menggunakan password yang sama.
 
-**Password Default: `12345678`**
+**Password Default: `password123`**
 
 | Role | Email Login |
 |------|-------------|
