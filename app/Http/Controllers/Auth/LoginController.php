@@ -13,8 +13,15 @@ class LoginController extends Controller
     /**
      * Tampilkan halaman formulir login.
      */
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
+        // Override/keluarkan session lama jika user kembali ke halaman login tanpa menekan logout
+        if (Auth::check()) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
+
         return view('pages.authentication.login.index', [
             'navbarVisibility' => '0',
             'sidebarVisibility' => '0'

@@ -21,14 +21,14 @@
     $garisPolyline = collect($titikKoordinat)->map(fn($t) => "{$t['x']},{$t['y']}")->implode(' ');
 @endphp
 
-<div class="pb-5">
+<div class="pb-5" x-data="{ showEksporModal: {{ (session('error_export') || $errors->any()) ? 'true' : 'false' }} }">
     <div class="relative overflow-hidden bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] px-5 pb-12 pt-10">
         <div class="flex items-center justify-between gap-3">
             <div>
                 <h1 class="font-jakarta text-xl font-extrabold text-white">Monitoring</h1>
                 <p class="mt-1 font-inter text-xs text-white">Periode: {{ $periode ?? date('Y') }}</p>
             </div>
-            <a href=""
+            <button type="button" @click="showEksporModal = true"
                 class="flex shrink-0 items-center gap-1.5 rounded-lg border border-white/40 bg-white/10 px-4 py-2.5 font-inter text-xs font-semibold text-white hover:bg-white/20">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-icon lucide-upload">
                     <path d="M12 3v12"/>
@@ -36,13 +36,13 @@
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 </svg>
                 Ekspor
-            </a>
+            </button>
         </div>
     </div>
 
     <div class="px-5 pt-6">
         <div class="mb-6 grid grid-cols-2 gap-4">
-            <a href="{{ route('operator.monitoring.jadwal') }}" class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14] hover:bg-slate-50 transition cursor-pointer">
+            <div class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
                 <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#2653EB]/15">
                     <svg class="h-5 w-5 text-[#2653EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H12v18H6.5A2.5 2.5 0 0 1 4 18.5v-13Z" />
@@ -51,8 +51,8 @@
                 </span>
                 <p class="mt-3 font-jakarta text-2xl font-extrabold text-[#2653EB]">{{ $ringkasan['jumlahBimbingan'] ?? 0 }}</p>
                 <p class="mt-1 font-inter text-xs text-slate-500">Jumlah bimbingan bulan ini</p>
-            </a>
-            <a href="{{ route('operator.monitoring.hasil') }}" class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14] hover:bg-slate-50 transition cursor-pointer">
+            </div>
+            <div class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
                 <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#16A34A]/15">
                     <svg class="h-5 w-5 text-[#16A34A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <path d="M23 6l-9.5 9.5-5-5L1 18" />
@@ -61,8 +61,8 @@
                 </span>
                 <p class="mt-3 font-jakarta text-2xl font-extrabold text-[#16A34A]">{{ $ringkasan['tingkatKehadiran'] ?? 0 }}%</p>
                 <p class="mt-1 font-inter text-xs text-slate-500">Tingkat kehadiran</p>
-            </a>
-            <a href="{{ route('operator.monitoring.penilaian') }}" class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14] hover:bg-slate-50 transition cursor-pointer">
+            </div>
+            <div class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
                 <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#F59E0B]/15">
                     <svg class="h-5 w-5 text-[#F59E0B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8l-6.2 3.3 1.2-6.9-5-4.9 6.9-1L12 2Z" />
@@ -70,7 +70,7 @@
                 </span>
                 <p class="mt-3 font-jakarta text-2xl font-extrabold text-[#F59E0B]">{{ number_format($ringkasan['rataSkor'] ?? 0, 1) }}</p>
                 <p class="mt-1 font-inter text-xs text-slate-500">Rata - rata skor</p>
-            </a>
+            </div>
             <div class="rounded-xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
                 <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#DC2626]/15">
                     <svg class="h-5 w-5 text-[#DC2626]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -126,7 +126,7 @@
             </div>
         </div>
 
-        <div x-data="{ showEksporModal: false }">
+        <div>
             <div class="mb-3 flex items-center justify-between">
                 <h2 class="font-inter font-semibold text-[13px] text-black">Log Aktivitas</h2>
                 <button type="button" @click="showEksporModal = true"
@@ -146,54 +146,61 @@
                     x-transition:enter-start="opacity-0 translate-y-4"
                     x-transition:enter-end="opacity-100 translate-y-0"
                     class="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
+                    <form action="{{ route('operator.monitoring.export') }}" method="GET">
+                        <p class="font-inter text-sm text-black">Ekspor untuk melihat log aktivitas lebih lanjut</p>
 
-                    <p class="font-inter text-sm text-black">Ekspor untuk melihat log aktivitas lebih lanjut</p>
-
-                    <div class="mt-5">
-                        <p class="font-inter text-sm font-semibold text-black">
-                            Pilih Periode
-                            <span class="font-normal text-xs text-slate-400">(*Periode yang dipilih hanya bisa di tahun yang sama)</span>
-                        </p>
-                    </div>
-
-                    <div class="mt-4">
-                        <label class="mb-1.5 block font-inter text-sm font-semibold text-black">Dari</label>
-                        <div class="relative">
-                            <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <rect x="3" y="5" width="18" height="16" rx="2" />
-                                <path d="M8 3v4M16 3v4M3 10h18" />
-                            </svg>
-                            <input type="date" name="dari"
-                                class="w-full rounded-lg bg-slate-100 py-3 pl-10 pr-3 font-inter text-sm text-slate-400 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2653EB]"
-                                placeholder="DD/MM/YYYY">
+                        <div class="mt-5">
+                            <p class="font-inter text-sm font-semibold text-black">
+                                Pilih Periode
+                                <span class="font-normal text-xs text-slate-400">(*Periode yang dipilih hanya bisa di tahun yang sama)</span>
+                            </p>
                         </div>
-                    </div>
 
-                    <div class="mt-4">
-                        <label class="mb-1.5 block font-inter text-sm font-semibold text-black">Sampai</label>
-                        <div class="relative">
-                            <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <rect x="3" y="5" width="18" height="16" rx="2" />
-                                <path d="M8 3v4M16 3v4M3 10h18" />
-                            </svg>
-                            <input type="date" name="sampai"
-                                class="w-full rounded-lg bg-slate-100 py-3 pl-10 pr-3 font-inter text-sm text-slate-400 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2653EB]"
-                                placeholder="DD/MM/YYYY">
+                        @if (session('error_export') || $errors->any())
+                            <div class="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
+                                {{ session('error_export') ?? $errors->first() }}
+                            </div>
+                        @endif
+
+                        <div class="mt-4">
+                            <label class="mb-1.5 block font-inter text-sm font-semibold text-black">Dari</label>
+                            <div class="relative">
+                                <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <rect x="3" y="5" width="18" height="16" rx="2" />
+                                    <path d="M8 3v4M16 3v4M3 10h18" />
+                                </svg>
+                                <input type="date" name="dari"
+                                    class="w-full rounded-lg bg-slate-100 py-3 pl-10 pr-3 font-inter text-sm text-slate-400 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2653EB]"
+                                    placeholder="DD/MM/YYYY" required>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mt-6 grid grid-cols-2 gap-3">
-                        <button type="button" @click="showEksporModal = false"
-                            class="rounded-full border border-[#2653EB] py-3 font-inter text-sm font-semibold text-[#2653EB] hover:bg-blue-50">
-                            Batal
-                        </button>
-                        <button type="button"
-                            class="w-full rounded-full bg-[#2653EB] py-3 font-inter text-sm font-semibold text-white hover:bg-blue-700">
-                            Ekspor
-                        </button>
-                    </div>
+                        <div class="mt-4">
+                            <label class="mb-1.5 block font-inter text-sm font-semibold text-black">Sampai</label>
+                            <div class="relative">
+                                <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <rect x="3" y="5" width="18" height="16" rx="2" />
+                                    <path d="M8 3v4M16 3v4M3 10h18" />
+                                </svg>
+                                <input type="date" name="sampai"
+                                    class="w-full rounded-lg bg-slate-100 py-3 pl-10 pr-3 font-inter text-sm text-slate-400 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2653EB]"
+                                    placeholder="DD/MM/YYYY" required>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 grid grid-cols-2 gap-3">
+                            <button type="button" @click="showEksporModal = false"
+                                class="rounded-full border border-[#2653EB] py-3 font-inter text-sm font-semibold text-[#2653EB] hover:bg-blue-50">
+                                Batal
+                            </button>
+                            <button type="submit" @click="showEksporModal = false"
+                                class="w-full rounded-full bg-[#2653EB] py-3 font-inter text-sm font-semibold text-white hover:bg-blue-700">
+                                Ekspor
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

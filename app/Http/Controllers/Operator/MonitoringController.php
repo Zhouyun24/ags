@@ -8,6 +8,8 @@ use App\Models\jadwal_bimbingan;
 use App\Models\penilaian_bimbingan;
 use App\Models\hasil_bimbingan;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AktivitasExport;
 
 class MonitoringController extends Controller
 {
@@ -149,5 +151,22 @@ class MonitoringController extends Controller
         return view('pages.operator.monitoring.penilaian', [
             'penilaians' => $mappedPenilaians
         ]);
+    }
+
+    public function exportAktivitas(Request $request)
+    {
+        $request->validate([
+            'dari' => 'required|date',
+            'sampai' => 'required|date|after_or_equal:dari',
+        ]);
+
+        $dari = Carbon::parse($request->query('dari'));
+        $sampai = Carbon::parse($request->query('sampai'));
+
+        if ($dari->year !== $sampai->year) {
+            return back()->with('error_export', 'Periode yang dipilih hanya bisa di tahun yang sama.');
+        }
+
+        return Excel::download(new AktivitasExport($dari->format('Y-m-d'), $sampai->format('Y-m-d')), 'log_aktivitas_monitoring_'.Carbon::now()->format('Y-m-d_H-i-s').'.xlsx');
     }
 }

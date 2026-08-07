@@ -56,15 +56,12 @@ Route::get('/', function () {
     ]);
 });
 
-// Route Khusus Tamu (Hanya bisa diakses jika BELUM login)
-Route::middleware('guest')->group(function () {
-    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [LoginController::class, 'login']);
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
 
-    // Registrasi Operator (KK1)
-    Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
-    Route::post('/register', [RegisterController::class, 'register']);
-});
+// Registrasi Operator (KK1)
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
 
 // Route Logout (Harus sudah login)
 Route::post('/logout', [LoginController::class, 'logout'])
@@ -132,6 +129,7 @@ Route::middleware(['auth', 'role:1'])->prefix('operator')->name('operator.')->gr
     Route::get('/monitoring/jadwal', [MonitoringController::class, 'jadwal'])->name('monitoring.jadwal');
     Route::get('/monitoring/hasil', [MonitoringController::class, 'hasil'])->name('monitoring.hasil');
     Route::get('/monitoring/penilaian', [MonitoringController::class, 'penilaian'])->name('monitoring.penilaian');
+    Route::get('/monitoring/export-aktivitas', [MonitoringController::class, 'exportAktivitas'])->name('monitoring.export');
 
     // --- Hapus Jadwal Bimbingan (KK15) ---
     Route::delete('/monitoring/jadwal/{id_jadwal}', [MonitoringController::class, 'destroyJadwal'])->name('monitoring.jadwal.destroy');

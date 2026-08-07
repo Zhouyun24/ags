@@ -16,8 +16,15 @@ class RegisterController extends Controller
     /**
      * Tampilkan halaman formulir pendaftaran operator.
      */
-    public function showRegisterForm()
+    public function showRegisterForm(\Illuminate\Http\Request $request)
     {
+        // Override/keluarkan session lama jika user kembali ke halaman register
+        if (Auth::check()) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
+
         return view('pages.authentication.register.index', [
             'navbarVisibility' => '0',
             'sidebarVisibility' => '0',
