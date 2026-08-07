@@ -2,7 +2,7 @@
 
 @section('layouts')
 <div class="flex flex-col min-h-screen bg-slate-50 pb-10">
-    <div class="bg-[#10b981] px-6 pb-6 pt-10 text-white">
+    <div class="bg-gradient-to-br from-[#22C55E] via-[#16A34A] to-[#15803D] px-5 pb-12 pt-10 text-white">
         <h1 class="font-['Plus_Jakarta_Sans'] text-2xl font-bold">
             Hasil Bimbingan
         </h1>

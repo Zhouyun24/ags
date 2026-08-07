@@ -5,6 +5,7 @@
         ['label' => 'Persetujuan Jadwal', 'route' => 'dosen.persetujuan-jadwal.index', 'icon' => 'clipboard-check'],
         ['label' => 'Hasil Bimbingan', 'route' => 'dosen.hasil-bimbingan.index', 'icon' => 'save'],
         ['label' => 'Evaluasi Mahasiswa', 'route' => 'dosen.evaluasi-mahasiswa.index', 'icon' => 'chart'],
+        ['label' => 'Daftar Mahasiswa', 'route' => 'dosen.daftar-mahasiswa.index', 'icon' => 'user'],
     ];
 @endphp
 
@@ -95,6 +96,13 @@
 
                                         @case('chart')
                                             <path d="M5 20V10M12 20V4M19 20v-7" />
+                                            @break
+
+                                        @case('user')
+                                            <path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+                                            <circle cx="10" cy="7" r="4" />
+                                            <path d="M23 20v-2a4 4 0 0 0-3-3.87" />
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                                             @break
                                     @endswitch
                                 </svg>

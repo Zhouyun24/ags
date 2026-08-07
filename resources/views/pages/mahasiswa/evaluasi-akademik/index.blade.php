@@ -42,7 +42,7 @@
 @endphp
 
 <div class="pb-8">
-    <div class="relative overflow-hidden bg-gradient-to-tl from-[#2563ED] via-[#2251E3] to-[#1D4ED8] px-5 min-h-[106px] flex flex-col justify-center">
+    <div class="relative overflow-hidden bg-gradient-to-tl from-[#2563ED] via-[#2251E3] to-[#1D4ED8] px-5 pb-12 pt-10 min-h-[106px] flex flex-col justify-center">
         <h1 class="font-jakarta text-xl font-extrabold text-white">Evaluasi Akademik</h1>
         <p class="mt-1 font-inter text-xs text-white">
             {{ $mahasiswa->nama }} &bull; Semester {{ $mahasiswa->semester }}

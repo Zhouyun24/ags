@@ -216,7 +216,7 @@
                 </span>
                 <span class="font-inter text-xs text-black">Evaluasi<br>Mahasiswa</span>
             </a>
-            <!-- <a href=""
+            <a href="{{ route('dosen.daftar-mahasiswa.index') }}"
                 class="flex items-center gap-3 rounded-xl bg-white min-h-[80px] px-4 shadow-[0px_4px_16px_0px_#0F172A14]">
                 <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#9333EA]/15">
                     <svg class="h-5 w-5 text-[#9333EA]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -226,7 +226,7 @@
                         <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                     </svg>
                 </span>
-                <span class="font-inter text-xs text-black">Daftar<br>Mahasiswa</span> -->
+                <span class="font-inter text-xs text-black">Daftar<br>Mahasiswa</span>
             </a>
         </div>
     </div>
