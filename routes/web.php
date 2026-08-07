@@ -153,14 +153,17 @@ Route::middleware(['auth', 'role:1'])->prefix('operator')->name('operator.')->gr
     Route::get('/profile/ubah-kata-sandi', function () {
         return view('pages.operator.profile.ubah-kata-sandi.index');
     })->name('profile.ubah-kata-sandi.index');
+    Route::match(['put', 'post'], '/profile/ubah-kata-sandi', [ResetPasswordController::class, 'update'])->name('profile.ubah-kata-sandi.update');
 
     Route::get('/profile/pengaturan-notifikasi', function () {
         return view('pages.operator.profile.pengaturan-notifikasi.index');
     })->name('profile.pengaturan-notifikasi.index');
+    Route::match(['put', 'post'], '/profile/pengaturan-notifikasi', [ProfileController::class, 'updateNotifikasi'])->name('profile.pengaturan-notifikasi.update');
 
     Route::get('/profile/privasi-keamanan', function () {
         return view('pages.operator.profile.privasi-keamanan.index');
     })->name('profile.privasi-keamanan.index');
+    Route::match(['put', 'post'], '/profile/privasi-keamanan', [ProfileController::class, 'updatePrivasi'])->name('profile.privasi-keamanan.update');
 
 });
 
@@ -198,14 +201,17 @@ Route::middleware(['auth', 'role:2'])->prefix('mahasiswa')->name('mahasiswa.')->
     Route::get('/profile/ubah-kata-sandi', function () {
         return view('pages.mahasiswa.profile.ubah-kata-sandi.index');
     })->name('profile.ubah-kata-sandi.index');
+    Route::match(['put', 'post'], '/profile/ubah-kata-sandi', [ResetPasswordController::class, 'update'])->name('profile.ubah-kata-sandi.update');
 
     Route::get('/profile/pengaturan-notifikasi', function () {
         return view('pages.mahasiswa.profile.pengaturan-notifikasi.index');
     })->name('profile.pengaturan-notifikasi.index');
+    Route::match(['put', 'post'], '/profile/pengaturan-notifikasi', [ProfileController::class, 'updateNotifikasi'])->name('profile.pengaturan-notifikasi.update');
 
     Route::get('/profile/privasi-keamanan', function () {
         return view('pages.mahasiswa.profile.privasi-keamanan.index');
     })->name('profile.privasi-keamanan.index');
+    Route::match(['put', 'post'], '/profile/privasi-keamanan', [ProfileController::class, 'updatePrivasi'])->name('profile.privasi-keamanan.update');
 
 });
 
@@ -275,13 +281,16 @@ Route::middleware(['auth', 'role:3'])->prefix('dosen')->name('dosen.')->group(fu
     Route::get('/profile/ubah-kata-sandi', function () {
         return view('pages.dosen.profile.ubah-kata-sandi.index');
     })->name('profile.ubah-kata-sandi.index');
+    Route::match(['put', 'post'], '/profile/ubah-kata-sandi', [ResetPasswordController::class, 'update'])->name('profile.ubah-kata-sandi.update');
 
     Route::get('/profile/pengaturan-notifikasi', function () {
         return view('pages.dosen.profile.pengaturan-notifikasi.index');
     })->name('profile.pengaturan-notifikasi.index');
+    Route::match(['put', 'post'], '/profile/pengaturan-notifikasi', [ProfileController::class, 'updateNotifikasi'])->name('profile.pengaturan-notifikasi.update');
 
     Route::get('/profile/privasi-keamanan', function () {
         return view('pages.dosen.profile.privasi-keamanan.index');
     })->name('profile.privasi-keamanan.index');
+    Route::match(['put', 'post'], '/profile/privasi-keamanan', [ProfileController::class, 'updatePrivasi'])->name('profile.privasi-keamanan.update');
 
 });

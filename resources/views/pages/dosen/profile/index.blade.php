@@ -21,6 +21,11 @@
     </div>
 
     <div class="relative px-7 z-10">
+        @if (session('success'))
+            <div class="-mt-8 mb-4 rounded-xl bg-emerald-500 p-3.5 text-center font-inter text-xs font-medium text-white shadow-md">
+                {{ session('success') }}
+            </div>
+        @endif
 
         <div class="-mt-12 mb-5 flex flex-col items-center rounded-2xl bg-white p-6 shadow-[0px_4px_16px_0px_#0F172A14]">
             <div class="relative">

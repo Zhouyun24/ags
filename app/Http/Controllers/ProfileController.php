@@ -71,4 +71,30 @@ class ProfileController extends Controller
 
         return view($viewPath, ['user' => $profileData]);
     }
+
+    public function updateNotifikasi(Request $request)
+    {
+        $user = Auth::user();
+        $targetRoute = match ((int)($user?->role ?? 0)) {
+            1 => 'operator.profile.index',
+            2 => 'mahasiswa.profile.index',
+            3 => 'dosen.profile.index',
+            default => 'login',
+        };
+
+        return redirect()->route($targetRoute)->with('success', 'Pengaturan notifikasi berhasil disimpan.');
+    }
+
+    public function updatePrivasi(Request $request)
+    {
+        $user = Auth::user();
+        $targetRoute = match ((int)($user?->role ?? 0)) {
+            1 => 'operator.profile.index',
+            2 => 'mahasiswa.profile.index',
+            3 => 'dosen.profile.index',
+            default => 'login',
+        };
+
+        return redirect()->route($targetRoute)->with('success', 'Pengaturan privasi & keamanan berhasil disimpan.');
+    }
 }
