@@ -177,13 +177,13 @@
             </svg>
             Daftar Sekarang
         </button> --}}
-        <a href="{{ route('operator.import-data') }}" class="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 text-sm font-semibold text-white shadow-[0px_8px_32px_0px_#00000040] transition hover:bg-blue-700 active:bg-blue-800">
+        <a href="{{ route('register.import-data') }}" class="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 text-sm font-semibold text-white shadow-[0px_8px_32px_0px_#00000040] transition hover:bg-blue-700 active:bg-blue-800">
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z" />
             </svg>
             Daftar Sekarang
         </a>
-        <form method="POST" action="{{ route('logout') }}" class="mt-3">
+        {{-- <form method="POST" action="{{ route('logout') }}" class="mt-3">
             @csrf
             <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 py-3.5 text-sm font-semibold text-red-600 transition hover:bg-red-100">
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -192,7 +192,7 @@
                 </svg>
                 Keluar dari Akun Operator
             </button>
-        </form>
+        </form> --}}
         <p class="mt-4 pb-8 text-center text-sm text-slate-600">
             Sudah punya akun?
             <a href="{{ route('login') }}" class="font-semibold text-blue-600 hover:text-blue-700">

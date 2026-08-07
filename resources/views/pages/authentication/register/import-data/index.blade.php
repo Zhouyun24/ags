@@ -147,13 +147,13 @@
         </div>
 
         <div class="mt-auto">
-            <a href=""
+            <a href="{{ route('login') }}"
                 class="flex w-full items-center justify-center rounded-lg bg-[#2653EB] py-3.5 font-inter text-sm font-semibold text-white hover:bg-[#1D4ED8]">
                 Aktivasi dengan Data
             </a>
             <p class="mt-4 text-center font-inter text-xs text-slate-500">
                 Lewati import data?
-                <a href="{{ route('operator.beranda.index') }}" class="font-semibold text-[#2653EB] hover:underline">Lewati</a>
+                <a href="{{ route('login') }}" class="font-semibold text-[#2653EB] hover:underline">Lewati</a>
             </p>
         </div>
     </div>

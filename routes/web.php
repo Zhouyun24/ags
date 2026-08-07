@@ -59,9 +59,36 @@ Route::get('/', function () {
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
-// Registrasi Operator (KK1)
+// Registrasi Operator (Frontend Only)
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
+Route::get('/register/import-data', function () {
+    return view('pages.authentication.register.import-data.index', [
+        'navbarVisibility' => '0', 
+        'sidebarVisibility' => '0'
+    ]);
+})->name('register.import-data');
+
+// Lupa Kata Sandi (Frontend Only)
+Route::get('/forgot-password', function () {
+    return view('pages.authentication.reset-password.request-email.index', [
+        'navbarVisibility' => '0', 
+        'sidebarVisibility' => '0'
+    ]);
+})->name('forgot-password');
+
+Route::get('/forgot-password/otp', function () {
+    return view('pages.authentication.reset-password.verify-otp.index', [
+        'navbarVisibility' => '0', 
+        'sidebarVisibility' => '0'
+    ]);
+})->name('forgot-password.otp');
+
+Route::get('/forgot-password/reset', function () {
+    return view('pages.authentication.reset-password.new-password.index', [
+        'navbarVisibility' => '0', 
+        'sidebarVisibility' => '0'
+    ]);
+})->name('forgot-password.reset');
 
 // Route Logout (Harus sudah login)
 Route::post('/logout', [LoginController::class, 'logout'])
@@ -83,19 +110,7 @@ Route::middleware(['auth', 'role:1'])->prefix('operator')->name('operator.')->gr
     // Beranda Operator
     Route::get('/beranda', [DashboardOperatorController::class, 'index'])->name('beranda.index');
 
-    Route::get('/daftar', function () {
-        return view('pages.authentication.register.index', [
-            'navbarVisibility' => '0', 
-            'sidebarVisibility' => '0'
-        ]);
-    })->name('daftar');
 
-    Route::get('/import-data', function () {
-        return view('pages.authentication.register.import-data.index', [
-            'navbarVisibility' => '0', 
-            'sidebarVisibility' => '0'
-        ]);
-    })->name('import-data');
 
     // --- Kelola Data Operator (KK2) ---
     Route::get('/kelola-operator', [KelolaOperatorController::class, 'index'])->name('kelola-operator.index');

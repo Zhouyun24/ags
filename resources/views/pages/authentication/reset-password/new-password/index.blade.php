@@ -30,8 +30,7 @@
             </span>
         </div>
 
-        <form method="POST" action="" class="mt-8">
-            @csrf
+        <form @submit.prevent="window.location.href = '{{ route('login') }}'" class="mt-8">
             <input type="hidden" name="token" value="{{ $token ?? request('token') }}" />
             <input type="hidden" name="email" value="{{ $email ?? request('email') }}" />
 

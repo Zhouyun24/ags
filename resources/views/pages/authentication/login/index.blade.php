@@ -108,7 +108,7 @@
                 </span>
                 <span class="text-sm text-slate-700">Ingat Saya</span>
             </label>
-            <a href="#" class="text-sm font-semibold text-blue-600 hover:text-blue-700">
+            <a href="{{ route('forgot-password') }}" class="text-sm font-semibold text-blue-600 hover:text-blue-700">
                 Lupa Kata Sandi?
             </a>
         </div>
@@ -118,7 +118,7 @@
             Masuk
         </button>
 
-        <a href="{{ route('operator.daftar') }}"
+        <a href="{{ route('register') }}"
             class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-blue-600 py-3.5 text-sm font-semibold text-blue-600 transition hover:bg-blue-50">
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z" />

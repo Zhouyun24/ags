@@ -23,8 +23,7 @@
             </span>
         </div>
 
-        <form method="POST" action="" class="mt-8">
-            @csrf
+        <form @submit.prevent="window.location.href = '{{ route('forgot-password.otp') }}'" class="mt-8">
 
             <label for="email" class="mb-1.5 block font-inter text-sm font-semibold text-black">Alamat Email</label>
             <div class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3.5 shadow-[0px_4px_16px_0px_#0F172A14] focus-within:border-[#2653EB]">

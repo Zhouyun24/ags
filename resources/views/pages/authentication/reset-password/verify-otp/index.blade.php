@@ -71,8 +71,7 @@
             <p class="font-inter text-xs text-slate-500">Periksa kotak masuk atau folder spam</p>
         </div>
 
-        <form method="POST" action="" class="mt-6">
-            @csrf
+        <form @submit.prevent="window.location.href = '{{ route('forgot-password.reset') }}'" class="mt-6">
             <input type="hidden" name="email" value="{{ $email }}" />
             <input type="hidden" name="otp" :value="kodeLengkap" />
 
