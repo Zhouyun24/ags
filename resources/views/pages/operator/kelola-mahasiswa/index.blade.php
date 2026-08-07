@@ -8,6 +8,7 @@
 <div
     class="pb-5"
     x-data="{
+        cari: '',
         modalHapus: false,
         targetId: null,
         targetNama: '',
@@ -40,28 +41,22 @@
     </div>
 
     <div class="px-5 pt-6">
-        <form method="GET" class="mb-6" x-data>
-            <div class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-[0px_4px_16px_0px_#0F172A14]">
-                <input
-                    type="text"
-                    name="cari"
-                    value="{{ request('cari') }}"
-                    placeholder="Cari NIM atau Nama Mahasiswa"
-                    class="w-full border-none font-inter text-xs text-black placeholder:text-slate-400 focus:outline-none focus:ring-0"
-                    @input.debounce.500ms="$el.form.submit()"
-                />
-                <button type="submit">
-                    <svg class="h-4 w-4 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                        <circle cx="11" cy="11" r="7" />
-                        <path d="m21 21-4.3-4.3" />
-                    </svg>
-                </button>
-            </div>
-        </form>
+        <div class="mb-6 flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-[0px_4px_16px_0px_#0F172A14]">
+            <input
+                type="text"
+                x-model="cari"
+                placeholder="Cari NIM atau Nama Mahasiswa"
+                class="w-full border-none font-inter text-xs text-black placeholder:text-slate-400 focus:outline-none focus:ring-0"
+            />
+            <svg class="h-4 w-4 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m21 21-4.3-4.3" />
+            </svg>
+        </div>
 
         <div class="flex flex-col gap-4">
             @forelse ($mahasiswas as $mhs)
-                <div class="mb-4 rounded-xl border border-slate-100 bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
+                <div x-show="cari === '' || '{{ strtolower($mhs->nim . ' ' . ($mhs->pengguna->nama ?? '')) }}'.includes(cari.toLowerCase())" class="mb-4 rounded-xl border border-slate-100 bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
                     <div class="mb-4 flex items-start gap-4">
                         <img src="{{ $mhs->pengguna?->foto_profil ? asset('storage/' . $mhs->pengguna->foto_profil) : 'https://ui-avatars.com/api/?name=' . urlencode($mhs->pengguna?->nama ?? 'M') . '&background=random' }}"
                             alt="Profile" class="h-[52px] w-[52px] rounded-full object-cover">

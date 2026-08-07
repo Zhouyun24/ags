@@ -17,11 +17,22 @@ class KelolaMahasiswaController extends Controller
     /**
      * Tampilkan daftar semua Mahasiswa (KK3).
      */
-    public function index()
+    public function index(\Illuminate\Http\Request $request)
     {
-        $mahasiswas = mahasiswa::with(['pengguna', 'dosenPA.pengguna'])
-            ->orderByDesc('created_at')
-            ->get();
+        $query = mahasiswa::with(['pengguna', 'dosenPA.pengguna'])
+            ->orderByDesc('created_at');
+
+        if ($request->has('cari') && $request->cari != '') {
+            $cari = $request->cari;
+            $query->where(function($q) use ($cari) {
+                $q->where('nim', 'like', "%{$cari}%")
+                  ->orWhereHas('pengguna', function($q2) use ($cari) {
+                      $q2->where('nama', 'like', "%{$cari}%");
+                  });
+            });
+        }
+
+        $mahasiswas = $query->get();
 
         $dosenList = dosen_pa::with('pengguna')->get();
 

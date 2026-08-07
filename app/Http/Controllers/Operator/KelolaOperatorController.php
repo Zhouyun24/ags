@@ -16,9 +16,19 @@ class KelolaOperatorController extends Controller
     /**
      * Tampilkan daftar semua Operator (KK2).
      */
-    public function index()
+    public function index(\Illuminate\Http\Request $request)
     {
-        $operators = operator::with('pengguna')->orderByDesc('created_at')->get();
+        $query = operator::with('pengguna')->orderByDesc('created_at');
+
+        if ($request->has('cari') && $request->cari != '') {
+            $cari = $request->cari;
+            $query->whereHas('pengguna', function ($q) use ($cari) {
+                $q->where('nama', 'like', "%{$cari}%")
+                  ->orWhere('id_pengguna', 'like', "%{$cari}%");
+            });
+        }
+
+        $operators = $query->get();
 
         return view('pages.operator.kelola-operator.index', [
             'operators' => $operators,

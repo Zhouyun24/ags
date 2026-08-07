@@ -16,12 +16,23 @@ class KelolaDosenController extends Controller
     /**
      * Tampilkan daftar semua Dosen PA (KK4).
      */
-    public function index()
+    public function index(\Illuminate\Http\Request $request)
     {
-        $dosens = dosen_pa::with('pengguna')
+        $query = dosen_pa::with('pengguna')
             ->withCount('mahasiswa')
-            ->orderByDesc('created_at')
-            ->get();
+            ->orderByDesc('created_at');
+
+        if ($request->has('cari') && $request->cari != '') {
+            $cari = $request->cari;
+            $query->where(function($q) use ($cari) {
+                $q->where('nip', 'like', "%{$cari}%")
+                  ->orWhereHas('pengguna', function($q2) use ($cari) {
+                      $q2->where('nama', 'like', "%{$cari}%");
+                  });
+            });
+        }
+
+        $dosens = $query->get();
 
         return view('pages.operator.kelola-dosen.index', [
             'dosens' => $dosens,
