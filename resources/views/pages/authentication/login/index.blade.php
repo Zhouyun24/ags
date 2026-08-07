@@ -17,11 +17,8 @@
         </p>
     </div>
 
-    {{-- 1. UBAH METHOD JADI POST DAN ACTION KE ROUTE LOGIN --}}
     <form method="POST" action="{{ route('login') }}" class="flex-1 px-6 pt-8" x-data="{ showPassword: false, remember: false }">
         @csrf
-
-        {{-- ID Pengguna / Email --}}
         <div class="mb-5">
             <label for="email" class="mb-2 block text-sm font-semibold text-slate-800">
                 Email
@@ -38,13 +35,11 @@
                     @keydown.enter="$el.closest('form').submit()"
                     class="w-full rounded-xl border border-slate-200 bg-white py-3.5 pl-11 pr-4 text-sm text-slate-800 placeholder:text-slate-400 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100">
             </div>
-            {{-- 2. DYNAMIC ERROR MESSAGE FOR EMAIL --}}
             @error('email')
                 <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p>
             @enderror
         </div>
 
-        {{-- Kata Sandi --}}
         <div class="mb-4">
             <label for="kata_sandi" class="mb-2 block text-sm font-semibold text-slate-800">
                 Kata Sandi
@@ -56,7 +51,6 @@
                         <path d="M8 10V7a4 4 0 0 1 8 0v3" />
                     </svg>
                 </span>
-                {{-- 3. UBAH NAME JADI 'kata_sandi' --}}
                 <input :type="showPassword ? 'text' : 'password'" id="kata_sandi" name="kata_sandi"
                     placeholder="Masukkan Kata Sandi" required
                     @keydown.enter="$el.closest('form').submit()"
@@ -79,7 +73,6 @@
                     </svg>
                 </button>
             </div>
-            {{-- 4. DYNAMIC ERROR MESSAGE FOR KATA SANDI --}}
             @error('kata_sandi')
                 <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p>
             @enderror

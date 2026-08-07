@@ -2,7 +2,6 @@
 
 @section('layouts')
 <div class="flex flex-col min-h-screen bg-slate-50 pb-10">
-    {{-- Header Section --}}
     <div class="overflow-hidden bg-gradient-to-br from-[#22C55E] via-[#16A34A] to-[#15803D] px-5 pb-12 pt-10 text-white">
         <div class="flex items-center justify-between">
             <div>
@@ -16,11 +15,9 @@
         </div>
     </div>
 
-    {{-- Content --}}
     <div class="px-6 mt-6">
         <div class="space-y-4 max-w-md mx-auto">
             @forelse ($jadwals->where('status', 'menunggu') as $item)
-                {{-- Schedule Card --}}
                 <div class="rounded-2xl bg-white p-5 shadow-sm border border-slate-100">
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-3">
@@ -44,7 +41,6 @@
                         </span>
                     </div>
 
-                    {{-- Date/Time Box --}}
                     <div class="mb-5 flex flex-wrap items-center gap-6 rounded-xl bg-indigo-50/50 p-3 text-sm text-slate-700 border border-indigo-100/50">
                         <div class="flex items-center gap-2">
                             <svg class="h-4 w-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -64,7 +60,6 @@
                         </div>
                     </div>
 
-                    {{-- Action Buttons --}}
                     <div class="grid grid-cols-2 gap-3">
                         <form method="POST" action="{{ route('dosen.persetujuan-jadwal.update', $item->id_jadwal) }}">
                             @csrf

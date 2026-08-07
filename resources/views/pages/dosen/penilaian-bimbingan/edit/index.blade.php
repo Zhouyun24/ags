@@ -8,7 +8,6 @@
             return (((this.partisipasi + this.pemahaman) / 2) || 0).toFixed(1);
         }
     }">
-    {{-- ================= HEADER ================= --}}
     <div class="relative overflow-hidden rounded-b-[20px] bg-gradient-to-br from-[#22C55E] via-[#16A34A] to-[#15803D] px-5 pb-6 pt-5">
         <h1 class="font-jakarta text-xl font-extrabold text-white">Evaluasi Mahasiswa</h1>
         <p class="mt-1 font-inter text-xs text-white">Kelola nilai perkembangan Mahasiswa</p>
@@ -18,8 +17,6 @@
         <form method="POST" action="{{ route('dosen.penilaian.update', $penilaian->id_perkembangan) }}">
             @csrf
             @method('PATCH')
-
-            {{-- ================= INFO MAHASISWA ================= --}}
             <div class="mb-6 flex items-center gap-3 rounded-xl border border-[#C7D2FE] bg-[#E0E7FF]/50 p-4">
                 <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#2653EB]">
                     <svg class="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -36,9 +33,7 @@
                 </div>
             </div>
 
-            {{-- ================= FORM SKOR ================= --}}
             <div class="mb-6 rounded-2xl bg-white p-5 shadow-[0px_4px_16px_0px_#0F172A14]">
-                {{-- Partisipasi --}}
                 <p class="font-inter text-sm text-black">Partisipasi</p>
                 <div class="mt-2 h-[6px] w-full overflow-hidden rounded-full bg-slate-200">
                     <div class="h-full rounded-full bg-[#2653EB] transition-all duration-200"
@@ -63,7 +58,6 @@
                     <p class="mt-1.5 font-inter text-xs text-red-500">{{ $message }}</p>
                 @enderror
 
-                {{-- Pemahaman --}}
                 <p class="mt-6 font-inter text-sm text-black">Pemahaman</p>
                 <div class="mt-2 h-[6px] w-full overflow-hidden rounded-full bg-slate-200">
                     <div class="h-full rounded-full bg-[#2653EB] transition-all duration-200"
@@ -88,7 +82,6 @@
                     <p class="mt-1.5 font-inter text-xs text-red-500">{{ $message }}</p>
                 @enderror
 
-                {{-- Skor Keseluruhan --}}
                 <div class="mt-6 rounded-xl bg-[#2653EB] py-6 text-center">
                     <p class="font-inter text-xs text-blue-100">Skor Keseluruhan</p>
                     <p class="mt-1 font-jakarta text-4xl font-extrabold text-white" x-text="keseluruhan"></p>
@@ -97,7 +90,6 @@
                 </div>
             </div>
 
-            {{-- ================= TOMBOL AKSI ================= --}}
             <div class="mb-6 grid grid-cols-2 gap-3">
                 <a href="{{ route('dosen.evaluasi-mahasiswa.index') }}"
                     class="flex items-center justify-center rounded-lg border border-[#2653EB] py-3 font-inter text-sm font-semibold text-[#2653EB] hover:bg-[#2653EB]/5">

@@ -2,13 +2,11 @@
 
 @section('layouts')
 @php
-    // --- Hitung lingkaran skor keseluruhan (circular progress) ---
     $radius = 70;
     $circumference = 2 * pi() * $radius;
     $persenSkor = $skorMaks > 0 ? $skorKeseluruhan / $skorMaks : 0;
     $strokeOffset = $circumference * (1 - $persenSkor);
 
-    // --- Hitung titik-titik grafik tren (SVG line chart) ---
     $chartWidth = 320;
     $chartHeight = 140;
     $paddingLeft = 30;

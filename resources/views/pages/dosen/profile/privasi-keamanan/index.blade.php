@@ -61,7 +61,6 @@
         hapusSesi(id) {
             this.sesiList = this.sesiList.filter(s => s.id !== id);
             this.sesiUntukHapus = null;
-            // TODO: panggil endpoint backend untuk logout sesi tsb, misal:
             // fetch(`/profil/sesi/${id}`, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } });
         },
     }" class="pb-8">

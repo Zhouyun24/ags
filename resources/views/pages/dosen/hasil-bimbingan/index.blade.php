@@ -24,14 +24,12 @@
         },
     }'
 >
-    {{-- ================= HEADER ================= --}}
     <div class="relative overflow-hidden bg-gradient-to-br from-[#22C55E] via-[#16A34A] to-[#15803D] px-5 pb-12 pt-10">
         <h1 class="font-jakarta text-xl font-extrabold text-white">Hasil Bimbingan</h1>
         <p class="mt-1 font-inter text-[12px] text-white">Kelola catatan dan rekomendasi bimbingan</p>
     </div>
 
     <div class="px-5 pt-6">
-        {{-- ================= FILTER TAB ================= --}}
         <div class="mb-4 flex items-center gap-2">
             <button
                 type="button"
@@ -59,7 +57,6 @@
             </button>
         </div>
 
-        {{-- ================= SEARCH BAR ================= --}}
         <div class="mb-6 flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-[0px_4px_16px_0px_#0F172A14]">
             <input
                 type="text"
@@ -73,11 +70,9 @@
             </svg>
         </div>
 
-        {{-- ================= DAFTAR BIMBINGAN ================= --}}
         <div class="flex flex-col gap-4">
             <template x-for="bimbingan in filtered" :key="bimbingan.id">
                 <div class="rounded-2xl bg-white p-4 shadow-[0px_4px_16px_0px_#0F172A14]">
-                    {{-- Header kartu --}}
                     <div class="flex items-start justify-between">
                         <div class="flex items-start gap-3">
                             <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#2653EB]/15">
@@ -108,7 +103,6 @@
                         </span>
                     </div>
 
-                    {{-- Tanggal & jam --}}
                     <div class="mt-4 flex items-center gap-4 rounded-lg bg-[#E0E7FF]/60 px-3 py-2.5">
                         <span class="flex items-center gap-1.5 font-inter text-xs text-slate-700">
                             <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -126,19 +120,16 @@
                         </span>
                     </div>
 
-                    {{-- Catatan Bimbingan --}}
                     <div class="mt-3 rounded-lg bg-[#DBEAFE]/70 p-3">
                         <p class="font-inter text-xs font-semibold text-[#2563EB]">Catatan Bimbingan</p>
                         <p class="mt-1 font-inter text-xs text-slate-700" x-text="bimbingan.catatan"></p>
                     </div>
 
-                    {{-- Rekomendasi Dosen --}}
                     <div class="mt-3 rounded-lg bg-[#DCFCE7]/70 p-3">
                         <p class="font-inter text-xs font-semibold text-[#16A34A]">Rekomendasi Dosen</p>
                         <p class="mt-1 font-inter text-xs text-slate-700" x-text="bimbingan.rekomendasi"></p>
                     </div>
 
-                    {{-- Tombol Aksi --}}
                     <div class="mt-4 flex justify-end">
                         <a
                             :href="bimbingan.urlAksi"
