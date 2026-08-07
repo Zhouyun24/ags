@@ -1,34 +1,6 @@
 @extends('layouts.index')
 
 @section('layouts')
-@php
-    $daftarJadwal = collect([
-        [
-            'id' => 1,
-            'namaMhs' => 'Nama Mhs',
-            'nim' => '10124257',
-            'topik' => 'Topik diskusi',
-            'namaDosen' => 'Nama Dosen',
-            'nip' => 'NIP',
-            'tanggal' => 'DD/MM/YYYY',
-            'jam' => 'HH/MM WIB',
-            'status' => 'disetujui',
-            'urlHapus' => route('operator.kelola-jadwal.index'),
-        ],
-        [
-            'id' => 2,
-            'namaMhs' => 'Nama Mhs Lain',
-            'nim' => '10124999',
-            'topik' => 'Topik diskusi lain',
-            'namaDosen' => 'Nama Dosen Lain',
-            'nip' => 'NIP',
-            'tanggal' => 'DD/MM/YYYY',
-            'jam' => 'HH/MM WIB',
-            'status' => 'menunggu',
-            'urlHapus' => route('operator.kelola-jadwal.index'),
-        ],
-    ]);
-@endphp
 
 <div
     class="pb-5"

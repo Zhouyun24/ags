@@ -20,6 +20,9 @@ use App\Http\Controllers\Operator\MonitoringController;
 use App\Http\Controllers\Operator\DashboardOperatorController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
 use App\Http\Controllers\Dosen\PersetujuanJadwalDosenController;
+use App\Http\Controllers\Dosen\DaftarMahasiswaController;
+use App\Http\Controllers\Operator\KelolaBimbinganController;
+use App\Http\Controllers\Operator\KelolaJadwalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\NotificationController;
 
@@ -134,17 +137,15 @@ Route::middleware(['auth', 'role:1'])->prefix('operator')->name('operator.')->gr
     Route::delete('/monitoring/jadwal/{id_jadwal}', [MonitoringController::class, 'destroyJadwal'])->name('monitoring.jadwal.destroy');
 
     // Kelola Bimbingan
-    Route::get('/kelola-bimbingan', function () {
-        return view('pages.operator.kelola-bimbingan.index');
-    })->name('kelola-bimbingan.index');
+    Route::get('/kelola-bimbingan', [KelolaBimbinganController::class, 'index'])->name('kelola-bimbingan.index');
+    Route::delete('/kelola-bimbingan/{id}', [KelolaBimbinganController::class, 'destroy'])->name('kelola-bimbingan.destroy');
 
     Route::get('/kelola-bimbingan/{nim}', function () {
         return view('pages.operator.kelola-bimbingan.show');
     })->name('kelola-bimbingan.show');
     
-    Route::get('/kelola-jadwal', function () {
-        return view('pages.operator.kelola-jadwal.index');
-    })->name('kelola-jadwal.index');
+    Route::get('/kelola-jadwal', [KelolaJadwalController::class, 'index'])->name('kelola-jadwal.index');
+    Route::delete('/kelola-jadwal/{id}', [KelolaJadwalController::class, 'destroy'])->name('kelola-jadwal.destroy');
 
     // Notifikasi & Profile
     Route::get('/notifikasi', [NotificationController::class, 'index'])->name('notifikasi.index');
@@ -266,9 +267,7 @@ Route::middleware(['auth', 'role:3'])->prefix('dosen')->name('dosen.')->group(fu
     Route::patch('/penilaian/{id_perkembangan}', [PenilaianBimbinganController::class, 'update'])
         ->name('penilaian.update');
 
-    Route::get('/daftar-mahasiswa', function () {
-        return view('pages.dosen.daftar-mahasiswa.index');
-    })->name('daftar-mahasiswa.index');
+    Route::get('/daftar-mahasiswa', [DaftarMahasiswaController::class, 'index'])->name('daftar-mahasiswa.index');
 
     Route::get('/daftar-mahasiswa/{nim}', function () {
         return view('pages.dosen.daftar-mahasiswa.show');

@@ -1,50 +1,6 @@
 @extends('layouts.index')
 
 @section('layouts')
-@php
-    $daftarBimbingan = collect([
-        [
-            'id' => 1,
-            'namaMhs' => 'Nama Mhs',
-            'nim' => '10124257',
-            'topik' => 'Topik diskusi',
-            'namaDosen' => 'Nama Dosen',
-            'nip' => 'NIP',
-            'tanggal' => 'DD/MM/YYYY',
-            'jam' => 'HH/MM WIB',
-            'status' => 'selesai',
-            'catatan' => 'Perbaiki latar belakang dan rumusan masalah agar lebih spesifik.',
-            'rekomendasi' => 'Baca jurnal referensi dan perbaiki dalam satu minggu.',
-            'evaluasi' => [
-                'partisipasi' => 4.2,
-                'pemahaman' => 3.8,
-                'keseluruhan' => 4.0,
-            ],
-            'urlHapus' => route('operator.kelola-bimbingan.index'),
-            // 'urlHapus' => route('operator.kelola-bimbingan.destroy', 1),
-        ],
-        [
-            'id' => 2,
-            'namaMhs' => 'Nama Mhs Lain',
-            'nim' => '10124999',
-            'topik' => 'Topik diskusi lain',
-            'namaDosen' => 'Nama Dosen Lain',
-            'nip' => 'NIP',
-            'tanggal' => 'DD/MM/YYYY',
-            'jam' => 'HH/MM WIB',
-            'status' => 'menunggu',
-            'catatan' => 'Tambahkan studi kasus sebagai pembanding.',
-            'rekomendasi' => 'Konsultasikan kembali minggu depan.',
-            'evaluasi' => [
-                'partisipasi' => 0,
-                'pemahaman' => 0,
-                'keseluruhan' => 0,
-            ],
-            'urlHapus' => route('operator.kelola-bimbingan.index'),
-            // 'urlHapus' => route('operator.kelola-bimbingan.destroy', 2),
-        ],
-    ]);
-@endphp
 
 <div
     class="pb-5"
