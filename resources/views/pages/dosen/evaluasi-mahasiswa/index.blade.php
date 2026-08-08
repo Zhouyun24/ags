@@ -7,7 +7,7 @@
 @extends('layouts.index')
 
 @section('layouts')
-    <div x-data="{ activeTab: 'semua' }" class="pb-8">
+    <div x-data="{ activeTab: 'semua', search: '' }" class="pb-8">
 
         <div class="flex flex-col min-h-screen bg-slate-50 pb-10">
 
@@ -49,10 +49,10 @@
                 </div>
 
                 <div class="mb-4 relative w-full max-w-md">
-                    <input type="text" placeholder="Cari NIM atau Nama Mahasiswa"
+                    <input type="text" x-model="search" placeholder="Cari NIM atau Nama Mahasiswa"
                         class="w-full rounded-full bg-gray-100 py-2 pl-5 pr-12 text-sm text-gray-700 placeholder:text-gray-400 shadow-md outline-none transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-blue-400" />
 
-                    <button type="submit"
+                    <button type="button"
                         class="absolute right-4 top-1/2 -translate-y-1/2 text-black transition hover:scale-110">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
@@ -63,7 +63,7 @@
                 </div>
 
                 @forelse ($jadwal as $item)
-                    <div x-show="activeTab === 'semua' || activeTab === '{{ $item->status }}'"
+                    <div x-show="(activeTab === 'semua' || activeTab === '{{ $item->status }}') && ('{{ strtolower($item->nama) }}'.includes(search.toLowerCase()) || '{{ strtolower($item->nim) }}'.includes(search.toLowerCase()))"
                     class="mt-4 w-full max-w-sm rounded-2xl bg-[#F7F9FC] p-5 shadow-md">
 
                         <div class="flex items-start justify-between">
