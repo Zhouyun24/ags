@@ -34,7 +34,8 @@
                         name="nim"
                         value="{{ old('nim', $mahasiswa->nim) }}"
                         placeholder="1XXXXXXX"
-                        class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 font-inter text-sm text-black placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                        readonly
+                        class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 font-inter text-sm text-slate-500 placeholder:text-slate-400 focus:outline-none cursor-not-allowed"
                     />
                     @error('nim')
                         <p class="mt-1 font-inter text-[11px] text-[#DC2626]">{{ $message }}</p>
