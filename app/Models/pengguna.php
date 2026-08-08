@@ -27,6 +27,7 @@ class pengguna extends Authenticatable
 
     protected $hidden = [
         'kata_sandi',
+        'remember_token',
     ];
 
     // 3. MEMBERITAHU LARAVEL NAMA KOLOM PASSWORD

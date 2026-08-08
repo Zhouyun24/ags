@@ -38,7 +38,7 @@
             @if (session('success'))
                 <div x-data="{ showSuccess: true }">
                     <div x-show="showSuccess" x-cloak
-                        class="fixed inset-0 z-[100] flex items-end justify-center bg-black/40 px-5 pb-8 sm:items-center"
+                        class="fixed inset-0 z-50 flex items-end justify-center bg-black/40 px-5 pb-8 sm:items-center"
                         @click.self="showSuccess = false">
                         <div x-show="showSuccess"
                             x-transition:enter="transition ease-out duration-200"
@@ -64,7 +64,7 @@
             @if (session('error'))
                 <div x-data="{ showError: true }">
                     <div x-show="showError" x-cloak
-                        class="fixed inset-0 z-[100] flex items-end justify-center bg-black/40 px-5 pb-8 sm:items-center"
+                        class="fixed inset-0 z-50 flex items-end justify-center bg-black/40 px-5 pb-8 sm:items-center"
                         @click.self="showError = false">
                         <div x-show="showError"
                             x-transition:enter="transition ease-out duration-200"
